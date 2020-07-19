@@ -8,8 +8,133 @@ namespace WizBooklat.Migrations
     using System.Linq;
     using WizBooklat.Models;
 
-    // wb-db.
-    // user / wbadmin@123
+    /* Specs
+        WIZBOOKLAT
+
+        Reports
+        - choose kind of report, show graphs and tables then print
+
+        Books properties
+        - popularity
+        - multiple categories
+        - author
+        - date published
+        - review
+        - is featured
+        - date added
+
+        Book depreciation
+        - book can be added
+        - once may new version, display old
+        - but suggest that there's a new version
+
+        Settings
+        - date limit for reserving of books
+        - book limit / number of books allowed to reserve
+        - email suffix editable by admin '@editable.com'
+        - minimum start days of reservation
+        - maximum days of reservation
+
+        Roles
+        - Admin - manage accounts, set limits, book management
+        - Librarian - book management
+        - Customer
+        - Entrance
+
+        User properties
+        - branch id, when adding or returning books, this will be default location
+
+        Web App Book Reservation Process - Online
+        - sign up w/ email and student number, login
+        - choose book
+        - choose date range (reservation minimum start date is 2 days)
+        - submit
+        - pending points is shown
+
+        Web App Book Reservation Process - Walkin
+        - Bring book to librarian
+        - Librarian will search book in system
+        - click Reserve book for student
+        - Librarian will search for student in system
+        - submit
+
+        Reservation Limits
+        - if book isn't taken on the start date of reservation,
+        reservation is cancelled the next day
+        - minimum start date for reservation is 2 days, can only be weekdays
+        - maximum days of reservation is 14 days
+        - Loan periods are 7 and 14 (editable)
+
+        Book return Process
+        - librarian will search student
+        - click reserved books
+        - confirm return
+        - fill out form; damaged, description
+        - if no damage and returned on-time, points will be approved
+        - if book is damaged or late, points will be cancelled
+
+        Book Gallery
+        - Can filter according to book properties
+        - Can click book and see full details and availability
+
+        Librarian
+        - add book, search isbn if wala, manual input
+        - location field so this can be transferred within multiple branches
+
+        Upsale
+        - Featured books (click featured checkbox), Newly Added Books
+        - Book reaver, hall of fame, newly added books
+
+        Points earned when Visiting
+        - login with entrance type account
+        - open login page
+        - if student arrives, guard will tell student to input student number & email, show id
+        - points are automatically added
+
+        Other Resources
+        - besides books, there are other materials that can be reserved
+        - will undergo same process
+        - can be found on a separate page
+
+        Perks
+        - additional days per book
+        - additional limit of books
+        - other perks
+
+        Rank Object
+        - Add, Edit Rank
+        - Each rank has perks (Perks object, duration/ date range)
+        - Each rank has rewards (Rewards object, duration/ date range, 1 claim)
+        - Bronze 300
+        - Silver 500
+        - Gold 1000
+
+        Rewards
+        - when librarian or admmin adds reward, 
+        all existing members within that rank can claim
+        - 1 claim, upon claiming, code will be shown
+
+        Earned points
+        - 25, return book with no damage and on-time
+        - 5, visit per day. If multiple visits within a day, only count 1
+        - 25, review and comment
+
+        Book Status
+        - Available
+        - Available - Damaged (can not be reserved but can be used inside library)
+        - Reserved
+        - Pulled-out
+        - Lost - Reported (1 week to find the book if just misplaced)
+        - Lost - Confirmed
+
+        Inquiry Form, no more chat
+        - once filledout and submitted, sends email to admin or librarian
+        - admin/librarian will reply manually with email
+    */
+
+    // Open Library Search: http://openlibrary.org/search.json?title=the+lord+of+the+rings
+    // Open Library Get Book: https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&jscmd=data&format=json
+    // DB: user / wbadmin@123
 
     internal sealed class Configuration : DbMigrationsConfiguration<WizBooklat.Models.ApplicationDbContext>
     {
