@@ -103,3 +103,6 @@ C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.cspro
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.csproj.CopyComplete
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.dll
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.pdb
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.initial.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.csproj.GenerateResource.cache
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.Removesettingdatecreated.resources

@@ -24,7 +24,7 @@ namespace WizBooklat.Models
         public string ImageLocation { get; set; }
 
         // Book or Other Resources
-        public sbyte Type { get; set; }
+        public Int16 Type { get; set; }
 
         // number of days this book can be loaned; use constant
         public int LoanPeriod { get; set; }
@@ -61,7 +61,7 @@ namespace WizBooklat.Models
         public int ReviewId { get; set; }
 
         // Over 5 only
-        public sbyte Rate { get; set; }
+        public Int16 Rate { get; set; }
 
         public string Comment { get; set; }
 
@@ -90,7 +90,7 @@ namespace WizBooklat.Models
         public virtual BookTemplate BookTemplate { get; set; }
 
         // use constant
-        public sbyte BookStatus { get; set; }
+        public Int16 BookStatus { get; set; }
     }
 
     public class Loan
@@ -178,7 +178,7 @@ namespace WizBooklat.Models
         public int Points { get; set; }
 
         // Add or Minus
-        public sbyte Type { get; set; }
+        public Int16 Type { get; set; }
         public string Description { get; set; }
 
         public string UserId { get; set; }
@@ -228,6 +228,5 @@ namespace WizBooklat.Models
         public int SettingId { get; set; }
         public string Code { get; set; }
         public string Value { get; set; }
-        public DateTime DateCreated { get; set; }
     }
 }

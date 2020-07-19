@@ -8,6 +8,9 @@ namespace WizBooklat.Migrations
     using System.Linq;
     using WizBooklat.Models;
 
+    // wb-db.
+    // user / wbadmin@123
+
     internal sealed class Configuration : DbMigrationsConfiguration<WizBooklat.Models.ApplicationDbContext>
     {
         public Configuration()
