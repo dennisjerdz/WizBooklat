@@ -53,6 +53,67 @@ body {
     color:#6427ff;
 }
 
+.table.dataTable thead th, table.dataTable thead td{
+    border-bottom: 1px groove rgba(50,50,100,0.1) !important;
+    /*border-bottom:none !important;*/
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    padding:0em 0.4em !important;
+}
+
+/*table background*/
+table.dataTable tbody th, table.dataTable tbody td{
+    /*background-color:rgba(240,240,240,0.1);*/
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+    background:none !important;
+    border:none !important;
+    background-color: #00a0ff !important;
+    color:white !important;
+    padding:0px 8px 0px 8px !important;
+}
+
+.dataTables_info{
+    color:rgba(0,0,0,0.4) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate{
+    padding-top:0.5em !important;
+}
+
+.dataTables_wrapper .dataTables_paginate{
+    float:left !important;
+}
+
+.window-heading{
+    margin-bottom:20px;
+}
+
+.dataTables_wrapper .dataTables_info{
+    float:right !important;
+}
+
+table.dataTable thead th, table.dataTable thead td{
+    padding:10px 0px 10px 10px !important;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+    border-top: 1px solid rgba(200,200,200,0.2);
+}
+
+table.dataTable tbody th, table.dataTable tbody td{
+    padding-top:15px !important;
+    padding-bottom:15px !important;
+    font-size:0.9em !important;
+}
+
+table.dataTable.no-footer{
+    border-color:rgba(0,0,0,0) !important;
+    margin-bottom:8px;
+}
+
 .account-links > li:first-of-type a{
     padding-right:0px !important;
     padding-left:0px;
@@ -178,4 +239,21 @@ body {
 .form-control-line-only:active,.form-control-line-only:focus{
     box-shadow:none !important;
     border-bottom:2px solid #00a0ff;
+}
+
+.alert-round{
+    margin-bottom: 0px;
+    margin-top:46px;
+}
+
+.alert-round.alert-success{
+    border-radius:14px;
+    background-color:#23ce31;
+    color:white;
+}
+
+.alert-round.alert-danger{
+    border-radius:14px;
+    background-color:#23ce31;
+    color:white;
 }

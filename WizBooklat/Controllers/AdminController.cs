@@ -11,7 +11,7 @@ using WizBooklat.Models;
 
 namespace WizBooklat.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         #region Account Manager
@@ -54,8 +54,7 @@ namespace WizBooklat.Controllers
             }
         }
         #endregion
-
-        [Authorize(Roles = "Admin")]
+        
         public ActionResult Accounts()
         {
             if (TempData["Error"] != null)
@@ -66,13 +65,11 @@ namespace WizBooklat.Controllers
             {
                 ViewBag.Message = TempData["Message"];
             }
-
-            ViewBag.Branches = db.Branches.ToList();
-
+            
             var users = db.Users.ToList();
             return View(users);
         }
-
+        
         public ActionResult ActivateAccount(string email)
         {
             var user = db.Users.FirstOrDefault(u => u.Email == email);
@@ -98,7 +95,7 @@ namespace WizBooklat.Controllers
             TempData["Message"] = "<strong>Account has been activated.</strong> We've sent a notification to "+user.Email+".";
             return RedirectToAction("Accounts");
         }
-
+        
         public ActionResult DisableAccount(string email)
         {
             var user = db.Users.FirstOrDefault(u => u.Email == email);
@@ -110,8 +107,7 @@ namespace WizBooklat.Controllers
             TempData["Message"] = "<strong>Account has been disabled.</strong> We've sent a notification to "+ user.Email +".";
             return RedirectToAction("Accounts");
         }
-
-        [Authorize(Roles = "Admin")]
+        
         public ActionResult AddAccount()
         {
             RegisterViewModel rvm = new RegisterViewModel();
@@ -125,12 +121,12 @@ namespace WizBooklat.Controllers
                 ViewBag.Message = TempData["Message"];
             }
 
+            ViewBag.Branches = db.Branches.ToList();
+
             return View(rvm);
         }
-
-        [Authorize(Roles = "Admin")]
+        
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddAccount(RegisterViewModel model)
         {
@@ -162,7 +158,72 @@ namespace WizBooklat.Controllers
                 AddErrors(result);
             }
 
+            ViewBag.Branches = db.Branches.ToList();
             // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+        
+        public ActionResult EditAccount(string email)
+        {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
+            var user = db.Users.FirstOrDefault(u => u.UserName == email);
+
+            if (user == null)
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Account not found.</strong>";
+                return RedirectToAction("Accounts");
+            }
+
+            var editAccountModel = new EditAccountViewModel
+            {
+                BranchId = user.BranchId,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                MiddleName = user.MiddleName,
+                LastName = user.LastName,
+                AccountType = user.AccountType
+            };
+
+            ViewBag.Branches = db.Branches.ToList();
+            return View(editAccountModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditAccount(EditAccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.FirstOrDefault(u => u.Email == model.Email);
+
+                if (user == null)
+                {
+                    TempData["Error"] = "1";
+                    TempData["Message"] = "<strong>Account not found.</strong>";
+                    return RedirectToAction("Accounts");
+                }
+                else
+                {
+                    user.FirstName = model.FirstName;
+                    user.MiddleName = model.MiddleName;
+                    user.LastName = model.LastName;
+                    user.BranchId = model.BranchId;
+
+                    db.SaveChanges();
+                    TempData["Message"] = "<strong>Account has been updated successfully.</strong>";
+                    return RedirectToAction("Accounts");
+                }
+            }
+
             return View(model);
         }
 

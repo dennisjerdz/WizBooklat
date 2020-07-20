@@ -94,6 +94,19 @@ namespace WizBooklat.Models
         public Int16 AccountStatus { get; set; }
     }
 
+    public class EditAccountViewModel
+    {
+        public string Email { get; set; }
+
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string MobileNumber { get; set; }
+        public int? BranchId { get; set; }
+
+        public Int16 AccountType { get; set; }
+    }
+
     public class ResetPasswordViewModel
     {
         [Required]

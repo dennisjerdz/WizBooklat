@@ -190,6 +190,10 @@
     <Compile Include="Migrations\202007200529435_Add mobile number and account type.Designer.cs">
       <DependentUpon>202007200529435_Add mobile number and account type.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007201701265_Account Branch navigation property.cs" />
+    <Compile Include="Migrations\202007201701265_Account Branch navigation property.Designer.cs">
+      <DependentUpon>202007201701265_Account Branch navigation property.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
@@ -280,6 +284,7 @@
     <Content Include="Views\BookUnits\Index.cshtml" />
     <Content Include="Views\Admin\Accounts.cshtml" />
     <Content Include="Views\Admin\AddAccount.cshtml" />
+    <Content Include="Views\Admin\EditAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -306,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007200529435_Add mobile number and account type.resx">
       <DependentUpon>202007200529435_Add mobile number and account type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007201701265_Account Branch navigation property.resx">
+      <DependentUpon>202007201701265_Account Branch navigation property.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

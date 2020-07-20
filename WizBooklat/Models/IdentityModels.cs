@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WizBooklat.Models
 {
@@ -18,20 +19,22 @@ namespace WizBooklat.Models
         public string MobileNumber { get; set; }
         public string MobileNumberCode { get; set; }
 
-        public int? BranchId { get; set; }
-
         public Int16 AccountType { get; set; }
         public Int16 AccountStatus { get; set; }
 
-        public virtual List<Loan> Loans { get; set; }
+        public int? BranchId { get; set; }
+        [ForeignKey("BranchId")]
+        public virtual Branch Branch { get; set; }
 
-        public virtual List<Review> Reviews { get; set; }
+        public List<Loan> Loans { get; set; }
 
-        public virtual List<Visit> Visits { get; set; }
+        public List<Review> Reviews { get; set; }
 
-        public virtual List<PointHistory> PointHistory { get; set; }
+        public List<Visit> Visits { get; set; }
 
-        public virtual List<Claim> RewardClaims { get; set; }
+        public List<PointHistory> PointHistory { get; set; }
+
+        public List<Claim> RewardClaims { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
