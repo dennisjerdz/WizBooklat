@@ -105,3 +105,4 @@ C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\obj\R
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\obj\Release\WizBooklat.dll
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\obj\Release\WizBooklat.pdb
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\obj\Release\WizBooklat.csprojResolveAssemblyReference.cache
+C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.AccountBranchnavigationproperty.resources

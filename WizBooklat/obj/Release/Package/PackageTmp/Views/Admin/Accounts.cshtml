@@ -39,6 +39,9 @@
                             EMAIL
                         </th>
                         <th>
+                            BRANCH
+                        </th>
+                        <th>
                             TYPE
                         </th>
                         <th>
@@ -65,6 +68,16 @@
                             </td>
                             <td>
                                 @item.Email
+                            </td>
+                            <td>
+                                @if (item.Branch != null)
+                                {
+                                    <text>@item.Branch.Name</text>
+                                }
+                                else
+                                {
+                                    <text>N/A</text>
+                                }
                             </td>
                             <td>
                                 @switch (item.AccountType)
@@ -95,7 +108,7 @@
                                 }
                             </td>
                             <td style="text-align:right;">
-                                <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("Edit", new { email = item.Email })">Edit</a>
+                                <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("EditAccount", new { email = item.Email })">Edit</a>
 
                                 @if (item.AccountStatus == AccountStatusConstant.ACTIVE)
                                 {
@@ -121,9 +134,9 @@
             var datatable = $("table").DataTable({
                 paging: true,
                 "pageLength": 10,
-                "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
+                "dom": "<'table-window'<'window-heading'<'row'<'col-xs-6'p><'col-xs-6'i>>><'table-responsive'rt>>",
                 "columnDefs": [
-                    { "orderable": false, "targets": 4 }
+                    { "orderable": false, "targets": 5 }
                 ]
             });
             $(".all-search").keyup(function () {
