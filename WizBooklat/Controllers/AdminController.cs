@@ -67,6 +67,8 @@ namespace WizBooklat.Controllers
                 ViewBag.Message = TempData["Message"];
             }
 
+            ViewBag.Branches = db.Branches.ToList();
+
             var users = db.Users.ToList();
             return View(users);
         }

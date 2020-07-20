@@ -37,6 +37,21 @@
         </div>
     </div>
     <div class="container">
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger alert-round alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @ViewBag.Message
+            </div>
+        }
+        else if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success alert-round alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @ViewBag.Message
+            </div>
+        }
+
         @RenderBody()
         <footer>
             <br />

@@ -58,8 +58,8 @@
                     <div class="col-md-6">
                         <label class="control-label">Branch</label>
                         @Html.DropDownListFor(
-                            m => m.AccountType,
-                            new List<SelectListItem> { new SelectListItem { Text="Mapua Makati", Value="1" }, new SelectListItem { Text = "Mapua Intramuros", Value = "2" } },
+                            m => m.BranchId,
+                            new SelectList(ViewBag.Branches,"BranchId","Name"),
                             new { @class = "form-control form-control-line-only" }
                         )
                     </div>
