@@ -1,0 +1,50 @@
+﻿@model WizBooklat.Models.Book
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Book</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BookTemplate.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookTemplate.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Branch.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Branch.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InternalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InternalCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BookStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BookStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.BookId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

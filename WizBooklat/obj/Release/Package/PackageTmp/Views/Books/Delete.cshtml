@@ -1,0 +1,136 @@
+﻿@model WizBooklat.Models.BookTemplate
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>BookTemplate</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImageLocation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImageLocation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoanPeriod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoanPeriod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ISBN)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ISBN)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OLKey)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OLKey)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PublishDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PublishDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InitialQuantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InitialQuantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActualQuantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ActualQuantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Genres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Authors)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Authors)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFeatured)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsFeatured)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

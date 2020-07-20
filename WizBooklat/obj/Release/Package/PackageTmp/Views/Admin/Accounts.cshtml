@@ -1,0 +1,134 @@
+﻿@model List<WizBooklat.Models.ApplicationUser>
+@using WizBooklat.Models
+@{
+    ViewBag.Title = "Accounts";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;List</h5>
+                </div>
+                <div class="topbar-right">
+                    <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("AddAccount")">Add Account +</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="topbar">
+            <div class="topbar-content">
+                <input class="form-control form-control-line-only topBarCenterContent all-search" placeholder="Search" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="body-container">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            NAME
+                        </th>
+                        <th>
+                            EMAIL
+                        </th>
+                        <th>
+                            TYPE
+                        </th>
+                        <th>
+                            STATUS
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.FirstName
+
+                                @if (item.MiddleName != null)
+                                {
+                                    @item.MiddleName.FirstOrDefault()
+                                    <text>.</text>
+                                }
+
+                                @item.LastName
+                            </td>
+                            <td>
+                                @item.Email
+                            </td>
+                            <td>
+                                @switch (item.AccountType)
+                                {
+                                    case AccountTypeConstant.ADMIN:
+                                        <span>Admin</span>
+                                        break;
+                                    case AccountTypeConstant.LIBRARIAN:
+                                        <span>Librarian</span>
+                                        break;
+                                    case AccountTypeConstant.ENTRANCE:
+                                        <span>Entrance</span>
+                                        break;
+                                    case AccountTypeConstant.LOANER:
+                                        <span>Student / Loaner</span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                @switch (item.AccountStatus)
+                                {
+                                    case AccountStatusConstant.ACTIVE:
+                                        <span style="color:green;">Active</span>
+                                        break;
+                                    case AccountStatusConstant.DISABLED:
+                                        <span style="color:red;">Disabled</span>
+                                        break;
+                                }
+                            </td>
+                            <td style="text-align:right;">
+                                <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("Edit", new { email = item.Email })">Edit</a>
+
+                                @if (item.AccountStatus == AccountStatusConstant.ACTIVE)
+                                {
+                                    <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("DisableAccount", new { email = item.Email })">Disable</a>
+                                }
+                                else if (item.AccountStatus == AccountStatusConstant.DISABLED)
+                                {
+                                    <a class="btn btn-xs btn-success btn-table-short" href="@Url.Action("ActivateAccount", new { email = item.Email })">Activate</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'table-responsive'rt>><'window-footer'<'col-md-6'i><'col-md-6'p>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 4 }
+                ]
+            });
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
+}

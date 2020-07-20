@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 
 namespace WizBooklat.Models
 {
@@ -14,8 +15,13 @@ namespace WizBooklat.Models
         public string MiddleName { get; set; }
         public string LastName { get; set; }
         public string StudentNumber { get; set; } 
+        public string MobileNumber { get; set; }
+        public string MobileNumberCode { get; set; }
 
         public int? BranchId { get; set; }
+
+        public Int16 AccountType { get; set; }
+        public Int16 AccountStatus { get; set; }
 
         public virtual List<Loan> Loans { get; set; }
 

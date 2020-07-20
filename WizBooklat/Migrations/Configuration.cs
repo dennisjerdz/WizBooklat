@@ -234,6 +234,7 @@ namespace WizBooklat.Migrations
                     UserName = "wbadmin@mailinator.com",
                     Email = "wbadmin@mailinator.com",
                     EmailConfirmed = true,
+                    AccountStatus = AccountStatusConstant.ACTIVE
                 };
                 userManager.Create(user, "wbadmin@123");
                 userManager.AddToRole(user.Id, "Admin");
@@ -247,9 +248,24 @@ namespace WizBooklat.Migrations
                     UserName = "wblibrarian@mailinator.com",
                     Email = "wblibrarian@mailinator.com",
                     EmailConfirmed = true,
+                    AccountStatus = AccountStatusConstant.ACTIVE
                 };
                 userManager.Create(user, "wblibrarian@123");
                 userManager.AddToRole(user.Id, "Librarian");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "test1@mailinator.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    FirstName = "Test 1",
+                    UserName = "test1@mailinator.com",
+                    Email = "test1@mailinator.com",
+                    EmailConfirmed = true,
+                    AccountStatus = AccountStatusConstant.ACTIVE
+                };
+                userManager.Create(user, "test1@123");
+                userManager.AddToRole(user.Id, "Loaner");
             }
 
             if (!context.Users.Any(u => u.UserName == "wbloaner1@mailinator.com"))
@@ -260,6 +276,7 @@ namespace WizBooklat.Migrations
                     UserName = "wbloaner1@mailinator.com",
                     Email = "wbloaner1@mailinator.com",
                     EmailConfirmed = true,
+                    AccountStatus = AccountStatusConstant.ACTIVE
                 };
                 userManager.Create(user, "wbloaner1@123");
                 userManager.AddToRole(user.Id, "Loaner");
@@ -273,6 +290,7 @@ namespace WizBooklat.Migrations
                     UserName = "wbloaner2@mailinator.com",
                     Email = "wbloaner2@mailinator.com",
                     EmailConfirmed = true,
+                    AccountStatus = AccountStatusConstant.ACTIVE
                 };
                 userManager.Create(user, "wbloaner2@123");
                 userManager.AddToRole(user.Id, "Loaner");
@@ -286,6 +304,7 @@ namespace WizBooklat.Migrations
                     UserName = "wbentrance@mailinator.com",
                     Email = "wbentrance@mailinator.com",
                     EmailConfirmed = true,
+                    AccountStatus = AccountStatusConstant.ACTIVE
                 };
                 userManager.Create(user, "wbentrance@123");
                 userManager.AddToRole(user.Id, "Entrance");

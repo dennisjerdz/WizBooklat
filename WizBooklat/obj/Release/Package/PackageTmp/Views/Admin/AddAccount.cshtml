@@ -1,0 +1,91 @@
+﻿@model WizBooklat.Models.RegisterViewModel
+@using WizBooklat.Models
+@{
+    ViewBag.Title = "Accounts";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;Add Account</h5>
+                </div>
+                <div class="topbar-right">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="body-container">
+            @using (Html.BeginForm("AddAccount", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.AccountType, new { @class = "control-label" })
+                        @Html.DropDownListFor(
+                            m => m.AccountType,
+                            AccountTypeConstant.AccountTypeList,
+                            new { @class = "form-control form-control-line-only" }
+                        )
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Email, new { @class = "control-label", @type = "email" })
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-line-only" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control form-control-line-only" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.MiddleName, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control form-control-line-only" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control form-control-line-only" })
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Branch</label>
+                        @Html.DropDownListFor(
+                            m => m.AccountType,
+                            new List<SelectListItem> { new SelectListItem { Text="Mapua Makati", Value="1" }, new SelectListItem { Text = "Mapua Intramuros", Value = "2" } },
+                            new { @class = "form-control form-control-line-only" }
+                        )
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-line-only" })
+                    </div>
+                    <div class="col-md-6">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-line-only" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-8 col-md-4">
+                        <br />
+                        <input type="submit" class="btn btn-info btn-block" value="Add Account" />
+                        <br />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

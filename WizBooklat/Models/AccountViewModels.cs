@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WizBooklat.Models
@@ -79,6 +80,18 @@ namespace WizBooklat.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string StudentNumber { get; set; }
+        public string MobileNumber { get; set; }
+        public string MobileNumberCode { get; set; }
+
+        public int? BranchId { get; set; }
+
+        public Int16 AccountType { get; set; }
+        public Int16 AccountStatus { get; set; }
     }
 
     public class ResetPasswordViewModel

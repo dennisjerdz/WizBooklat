@@ -1,0 +1,140 @@
+﻿@model IEnumerable<WizBooklat.Models.BookTemplate>
+
+@{
+    ViewBag.Title = "Books";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;List</h5>
+                </div>
+                <div class="topbar-right">
+                    <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("Create")">Add Book +</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="topbar">
+            <div class="topbar-content">
+                <input class="form-control form-control-line-only topBarCenterContent" placeholder="Search"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="body-container">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Title)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ImageLocation)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Type)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.LoanPeriod)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ISBN)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OLKey)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PublishDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.InitialQuantity)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ActualQuantity)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Genres)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Authors)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.IsFeatured)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.DateCreated)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ImageLocation)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Type)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LoanPeriod)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ISBN)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OLKey)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PublishDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.InitialQuantity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ActualQuantity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Genres)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Authors)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsFeatured)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateCreated)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.BookTemplateId }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.BookTemplateId }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.BookTemplateId })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
