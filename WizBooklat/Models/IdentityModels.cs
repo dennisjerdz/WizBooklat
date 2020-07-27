@@ -59,6 +59,7 @@ namespace WizBooklat.Models
         public DbSet<Genre> Genres { get; set; }
         public DbSet<BookGenre> BookGenres { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<BookAuthor> BookAuthors { get; set; }
         public DbSet<Visit> Visits { get; set; }
         public DbSet<PointHistory> PointHistories { get; set; }
         public DbSet<Rank> Ranks { get; set; }

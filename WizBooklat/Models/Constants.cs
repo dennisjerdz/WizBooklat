@@ -65,4 +65,10 @@ namespace WizBooklat.Models
             new SelectListItem{ Text = "Entrance", Value = "3"}
         };
     }
+
+    public class BookTypeConstant
+    {
+        public const sbyte Other = 0;
+        public const sbyte Book = 1;
+    }
 }

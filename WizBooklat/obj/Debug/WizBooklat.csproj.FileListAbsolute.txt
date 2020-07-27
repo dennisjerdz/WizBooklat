@@ -214,3 +214,5 @@ C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\bin\M
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.Addmobilenumberandaccounttype.resources
 C:\Users\Jerdz\Documents\Visual Studio 2015\Projects\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.AccountBranchnavigationproperty.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.Addmobilenumberandaccounttype.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.AccountBranchnavigationproperty.resources
