@@ -50,7 +50,7 @@ namespace WizBooklat.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishDate,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
+        public ActionResult Create([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
         {
             bookTemplate.IsFeatured = false;
             bookTemplate.ActualQuantity = bookTemplate.InitialQuantity;
@@ -166,6 +166,9 @@ namespace WizBooklat.Controllers
 
         public async Task<JsonResult> SearchISBN(string search)
         {
+            WizBooklat.Models.ViewModels.BookData bookDataInitial = new Models.ViewModels.BookData();
+            WizBooklat.Models.ViewModels.OpenLibraryBookData bookDataFinal = new Models.ViewModels.OpenLibraryBookData();
+
             using (HttpClient client = new HttpClient())
             {
                 if (ServicePointManager.SecurityProtocol != SecurityProtocolType.Tls12)
@@ -179,25 +182,22 @@ namespace WizBooklat.Controllers
                     string partialUri = "https://openlibrary.org/api/books?bibkeys=ISBN:"+search+"&jscmd=data&format=json";
 
                     var uri = new Uri(partialUri);
-                    // client.DefaultRequestHeaders.Authorization = WizBooklat.BasicAuthenticationHeader;
-                    // var content = new StringContent(JsonConvert.SerializeObject(newOrder), Encoding.UTF8, "application/json");
                     var result = await client.GetAsync(uri);
                     string resultContent = await result.Content.ReadAsStringAsync();
                     
                     var data = (JObject)JsonConvert.DeserializeObject(resultContent);
-                    string ISBN = data.First.Path;
-                    WizBooklat.Models.ViewModels.BookData d = data.First.ToObject<WizBooklat.Models.ViewModels.BookData>();
 
-                    WizBooklat.Models.ViewModels.BookData br = JsonConvert.DeserializeObject<WizBooklat.Models.ViewModels.BookData>(data.First.FirstOrDefault().ToString());
-
-                    WizBooklat.Models.ViewModels.OpenLibraryBookData book = new WizBooklat.Models.ViewModels.OpenLibraryBookData
+                    if (data.HasValues)
                     {
-                        ISBN = ISBN,
-                        BookData = new Models.ViewModels.BookData
-                        {
+                        string ISBN = data.First.Path;
 
-                        }
-                    };
+                        bookDataInitial = JsonConvert.DeserializeObject<WizBooklat.Models.ViewModels.BookData>(data.First.FirstOrDefault().ToString());
+                        bookDataFinal = new WizBooklat.Models.ViewModels.OpenLibraryBookData
+                        {
+                            ISBN = ISBN,
+                            BookData = bookDataInitial
+                        };
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -205,10 +205,20 @@ namespace WizBooklat.Controllers
                 }
             }
 
-            return Json(
-                new { result = "success" },
-                JsonRequestBehavior.AllowGet
-            );
+            if (bookDataFinal.BookData != null)
+            {
+                return Json(
+                    new { result = 1, data = bookDataFinal },
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            else
+            {
+                return Json(
+                    new { result = 0 },
+                    JsonRequestBehavior.AllowGet
+                );
+            }
         }
 
         // GET: Books/Edit/5
@@ -231,7 +241,7 @@ namespace WizBooklat.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishDate,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
+        public ActionResult Edit([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
         {
             if (ModelState.IsValid)
             {

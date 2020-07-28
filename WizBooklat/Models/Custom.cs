@@ -36,8 +36,8 @@ namespace WizBooklat.Models
         public string OLKey { get; set; }
 
         // specific publish date for this book
-        public DateTime? PublishDate { get; set; }
-
+        public Int16? PublishYear { get; set; }
+        
         // number of stocks added upon creation
         public int InitialQuantity { get; set; }
 

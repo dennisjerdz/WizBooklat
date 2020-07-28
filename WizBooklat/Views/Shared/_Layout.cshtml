@@ -29,6 +29,10 @@
                         {
                             <li>@Html.ActionLink("Accounts", "Accounts", "Admin")</li>
                             <li>@Html.ActionLink("Books", "Index", "Books")</li>
+                            <li>@Html.ActionLink("Branches", "Index", "Branches")</li>
+                            <li>@Html.ActionLink("Ranks", "Index", "Ranks")</li>
+                            <li>@Html.ActionLink("Genres", "Index", "Genres")</li>
+                            <li>@Html.ActionLink("Authors", "Index", "Authors")</li>
                         }
                     </ul>
                     @Html.Partial("_LoginPartial")
@@ -55,7 +59,7 @@
         @RenderBody()
         <footer>
             <br />
-            <p class="pull-right">&copy; @DateTime.Now.Year - WizBooklat</p>
+            <!--<p class="pull-left">&copy; WizBooklat @DateTime.Now.Year</p>-->
         </footer>
     </div>
 

@@ -171,11 +171,14 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AuthorsController.cs" />
     <Compile Include="Controllers\BooksController.cs" />
     <Compile Include="Controllers\BookUnitsController.cs" />
     <Compile Include="Controllers\BranchesController.cs" />
+    <Compile Include="Controllers\GenresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RanksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -194,6 +197,14 @@
     <Compile Include="Migrations\202007201701265_Account Branch navigation property.cs" />
     <Compile Include="Migrations\202007201701265_Account Branch navigation property.Designer.cs">
       <DependentUpon>202007201701265_Account Branch navigation property.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007280925037_Publish Date to Year.cs" />
+    <Compile Include="Migrations\202007280925037_Publish Date to Year.Designer.cs">
+      <DependentUpon>202007280925037_Publish Date to Year.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007280926470_Nullable Publish Year.cs" />
+    <Compile Include="Migrations\202007280926470_Nullable Publish Year.Designer.cs">
+      <DependentUpon>202007280926470_Nullable Publish Year.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -294,6 +305,21 @@
     <Content Include="Views\Branches\Details.cshtml" />
     <Content Include="Views\Branches\Edit.cshtml" />
     <Content Include="Views\Branches\Index.cshtml" />
+    <Content Include="Views\Ranks\Create.cshtml" />
+    <Content Include="Views\Ranks\Delete.cshtml" />
+    <Content Include="Views\Ranks\Details.cshtml" />
+    <Content Include="Views\Ranks\Edit.cshtml" />
+    <Content Include="Views\Ranks\Index.cshtml" />
+    <Content Include="Views\Genres\Create.cshtml" />
+    <Content Include="Views\Genres\Delete.cshtml" />
+    <Content Include="Views\Genres\Details.cshtml" />
+    <Content Include="Views\Genres\Edit.cshtml" />
+    <Content Include="Views\Genres\Index.cshtml" />
+    <Content Include="Views\Authors\Create.cshtml" />
+    <Content Include="Views\Authors\Delete.cshtml" />
+    <Content Include="Views\Authors\Details.cshtml" />
+    <Content Include="Views\Authors\Edit.cshtml" />
+    <Content Include="Views\Authors\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -325,6 +351,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007201701265_Account Branch navigation property.resx">
       <DependentUpon>202007201701265_Account Branch navigation property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007280925037_Publish Date to Year.resx">
+      <DependentUpon>202007280925037_Publish Date to Year.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007280926470_Nullable Publish Year.resx">
+      <DependentUpon>202007280926470_Nullable Publish Year.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
