@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", false)
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="~/Content/datatables.min.css" rel="stylesheet" />
+</head>
+<body>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Content/datatables.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,146 +1,242 @@
 ﻿@model WizBooklat.Models.BookTemplate
-
+@using WizBooklat.Models
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Books";
 }
 
-<h2>Create</h2>
+<div class="row">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="topbar">
+                    <div class="topbar-content">
+                        <div class="topbar-left">
+                            <h5><font>@ViewBag.Title</font> &emsp;/&emsp;Add Book</h5>
+                        </div>
+                        <div class="topbar-right">
 
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>BookTemplate</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ImageLocation, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ImageLocation, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ImageLocation, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.LoanPeriod, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.LoanPeriod, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LoanPeriod, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ISBN, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.OLKey, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OLKey, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OLKey, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PublishDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PublishDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PublishDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.InitialQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.InitialQuantity, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InitialQuantity, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ActualQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ActualQuantity, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ActualQuantity, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Genres, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Genres, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Genres, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Authors, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Authors, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Authors, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsFeatured, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.IsFeatured)
-                    @Html.ValidationMessageFor(model => model.IsFeatured, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="body-container">
+                    @using (Html.BeginForm("Create", "Books", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id="main-form" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DateCreated, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DateCreated, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DateCreated, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.ISBN, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.ISBN, new { htmlAttributes = new { @class = "form-control form-control-line-only" } })
+                                @Html.ValidationMessageFor(model => model.ISBN, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control form-control-line-only", @required = "true" } })
+                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control form-control-line-only" } })
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.ImageLocation, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.ImageLocation, new { htmlAttributes = new { @class = "form-control form-control-line-only" } })
+                                @Html.ValidationMessageFor(model => model.ImageLocation, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.LoanPeriod, htmlAttributes: new { @class = "control-label" })
+                                <select name="LoanPeriod" class="form-control form-control-line-only">
+                                    <option value="7">7</option>
+                                    <option value="14">14</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.LoanPeriod, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.PublishYear, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.PublishYear, new { htmlAttributes = new { @class = "form-control form-control-line-only", @type = "number", @max = DateTime.UtcNow.AddHours(8).ToString("yyyy") } })
+                                @Html.ValidationMessageFor(model => model.PublishYear, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                @Html.LabelFor(model => model.OLKey, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.OLKey, new { htmlAttributes = new { @class = "form-control form-control-line-only" } })
+                                @Html.ValidationMessageFor(model => model.OLKey, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="control-label">Quantity to Add</label>
+                                <input class="form-control form-control-line-only" name="InitialQuantity" id="InitialQuantity" type="number" min="1" value="1"/>
+                                @Html.ValidationMessageFor(model => model.InitialQuantity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <label class="control-label">Genres <span class="subtitle">(Delimit by Coma; G1, G2, ...)</span></label>
+                                @Html.TextAreaFor(model=>model.Genres, new { @class = "form-control form-control-line-only form-control-text-area" })
+                                @Html.ValidationMessageFor(model => model.Genres, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="control-label">Authors <span class="subtitle">(Delimit by Coma; A1, A2, ...)</span></label>
+                                @Html.TextAreaFor(model => model.Authors, new { @class = "form-control form-control-line-only form-control-text-area" })
+                                @Html.ValidationMessageFor(model => model.Authors, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-8 col-md-4">
+                                <br />
+                                <button type="submit" class="btn btn-block btn-info">Add Book</button>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="topbar">
+                    <div class="topbar-content topbar-content-form">
+                        @using (Ajax.BeginForm("SearchISBN", new { }, new AjaxOptions { OnBegin = "searchISBNBegin", OnComplete = "searchISBNDone", HttpMethod = "GET" }, new { @id = "SearchISBN-form" }))
+                        {
+                            <div class="topbar-content-form-left">
+                                <input name="search" class="form-control form-control-line-only topBarCenterContent all-search" placeholder="ISBN" type="number" required maxlength="14"/>
+                            </div>
+
+                            <div class="topbar-content-form-right">
+                                <button class="btn btn-info btn-block isbn-search-btn" type="submit">Search ISBN</button>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="book-info-container hidden paddingTopBottom20">
+                        <div class="book-info">
+                            <!--
+                                <p>
+                                    <strong></strong>
+                                    <br>
+                                    text
+                                </p>
+                            -->
+                        </div>
+                        <div class="tags-container">
+
+                        </div>
+                        <br />
+                    </div>
+
+                    <div class="loader-container hidden paddingTopBottom20">
+                        <center>
+                            <div class="loader"></div>
+                        </center>
+                        <br />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        function searchISBNDone(data) {
+            console.log(data.responseJSON);
+
+            $(".loader-container").addClass("hidden");
+            $(".book-info-container").removeClass("hidden");
+            $(".isbn-search-btn").prop('disabled', false);
+
+            $(".book-info").html("");
+            $(".tags-container").html("");
+            var book_info_body = "";
+
+            if (data.responseJSON.result == 0) {
+                book_info_body =
+                $("<center>" +
+                    "<h4 class='text-color-red'>ISBN Not Found!</h4>"+
+                "</center>");
+            }
+            else if (data.responseJSON.result == 1)
+            {
+                $("#main-form input.form-control,#main-form textarea.form-control").val("");
+                var json = data.responseJSON.data;
+                
+                book_info_body = $("<div class='book-info-result'>" +
+                    "<h4 class='text-color-green'>ISBN Found!</h4>" +
+                    "<hr/>"+
+                    "<p><strong>Title:</strong><br>"+json.BookData.title+"</p>"+
+                    "<p><strong>Publish Date:</strong><br>"+json.BookData.publish_date+"</p>"+
+                    "<p class='wrap-long-words'><strong>URL:</strong><br><a href='"+json.BookData.url+"'>"+json.BookData.url+"</a></p>"+
+                "</div>");
+
+                if (json.BookData.cover != null) {
+                    if (json.BookData.cover.medium != null) {
+                        book_info_body.append("<br/><img src='" + json.BookData.cover.medium + "' />");
+                        $("#ImageLocation").val(json.BookData.cover.medium);
+                    }
+                }
+
+                $("#Title").val(json.BookData.title);
+                $("#ISBN").val(json.ISBN);
+                $("#PublishYear").val(json.BookData.publish_date);
+
+                var copyKey = json.BookData.key;
+                $("#OLKey").val(copyKey.split("/").pop());
+                $("#InitialQuantity").val(1);
+
+                var genresString = "";
+                var authorsString = "";
+
+                if (json.BookData.subjects != null) {
+                    json.BookData.subjects.forEach(function (item, index) {
+                        genresString += (item.name + ",");
+                    });
+                }
+
+                if (json.BookData.authors != null) {
+                    json.BookData.authors.forEach(function (item, index) {
+                        authorsString += (item.name + ",");
+                    });
+                }
+
+                $("#Authors").val(authorsString);
+                $("#Genres").val(genresString);
+            }
+
+            $(".book-info").append(book_info_body);
+        };
+
+        function searchISBNBegin() {
+            $(".loader-container").removeClass("hidden");
+            $(".book-info-container").addClass("hidden");
+            $(".isbn-search-btn").prop('disabled', true);
+        }
+    </script>
 }

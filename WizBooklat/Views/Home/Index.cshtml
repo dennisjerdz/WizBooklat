@@ -1,31 +1,314 @@
 ﻿@{
+    Layout = "../Shared/_HomeLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+@section Styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.3.0/animate.css" />
+    <style>
+        body{
+            background-color:white !important;
+        }
+
+        .hero{
+            background:url('@Url.Content("~/Content/Images/3.jpg")');
+            background-size:cover;
+            padding-top:30px;
+            padding-bottom:220px;
+            box-shadow: 0px 0px 40px 4px rgba(0,0,0,1) inset;
+        }
+
+        @@media(max-width:768px){
+            .container-home{
+                padding-left:15px !important;
+                padding-right:15px !important;
+            }
+
+            .hero-heading{
+                text-align:center;
+                margin-right:0px;
+                margin-top:20px;
+            }
+
+            .icon-left-container, .icon-right-container{
+                float:unset !important;
+                margin-left:0px !important;
+                margin-right:0px !important;
+                text-align:center !important;
+            }
+
+            .text-left-container, .text-right-container{
+                float:unset !important;
+                margin-left:0px !important;
+                margin-right:0px !important;
+                text-align:center !important;
+            }
+        }
+
+        @@media(min-width:769px){
+            .container-home{
+                padding-left:70px !important;
+                padding-right:70px !important;
+            }
+        }
+
+        body{
+            padding-top:0px !important;
+        }
+
+        .hero input.form-control-line-only{
+            line-height:30px !important;
+            font-size:1.2em;
+            margin-bottom:25px;
+        }
+
+        .hero .btn{
+            line-height:30px !important;
+            font-size:1.2em;
+            margin-top:57px;
+            margin-bottom:30px;
+            font-weight:800;
+        }
+
+        .hero h2.hero-form-text{
+            margin-left:140px;
+            margin-right:140px;
+            padding-bottom:25px;
+            border-bottom:1px solid rgba(0,0,0,0.1);
+            margin-bottom:50px;
+        }
+
+        .hero-heading{
+            text-align:right;
+            margin-right:30px;
+            margin-top:40px;
+        }
+
+        .hero-heading h2, .hero-heading h4{
+            font-weight:800;
+            text-shadow:2px 6px 6px black;
+        }
+
+        .hero-heading h2{
+            font-size:4em;
+            color:white;
+            margin-bottom:20px;
+        }
+
+        .hero-heading h4{
+            font-size:3em;
+            color:rgba(255,255,255,0.7);
+        }
+
+        .md-landing{
+            font-size:150px !important;
+            color:white;
+        }
+
+        .icon-left-container{
+            padding:20px;
+            border-radius:10px;
+            background-color:#6427ff;
+            display:inline-block;
+            float:right;
+            margin-right:100px;
+        }
+
+        .icon-right-container{
+            padding:20px;
+            border-radius:10px;
+            background-color:#6427ff;
+            display:inline-block;
+            float:left;
+            margin-left:100px;
+        }
+
+        .text-left-container .head,.text-right-container .head{
+            color:#6427ff;
+            font-size:2.5em;
+            font-weight:800;
+        }
+
+        .text-left-container .sub,.text-right-container .sub{
+            color:unset !important;
+            font-size:1.8em !important;
+            font-weight:400;
+            display:block;
+        }
+
+        .text-left-container{
+            text-align:right;
+        }
+
+        .text-right-container{
+            text-align:left;
+        }
+
+        .container-info .row{
+            margin-bottom:120px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+}
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+    <script>
+        $(document).ready(function () {
+            new WOW().init();
+        });
+    </script>
+}
+
+<div class="hero">
+    <div class="navbar navbar-default" style="background-color:transparent !important;">
+        <div class="container container-home">
+            <div class="navbar-container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="@Url.Action("Index", "Home", new { })" class="navbar-brand">
+                        <strong class="text-purple">Wiz</strong><font class="text-purple">Booklat</font>
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("Accounts", "Accounts", "Admin")</li>
+                            <li>@Html.ActionLink("Books", "Index", "Books")</li>
+                            <li>@Html.ActionLink("Branches", "Index", "Branches")</li>
+                            <li>@Html.ActionLink("Ranks", "Index", "Ranks")</li>
+                            <li>@Html.ActionLink("Genres", "Index", "Genres")</li>
+                            <li>@Html.ActionLink("Authors", "Index", "Authors")</li>
+                        }
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container container-home">
+        <div class="row">
+            <div class="col-md-6 col-md-push-6">
+                <div class="body-container">
+                    <center>
+                        <h2 class="hero-form-text text-purple"><strong>Wiz</strong><font class="text-purple">Booklat</font></h2>
+                    </center>
+
+                    <form class="form-home">
+                        <input class="form-control form-control-line-only" placeholder="Student Number" />
+                        <input class="form-control form-control-line-only" placeholder="Email" />
+                        <button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-md-pull-6">
+                <div class="hero-heading">
+                    <h2>WizBooklat</h2>
+                    <h4>Cloud Based Library Management System</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+<div class="container container-home container-info">
+    <div class="row">
+        <div class="col-md-12">
+            <div style="height:20px;"></div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="icon-left-container wow pulse">
+                <i class="material-icons md-landing">military_tech</i>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="text-right-container">
+                <div class="head">
+                    Perks by Rank
+                </div>
+                <div class="sub">Claim rewards as you rank up</div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+
+    <div class="row">
+        <div class="col-md-6 col-md-push-6">
+            <div class="icon-right-container wow pulse">
+                <i class="material-icons md-landing">chrome_reader_mode</i>
+            </div>
+        </div>
+        <div class="col-md-6 col-md-pull-6">
+            <div class="text-left-container">
+                <div class="head">
+                    Find books<br /> via ISBN
+                </div>
+                <div class="sub">Easily find books<br /> with standard ISBN code</div>
+            </div>
+        </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="icon-left-container wow pulse">
+                <i class="material-icons md-landing">textsms</i>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="text-right-container">
+                <div class="head">
+                    SMS &amp; Email
+                </div>
+                <div class="sub">Receive SMS or Email alerts for your loan deadlines</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-push-6">
+            <div class="icon-right-container wow pulse">
+                <i class="material-icons md-landing">library_books</i>
+            </div>
+        </div>
+        <div class="col-md-6 col-md-pull-6">
+            <div class="text-left-container">
+                <div class="head">
+                    Powered by<br /> Open Library
+                </div>
+                <div class="sub">Discover more than 3M books with OpenLibrary</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger alert-round alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @Html.Raw(ViewBag.Message)
+        </div>
+    }
+    else if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success alert-round alert-dismissible">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @Html.Raw(ViewBag.Message)
+        </div>
+    }
+
+    <footer>
+        <br />
+        <!--<p class="pull-left">&copy; WizBooklat @DateTime.Now.Year</p>-->
+    </footer>
 </div>

@@ -10,7 +10,7 @@
     gray: #C0C0C0
     dirty white: #F1EFE2
     dirtier white: #E7E4D3 -> #f5be4d
-
+    red: #fe3933
 */
 
 /* Set padding to keep content from hitting the edges */
@@ -157,8 +157,23 @@ table.dataTable.no-footer{
     padding:0px 18px 0px 25px;
 }
 
-.topbar-right{
-    float:right;
+.topbar-content-form form{
+    width:100% !important;
+}
+
+.topbar-content-form .topbar-content-form-left {
+    display: inline-block !important;
+    width: 60%;
+    padding-right:10px;
+}
+
+.topbar-content-form .topbar-content-form-right  {
+    width: 38%;
+    display: inline-block !important;
+}
+
+.topbar-right {
+    float: right;
 }
 
 .topbar-content > *{
@@ -179,7 +194,7 @@ table.dataTable.no-footer{
 
 .body-container{
     background-color:white;
-    padding:25px 25px;
+    padding:25px 25px 15px 25px;
     border-radius:14px;
     box-shadow:rgba(100,100,100,0.1) 0px 3px 5px;
     margin-top:22px;
@@ -234,9 +249,13 @@ table.dataTable.no-footer{
     border-bottom:1px solid rgba(0,0,0,0.2);
     padding:7px 0px 4px 2px !important;
     font-size:0.9em;
-    line-height:10px !important;
+    line-height:10px;
     height:auto !important;
     transition:0.6s;
+}
+
+input.form-control-line-only {
+    line-height: 10px !important;
 }
 
 .form-control-line-only:active,.form-control-line-only:focus{
@@ -259,4 +278,100 @@ table.dataTable.no-footer{
     border-radius:14px;
     background-color:#23ce31;
     color:white;
+}
+
+.subtitle{
+    font-size:0.9em !important;
+    font-weight:400 !important;
+    color:#aaaaaa !important;
+}
+
+@media(max-width:700px) {
+    .form-control.form-control-line-only {
+        margin-bottom: 10px !important;
+    }
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid #00a0ff;
+    width: 50px;
+    height: 50px;
+    -webkit-animation: spin 0.8s linear infinite; /* Safari */
+    animation: spin 0.8s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.paddingTopBottom10{
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.paddingTopBottom20 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.tag {
+    border-radius: 15px;
+    background-color: #C0C0C0;
+    color:white;
+    display:inline-block;
+    line-height:20px;
+}
+
+.tag .tag-selected{
+
+}
+
+.text-color-red {
+    color: #fe3933;
+}
+
+.text-color-green {
+    color: #23ce31;
+}
+
+.book-info-container{
+    padding-left:25px;
+    padding-right:18px;
+    overflow:hidden;
+}
+
+.wrap-long-words {
+    /* Careful, this breaks the word wherever it is without a hyphen */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    /* Adds a hyphen where the word breaks */
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+}
+
+.form-control-text-area {
+    resize: none;
+    height: 80px !important;
+    line-height:20px !important;
 }
