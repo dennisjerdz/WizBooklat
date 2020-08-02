@@ -179,6 +179,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RanksController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -205,6 +206,10 @@
     <Compile Include="Migrations\202007280926470_Nullable Publish Year.cs" />
     <Compile Include="Migrations\202007280926470_Nullable Publish Year.Designer.cs">
       <DependentUpon>202007280926470_Nullable Publish Year.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202008021039403_Student Registration.cs" />
+    <Compile Include="Migrations\202008021039403_Student Registration.Designer.cs">
+      <DependentUpon>202008021039403_Student Registration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -327,6 +332,11 @@
     <Content Include="Views\Authors\Edit.cshtml" />
     <Content Include="Views\Authors\Index.cshtml" />
     <Content Include="Views\Shared\_HomeLayout.cshtml" />
+    <Content Include="Views\Settings\Create.cshtml" />
+    <Content Include="Views\Settings\Delete.cshtml" />
+    <Content Include="Views\Settings\Details.cshtml" />
+    <Content Include="Views\Settings\Edit.cshtml" />
+    <Content Include="Views\Settings\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -364,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007280926470_Nullable Publish Year.resx">
       <DependentUpon>202007280926470_Nullable Publish Year.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008021039403_Student Registration.resx">
+      <DependentUpon>202008021039403_Student Registration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

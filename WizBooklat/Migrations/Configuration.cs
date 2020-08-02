@@ -172,7 +172,7 @@ namespace WizBooklat.Migrations
             {
                 context.Settings.Add(new Models.Setting()
                 {
-                    Code = "EMAIL_SUFFX",
+                    Code = "EMAIL_SUFFIX",
                     Value = "@mymapua.edu.ph"
                 });
             }
@@ -185,6 +185,8 @@ namespace WizBooklat.Migrations
                     Value = "2"
                 });
             }
+
+            context.SaveChanges();
 
             /* Separator Separator Separator Separator Separator Separator Separator */
 

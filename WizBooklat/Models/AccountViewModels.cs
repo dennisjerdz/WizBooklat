@@ -81,9 +81,12 @@ namespace WizBooklat.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
+        [Required]
         public string LastName { get; set; }
+        [Required]
         public string StudentNumber { get; set; }
         public string MobileNumber { get; set; }
         public string MobileNumberCode { get; set; }

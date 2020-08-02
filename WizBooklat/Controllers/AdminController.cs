@@ -150,6 +150,22 @@ namespace WizBooklat.Controllers
 
                 if (result.Succeeded)
                 {
+                    switch (model.AccountType)
+                    {
+                        case AccountTypeConstant.ADMIN:
+                            UserManager.AddToRole(user.Id, "Admin");
+                            break;
+                        case AccountTypeConstant.LIBRARIAN:
+                            UserManager.AddToRole(user.Id, "Librarian");
+                            break;
+                        case AccountTypeConstant.LOANER:
+                            UserManager.AddToRole(user.Id, "Loaner");
+                            break;
+                        case AccountTypeConstant.ENTRANCE:
+                            UserManager.AddToRole(user.Id, "Entrance");
+                            break;
+                    }
+                    
                     await db.SaveChangesAsync();
 
                     TempData["Message"] = "<strong>Account has been created.</strong>.";

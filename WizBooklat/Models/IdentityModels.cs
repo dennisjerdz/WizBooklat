@@ -18,6 +18,7 @@ namespace WizBooklat.Models
         public string StudentNumber { get; set; } 
         public string MobileNumber { get; set; }
         public string MobileNumberCode { get; set; }
+        public string EmailCode { get; set; }
 
         public Int16 AccountType { get; set; }
         public Int16 AccountStatus { get; set; }

@@ -15,6 +15,8 @@ namespace WizBooklat.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -57,6 +59,15 @@ namespace WizBooklat.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -79,7 +90,34 @@ namespace WizBooklat.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    var user = db.Users.FirstOrDefault(u => u.UserName == model.Email);
+
+                    if (user != null)
+                    {
+                        if (user.AccountStatus == AccountStatusConstant.DISABLED || user.EmailConfirmed == false)
+                        {
+                            ViewBag.Error = "1";
+                            ViewBag.Message = "The email; "+model.Email+" is not yet verified. Please activate your account by clicking the Activation link sent to your email.";
+                            return View(model);
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(returnUrl))
+                    {
+                        switch (user.AccountType)
+                        {
+                            case AccountTypeConstant.LIBRARIAN:
+                                return RedirectToAction("Index", "Home");
+                            case AccountTypeConstant.ADMIN:
+                                return RedirectToAction("Index", "Admin");
+                            default:
+                                return RedirectToAction("Index", "Home");
+                        }
+                    }
+                    else
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -137,8 +175,21 @@ namespace WizBooklat.Controllers
         //
         // GET: /Account/Register
         [AllowAnonymous]
-        public ActionResult Register()
+        public ActionResult Register(string StudentNumber, string Email)
         {
+            RegisterViewModel rvm = new RegisterViewModel();
+            rvm.StudentNumber = StudentNumber ?? "";
+            rvm.StudentNumber = Email ?? "";
+
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             return View();
         }
 
@@ -149,27 +200,111 @@ namespace WizBooklat.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            bool is_email_correct = false;
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                Setting email_setting = db.Settings.FirstOrDefault(e=>e.Code == "EMAIL_SUFFIX");
 
-                    return RedirectToAction("Index", "Home");
+                if (email_setting != null)
+                {
+                    string email_suffx = email_setting.Value;
+
+                    if (("@"+model.Email.Split('@').Last()) == email_suffx)
+                    {
+                        is_email_correct = true;
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Email", ("Email must belong to the domain; " + email_suffx + "."));
+                    }
                 }
-                AddErrors(result);
+
+                if (is_email_correct)
+                {
+                    string emailCode = Guid.NewGuid().ToString();
+
+                    var user = new ApplicationUser {
+                        UserName = model.Email,
+                        Email = model.Email,
+                        FirstName = model.FirstName,
+                        MiddleName = model.MiddleName,
+                        LastName = model.LastName,
+                        StudentNumber = model.StudentNumber,
+                        AccountStatus = AccountStatusConstant.DISABLED,
+                        AccountType = AccountTypeConstant.LOANER,
+                        EmailCode = emailCode
+                    };
+
+                    var result = await UserManager.CreateAsync(user, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        UserManager.AddToRole(user.Id, "Loaner");
+
+                        string fromName = "WizBooklat Registration";
+                        string subject = "WizBooklat Activation Link"; //+ DateTime.UtcNow.AddHours(8).ToString("MM-dd-yy");
+                        var callbackUrl = Url.Action("AccountActivation", "Account", new { code = emailCode }, protocol: Request.Url.Scheme);
+                        string body = "Click <a href=\"" + callbackUrl + "\">here</a> to activate your WizBooklat Loaner Account.";
+
+                        WizBooklat.WBHelper.SendEmail(fromName, subject, body, model.Email, model.FirstName);
+
+                        // wait SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                        // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                        TempData["Message"] = "We've sent " + model.Email + " an Activation link. Please click the link to verify your account.";
+                        return RedirectToAction("Login", "Account");
+                    }
+                    ModelState.AddModelError("Email", "");
+                    AddErrors(result);
+                }
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> AccountActivation(string code)
+        {
+            if (code == null)
+            {
+                return View("Error");
+            }
+
+            var user = db.Users.FirstOrDefault(u => u.EmailCode == code);
+
+            if (user == null)
+            {
+                return Content("Error: Invalid code.");
+            }
+            else
+            {
+                user.EmailConfirmed = true;
+                user.AccountStatus = AccountStatusConstant.ACTIVE;
+            }
+
+            await db.SaveChangesAsync();
+
+            if (user.AccountType == AccountTypeConstant.LOANER)
+            {
+                UserManager.AddToRole(user.Id, "Loaner");
+            }
+            else if (user.AccountType == AccountTypeConstant.LIBRARIAN)
+            {
+                UserManager.AddToRole(user.Id, "Librarian");
+            }
+
+            TempData["Message"] = (user.AccountType == AccountTypeConstant.LOANER)
+                ? "<strong>Your account has been activated!</strong> You can now signin."
+                : "<strong>Your account has been activated!</strong> You can now signin.";
+
+            return RedirectToAction("Login", "Account");
         }
 
         //

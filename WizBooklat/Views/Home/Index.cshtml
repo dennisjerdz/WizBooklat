@@ -43,6 +43,14 @@
                 margin-right:0px !important;
                 text-align:center !important;
             }
+
+            .hero-heading{
+                text-align:center !important;
+            }
+
+            .small-text-align-center{
+                text-align:center;
+            }
         }
 
         @@media(min-width:769px){
@@ -147,6 +155,11 @@
         .container-info .row{
             margin-bottom:120px;
         }
+
+        .icon-left-container{
+            text-align:center !important;
+            margin-bottom:10px;
+        }
     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 }
@@ -194,24 +207,24 @@
 
     <div class="container container-home">
         <div class="row">
-            <div class="col-md-6 col-md-push-6">
+            <div class="col-md-6">
+                <div class="hero-heading">
+                    <h2>WizBooklat</h2>
+                    <h4>Cloud Based Library Management System</h4>
+                </div>
+            </div>
+
+            <div class="col-md-6">
                 <div class="body-container">
                     <center>
                         <h2 class="hero-form-text text-purple"><strong>Wiz</strong><font class="text-purple">Booklat</font></h2>
                     </center>
 
-                    <form class="form-home">
-                        <input class="form-control form-control-line-only" placeholder="Student Number" />
-                        <input class="form-control form-control-line-only" placeholder="Email" />
+                    <form class="form-home" action="@Url.Action("Register","Account", null)" method="GET">
+                        <input class="form-control form-control-line-only" name="StudentNumber" placeholder="Student Number" />
+                        <input class="form-control form-control-line-only" name="Email" placeholder="Email" />
                         <button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
                     </form>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-md-pull-6">
-                <div class="hero-heading">
-                    <h2>WizBooklat</h2>
-                    <h4>Cloud Based Library Management System</h4>
                 </div>
             </div>
         </div>
@@ -227,7 +240,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 small-text-align-center">
             <div class="icon-left-container wow pulse">
                 <i class="material-icons md-landing">military_tech</i>
             </div>
@@ -243,7 +256,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6 col-md-push-6">
+        <div class="col-md-6 col-md-push-6 small-text-align-center">
             <div class="icon-right-container wow pulse">
                 <i class="material-icons md-landing">chrome_reader_mode</i>
             </div>
@@ -259,7 +272,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 small-text-align-center">
             <div class="icon-left-container wow pulse">
                 <i class="material-icons md-landing">textsms</i>
             </div>
@@ -275,7 +288,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6 col-md-push-6">
+        <div class="col-md-6 col-md-push-6 small-text-align-center">
             <div class="icon-right-container wow pulse">
                 <i class="material-icons md-landing">library_books</i>
             </div>

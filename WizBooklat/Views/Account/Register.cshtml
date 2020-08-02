@@ -1,41 +1,131 @@
 ﻿@model WizBooklat.Models.RegisterViewModel
 @{
+    Layout = "../Shared/_HomeLayout.cshtml";
     ViewBag.Title = "Register";
 }
 
-<h2>@ViewBag.Title.</h2>
+@section Styles{
+<style>
+        body{
+            background:url('@Url.Content("~/Content/Images/3.jpg")');
+            background-size:cover;
+        }
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
+        .extra-container-margin{
+            margin:30px;
+        }
+
+        .validation-summary-errors{
+            background-color:#fe3933;
+            padding:10px;
+            border-radius:9px;
+            margin-bottom:10px;
+        }
+
+        .validation-summary-errors > ul li{
+            color:white !important;
+            line-height:25px;
+        }
+</style>    
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    <div class="container">
+        @if (ViewBag.Error != null)
+            {
+                if (ViewBag.Error == "1")
+                {
+                    <div class="ownorent-alert alert alert-danger alert-dismissible marginTop10">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        @Html.Raw(ViewBag.Message)
+                    </div>
+                }
+            }
+            else if (ViewBag.Message != null)
+            {
+                <div class="ownorent-alert alert alert-success alert-dismissable marginTop10">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    @Html.Raw(ViewBag.Message)
+                </div>
+            }
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="extra-container-margin">
+                    <div class="body-container">
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <center>
+                                <h3>
+                                    <strong class="text-purple">Wiz</strong><font class="text-purple">Booklat</font>
+                                </h3>
+                                <h4>
+                                    Loaner Registration
+                                </h4>
+                            </center>
+                            
+                            <hr />
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control form-control-line-only" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(m => m.MiddleName, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control form-control-line-only" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control form-control-line-only" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(m => m.StudentNumber, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.StudentNumber, new { @class = "form-control form-control-line-only", @type="number", @minlength="10", maxlength="10" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-line-only" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-line-only" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "control-label" })
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-line-only" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <br />
+                                    <a style="margin-top:5px; display:block;" href="@Url.Action("Index","Home")">Back to Home</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <br />
+                                    <input type="submit" class="btn btn-info btn-block" value="Register" />
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                
+                @section Scripts {
+                    @Scripts.Render("~/bundles/jqueryval")
+                }
+            </div>
+        </div>
+    </div>
