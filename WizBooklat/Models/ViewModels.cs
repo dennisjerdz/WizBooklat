@@ -5,10 +5,23 @@ using System.Web;
 
 namespace WizBooklat.Models.ViewModels
 {
+    public class FindBookViewModel
+    {
+        public string ISBN { get; set; }
+        public List<int> Genres { get; set; }
+        public string Title { get; set; }
+    }
+
+    public class InitialGalleryViewModel
+    {
+        public List<BookTemplate> Featured { get; set; }
+        public List<BookTemplate> NewArrival { get; set; }
+        public List<BookTemplate> TopGenre { get; set; }
+    }
+
     public class Publisher
     {
         public string name { get; set; }
-
     }
 
     public class Identifiers

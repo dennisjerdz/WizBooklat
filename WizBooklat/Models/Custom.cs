@@ -81,7 +81,7 @@ namespace WizBooklat.Models
 
         public string InternalCode { get; set; }
 
-        public int BranchId { get; set; }
+        public int? BranchId { get; set; }
         [ForeignKey("BranchId")]
         public virtual Branch Branch { get; set; }
 

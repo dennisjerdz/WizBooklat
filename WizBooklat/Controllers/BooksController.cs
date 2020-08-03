@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,42 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WizBooklat.Models;
+using ViewModels = WizBooklat.Models.ViewModels;
 
 namespace WizBooklat.Controllers
 {
     public class BooksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        [Route("Books/Gallery/")]
+        public async Task<ActionResult> Gallery()
+        {
+            ViewModels.InitialGalleryViewModel ig = new ViewModels.InitialGalleryViewModel();
+
+            ig.Featured = await db.BookTemplates.Where(b => b.IsFeatured == true).OrderByDescending(b=>b.DateCreated).Take(10).ToListAsync();
+            ig.NewArrival = await db.BookTemplates.OrderByDescending(b => b.DateCreated).Take(10).ToListAsync();
+
+            var topGenre = await db.Genres.OrderByDescending(b => b.BookGenres.Count()).FirstOrDefaultAsync();
+
+            if (topGenre != null)
+            {
+                ViewBag.TopGenre = topGenre.Name;
+                int[] books = topGenre.BookGenres.Select(b=>b.BookTemplateId).Take(10).ToArray();
+                ig.TopGenre = await db.BookTemplates.Where(b => books.Contains(b.BookTemplateId)).ToListAsync();
+            }
+
+            return View(ig);
+        }
+
+        [Route("Books/Gallery/Find/")]
+        public async Task<ActionResult> Gallery(string isbn, string title, int[] genreId)
+        {
+            // ViewBag.categories = db.Genres.ToList();
+            // var books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(fbparam.ISBN) && b.Title.Contains(fbparam.Title)).ToListAsync();
+
+            return Content(isbn+" "+title+" "+String.Join(",",genreId));
+        }
 
         // GET: Books
         public ActionResult Index()
@@ -52,6 +83,9 @@ namespace WizBooklat.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
         {
+            int? branchId = null;
+            ApplicationUser currentUser;
+
             bookTemplate.IsFeatured = false;
             bookTemplate.ActualQuantity = bookTemplate.InitialQuantity;
             bookTemplate.Type = WizBooklat.Models.BookTypeConstant.Book;
@@ -157,7 +191,33 @@ namespace WizBooklat.Controllers
                 db.SaveChanges();
                 #endregion
 
-                TempData["Message"] = "<strong>Book has been added successfully.</strong>";
+                string userId = User.Identity.GetUserId();
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    currentUser = db.Users.FirstOrDefault(u => u.Id == userId);
+
+                    if (currentUser != null)
+                    {
+                        branchId = currentUser.BranchId;
+                    }
+                }
+
+                List<Book> bookUnits = new List<Book>();
+                for (int count = 0; count < bookTemplate.InitialQuantity; count++)
+                {
+                    var bookToAdd = new Book {
+                        BookStatus = BookStatusConstant.AVAILABLE,
+                        BookTemplateId = bookTemplate.BookTemplateId,
+                        BranchId = branchId
+                    };
+
+                    bookUnits.Add(bookToAdd);
+                }
+
+                db.Books.AddRange(bookUnits);
+                db.SaveChanges();
+
+                TempData["Message"] = "<strong>Book has been added successfully. The books are set to have the Branch ID assigned to you. You can manually update Branch ID per stock in Manage Stock.</strong>";
                 return RedirectToAction("Index");
             }
 
