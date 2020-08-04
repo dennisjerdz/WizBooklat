@@ -95,9 +95,18 @@
                                 @Html.DisplayFor(modelItem => item.DateCreated)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.BookTemplateId }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.BookTemplateId }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.BookTemplateId })
+                                <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("Edit", new { id = item.BookTemplateId })">Edit</a>
+
+                                <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("Delete", new { id = item.BookTemplateId })">Delete</a>
+
+                                @if (item.IsFeatured)
+                                {
+                                    <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("RemoveFeatured", new { id = item.BookTemplateId })">Unfeature</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-xs btn-success btn-table-short" href="@Url.Action("Feature", new { id = item.BookTemplateId })">Feature</a>
+                                }
                             </td>
                         </tr>
                     }

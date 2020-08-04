@@ -1,0 +1,70 @@
+﻿@model WizBooklat.Models.ViewModels.FindBookViewModel
+
+@{
+    ViewBag.Title = "Gallery";
+}
+
+<div class="row-container-offset-top">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="gallery-items-container">
+                    <div class="col-md-4">
+                        <div class="body-container">
+                            <h4>T</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="body-container">
+                            <h4>T</h4>
+                            <h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="body-container">
+                            <h4>T</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="body-container">
+                        4
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;List</h5>
+                </div>
+                <div class="topbar-right">
+                    <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("Create")">Add Book +</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="topbar">
+            <div class="topbar-content">
+                <input class="form-control form-control-line-only topBarCenterContent" placeholder="Search" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+}

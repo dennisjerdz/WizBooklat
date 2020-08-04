@@ -375,3 +375,20 @@ input.form-control-line-only {
     height: 80px !important;
     line-height:20px !important;
 }
+
+.row-container-offset-top {
+    margin-top:40px;
+}
+
+.gallery-items-container{
+    overflow-y: auto;
+    max-height:780px;
+}
+
+.horizontal-scrolling-container {
+    white-space: nowrap;
+}
+
+.horizontal-scrolling-wrapper {
+    overflow-x: auto;
+}

@@ -1,0 +1,104 @@
+﻿@model WizBooklat.Models.ViewModels.InitialGalleryViewModel
+
+@{
+    ViewBag.Title = "Gallery";
+}
+
+<div class="row-container-offset-top">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Featured</h2>
+                    <div class="horizontal-scrolling-wrapper">
+                        <div class="horizontal-scrolling-container">
+                            @foreach (var featuredBook in Model.Featured)
+                            {
+                                <div class="body-container" style="margin-right:40px; display:inline-block !important;">
+                                    @featuredBook.Title
+                                    <br />
+                                    @featuredBook.ISBN
+                                    <br />
+                                    @featuredBook.DateCreated.ToString("MM-dd-yy")
+                                    <br />
+                                    <img src="@featuredBook.ImageLocation" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>New Arrival</h2>
+                    <div class="horizontal-scrolling-wrapper">
+                        <div class="horizontal-scrolling-container">
+                            @foreach (var featuredBook in Model.NewArrival)
+                            {
+                                <div class="body-container" style="margin-right:40px; display:inline-block !important;">
+                                    @featuredBook.Title
+                                    <br />
+                                    @featuredBook.ISBN
+                                    <br />
+                                    @featuredBook.DateCreated.ToString("MM-dd-yy")
+                                    <br />
+                                    <img src="@featuredBook.ImageLocation" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Top Genre</h2>
+                    <div class="horizontal-scrolling-wrapper">
+                        <div class="horizontal-scrolling-container">
+                            @foreach (var featuredBook in Model.TopGenre)
+                            {
+                                <div class="body-container" style="margin-right:40px; display:inline-block !important;">
+                                    @featuredBook.Title
+                                    <br />
+                                    @featuredBook.ISBN
+                                    <br />
+                                    @featuredBook.DateCreated.ToString("MM-dd-yy")
+                                    <br />
+                                    <img src="@featuredBook.ImageLocation" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="body-container">
+                <h4>Filters</h4>
+                <form class="form-horizontal">
+                    <label class="control-label">Title</label>
+                    <input class="form-control form-control-line-only" placeholder="Title" />
+
+                    <label class="control-label">ISBN</label>
+                    <input class="form-control form-control-line-only" placeholder="ISBN" />
+
+                    <label class="control-label">Genre</label>
+                    <select class="form-control form-control-line-only" placeholder="Genre"></select>
+
+                    <br />
+
+                    <button class="btn btn-block btn-info" type="submit">Search</button>
+
+                    <br />
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+@section scripts{
+    
+}

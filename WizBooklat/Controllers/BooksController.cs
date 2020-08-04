@@ -28,7 +28,7 @@ namespace WizBooklat.Controllers
             ig.Featured = await db.BookTemplates.Where(b => b.IsFeatured == true).OrderByDescending(b=>b.DateCreated).Take(10).ToListAsync();
             ig.NewArrival = await db.BookTemplates.OrderByDescending(b => b.DateCreated).Take(10).ToListAsync();
 
-            var topGenre = await db.Genres.OrderByDescending(b => b.BookGenres.Count()).FirstOrDefaultAsync();
+            var topGenre = await db.Genres.Include(b=>b.BookGenres).OrderByDescending(b => b.BookGenres.Count()).FirstOrDefaultAsync();
 
             if (topGenre != null)
             {
@@ -46,12 +46,22 @@ namespace WizBooklat.Controllers
             // ViewBag.categories = db.Genres.ToList();
             // var books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(fbparam.ISBN) && b.Title.Contains(fbparam.Title)).ToListAsync();
 
-            return Content(isbn+" "+title+" "+String.Join(",",genreId));
+            // return Content(isbn+" "+title+" "+String.Join(",",genreId));
+
+            return View("GalleryFind", null);
         }
 
         // GET: Books
         public ActionResult Index()
         {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
             return View(db.BookTemplates.ToList());
         }
 
@@ -91,8 +101,18 @@ namespace WizBooklat.Controllers
             bookTemplate.Type = WizBooklat.Models.BookTypeConstant.Book;
             bookTemplate.DateCreated = DateTime.UtcNow.AddHours(8);
 
-            string[] genres = bookTemplate.Genres.Split(',');
-            string[] authors = bookTemplate.Authors.Split(',');
+            string[] genres = { "" };
+            string[] authors = { "" };
+
+            if (bookTemplate.Genres != null)
+            {
+                genres = bookTemplate.Genres.Split(',');
+            }
+
+            if (bookTemplate.Authors != null)
+            {
+                authors = bookTemplate.Authors.Split(',');
+            }
 
             if (ModelState.IsValid)
             {
@@ -325,6 +345,42 @@ namespace WizBooklat.Controllers
                 return HttpNotFound();
             }
             return View(bookTemplate);
+        }
+
+        public ActionResult Feature(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BookTemplate bookTemplate = db.BookTemplates.Find(id);
+            if (bookTemplate == null)
+            {
+                return HttpNotFound();
+            }
+
+            bookTemplate.IsFeatured = true;
+            db.SaveChanges();
+            TempData["Message"] = "Successfully updated info. <strong>" + bookTemplate.Title + "</strong> is now Featured.";
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RemoveFeatured(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BookTemplate bookTemplate = db.BookTemplates.Find(id);
+            if (bookTemplate == null)
+            {
+                return HttpNotFound();
+            }
+
+            bookTemplate.IsFeatured = false;
+            db.SaveChanges();
+            TempData["Message"] = "Successfully updated info. <strong>" + bookTemplate.Title + "</strong> Featured attribute has been removed.";
+            return RedirectToAction("Index");
         }
 
         // POST: Books/Delete/5
