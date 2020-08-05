@@ -1,4 +1,4 @@
-﻿@model WizBooklat.Models.ViewModels.FindBookViewModel
+﻿@model List<WizBooklat.Models.BookTemplate>
 
 @{
     ViewBag.Title = "Gallery";
@@ -6,60 +6,62 @@
 
 <div class="row-container-offset-top">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="row">
                 <div class="gallery-items-container">
-                    <div class="col-md-4">
-                        <div class="body-container">
-                            <h4>T</h4>
+                    @foreach (var featuredBook in Model)
+                    {
+                        <div class="body-container" style="margin-right:40px; display:inline-block !important;">
+                            @featuredBook.Title
+                            <br />
+                            @featuredBook.ISBN
+                            <br />
+                            @featuredBook.DateCreated.ToString("MM-dd-yy")
+                            <br />
+                            <img src="@featuredBook.ImageLocation" />
                         </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="body-container">
-                            <h4>T</h4>
-                            <h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4><h4>T</h4>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="body-container">
-                            <h4>T</h4>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="body-container">
-                        4
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        <div class="col-md-3">
+            <div class="body-container">
+                <h4>Filters</h4>
+                @using (Html.BeginForm("Gallery/Find", "Books", FormMethod.Get, new { @class = "form-horizontal" }))
+                {
 
-<div class="row">
-    <div class="col-md-8">
-        <div class="topbar">
-            <div class="topbar-content">
-                <div class="topbar-left">
-                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;List</h5>
-                </div>
-                <div class="topbar-right">
-                    <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("Create")">Add Book +</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="topbar">
-            <div class="topbar-content">
-                <input class="form-control form-control-line-only topBarCenterContent" placeholder="Search" />
+                    <label class="control-label">Title</label>
+                    <input name="title" class="form-control form-control-line-only" placeholder="Title" value="@(Request.Params["title"])"/>
+
+                    <label class="control-label">ISBN</label>
+                    <input name="isbn" class="form-control form-control-line-only" placeholder="ISBN" value="@(Request.Params["isbn"])"/>
+
+                    <label class="control-label">Genre</label>
+                    <select name="genreId" class="form-control form-control-line-only" placeholder="Genre">
+                        @{
+                            List<WizBooklat.Models.Genre> sl = (List<WizBooklat.Models.Genre>)ViewBag.GenreOptions;
+                            int genreId = (Request.Params["genreId"] != null) ? Convert.ToInt32(Request.Params["genreId"]) : 0;
+                            foreach (var option in sl)
+                            {
+                                if (option.GenreId == genreId)
+                                {
+                                    <option selected value="@option.GenreId">@option.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@option.GenreId">@option.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+
+                    <br />
+
+                    <button class="btn btn-block btn-info" type="submit">Search</button>
+
+                    <br />
+                }
             </div>
         </div>
     </div>

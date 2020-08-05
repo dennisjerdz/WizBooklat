@@ -37,18 +37,20 @@ namespace WizBooklat.Controllers
                 ig.TopGenre = await db.BookTemplates.Where(b => books.Contains(b.BookTemplateId)).ToListAsync();
             }
 
+            List<Genre> genreOptions = db.Genres.ToList();
+            ViewBag.GenreOptions = genreOptions;
             return View(ig);
         }
 
         [Route("Books/Gallery/Find/")]
         public async Task<ActionResult> Gallery(string isbn, string title, int[] genreId)
         {
-            // ViewBag.categories = db.Genres.ToList();
-            // var books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(fbparam.ISBN) && b.Title.Contains(fbparam.Title)).ToListAsync();
+            List<Genre> genreOptions = db.Genres.ToList();
+            ViewBag.GenreOptions = genreOptions;
 
-            // return Content(isbn+" "+title+" "+String.Join(",",genreId));
+            var books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(isbn) && b.Title.Contains(title) && b.BookGenres.Select(g=>g.GenreId).Contains(genreId.FirstOrDefault())).ToListAsync();
 
-            return View("GalleryFind", null);
+            return View("GalleryFind", books);
         }
 
         // GET: Books

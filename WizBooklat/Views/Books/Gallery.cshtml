@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Gallery";
+
 }
 
 <div class="row-container-offset-top">
@@ -77,22 +78,31 @@
         <div class="col-md-3">
             <div class="body-container">
                 <h4>Filters</h4>
-                <form class="form-horizontal">
+                @using (Html.BeginForm("Gallery/Find","Books",FormMethod.Get,new { @class="form-horizontal" })) {
+
                     <label class="control-label">Title</label>
-                    <input class="form-control form-control-line-only" placeholder="Title" />
+                    <input name="title" class="form-control form-control-line-only" placeholder="Title" />
 
                     <label class="control-label">ISBN</label>
-                    <input class="form-control form-control-line-only" placeholder="ISBN" />
+                    <input name="isbn" class="form-control form-control-line-only" placeholder="ISBN" />
 
                     <label class="control-label">Genre</label>
-                    <select class="form-control form-control-line-only" placeholder="Genre"></select>
+                    <select name="genreId" class="form-control form-control-line-only" placeholder="Genre">
+                        @{ 
+                            List<WizBooklat.Models.Genre> sl = (List<WizBooklat.Models.Genre>)ViewBag.GenreOptions;
+                            foreach (var option in sl)
+                            {
+                                <option value="@option.GenreId">@option.Name</option>
+                            }
+                        }
+                    </select>
 
                     <br />
 
                     <button class="btn btn-block btn-info" type="submit">Search</button>
 
                     <br />
-                </form>
+                }
             </div>
         </div>
     </div>

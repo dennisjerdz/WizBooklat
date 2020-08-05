@@ -98,7 +98,6 @@ C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\Microsoft.Owin.Securit
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\Microsoft.Owin.Security.OAuth.xml
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.csprojAssemblyReference.cache
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.csproj.CoreCompileInputs.cache
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.csproj.CopyComplete
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.dll
