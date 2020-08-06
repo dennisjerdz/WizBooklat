@@ -1,0 +1,195 @@
+﻿@model WizBooklat.Models.BookTemplate
+@using WizBooklat.Models;
+@{
+    ViewBag.Title = "Loan";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><a href="@Url.Action("Gallery")">Books</a>&emsp;/&emsp;@Model.Title&emsp;/&emsp;Loan</h5>
+                </div>
+                <div class="topbar-right">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--
+        <div class="col-md-4">
+            <div class="topbar">
+                <div class="topbar-content">
+                    <input class="form-control form-control-line-only topBarCenterContent" placeholder="Search" />
+                </div>
+            </div>
+        </div>
+    -->
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="body-container">
+            <center>
+                <h4>@Model.Title</h4>
+            </center>
+            <br />
+            <img style="width:100%;" src="@Model.ImageLocation" />
+            @if (!String.IsNullOrEmpty(Model.OLKey))
+            {
+                <br />
+                <center>
+                    <a target="_blank" style="margin-top:20px; margin-bottom:10px;" class="btn btn-md btn-block" href="https://openlibrary.org/books/@Model.OLKey">
+                        <font style="color:#0094ff">Visit OpenLibrary Page &nbsp;<span class="glyphicon glyphicon-new-window"></span></font>
+                    </a>
+                </center>
+            }
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="body-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Reservation Form:</h5>
+                    @if (Model.Stocks.Any(s=>s.BookStatus == BookStatusConstant.AVAILABLE))
+                    {
+                        <div style="height:200px; width:100%; padding:0px 15px;">
+                            <form class="form-horizontal" style="padding-top:10px;">
+                                <input type="hidden" name="BookTemplateId" value="@Model.BookTemplateId" />
+
+                                <div class="form-group">
+                                    <label class="control-label">Start Date</label>
+                                    <input class="form-control form-control-line-only" name="StartDate" type="date" required/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label">End Date</label>
+                                    <input class="form-control form-control-line-only" name="EndDate" type="date" required/>
+                                </div>
+
+                                <div class="form-group">
+                                    <button style="margin-top:15px;" type="submit" class="btn btn-info btn-block">Submit Reservation</button>
+                                </div>
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="height:200px; width:100%; padding:0px 40px; background-color:rgb(248, 248, 248);">
+                            <center>
+                                <h2 class="text-color-red" style="padding-top:65px; margin:0px;">This book is currently unavailable for loaning.</h2>
+                            </center>
+                        </div>
+                    }
+                </div>
+
+                <div class="col-md-6">
+                    <h5>Stock status:</h5>
+                    <div class="table-responsive">
+                        <table style="border:1px solid rgba(0,0,0,0.1); height:200px; overflow-y:auto;" class="table table-side table-hover table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>ID</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in Model.Stocks)
+                                {
+                                    <tr>
+                                        <td>
+                                            @if (item.Branch != null)
+                                            {
+                                                <text>@item.Branch.Name</text>
+                                            }
+                                            else
+                                            {
+                                                <text>Not assigned</text>
+                                            }
+                                        </td>
+                                        <td>
+                                            @item.BookId
+                                        </td>
+                                        <td>
+                                            @switch (item.BookStatus)
+                                            {
+                                                case BookStatusConstant.AVAILABLE:
+                                                    <span class="text-color-green">Active</span>
+                                                    break;
+                                                case BookStatusConstant.RESERVED:
+                                                    <span class="text-info">Reserved</span>
+                                                    break;
+                                                case BookStatusConstant.LOANED:
+                                                    <span class="text-info">Loaned</span>
+                                                    break;
+                                                case BookStatusConstant.REPORTED_LOST:
+                                                    <span class="text-warning">Reported Lost</span>
+                                                    break;
+                                                case BookStatusConstant.CONFIRMED_LOST:
+                                                    <span class="text-color-red">Confirmed Lost</span>
+                                                    break;
+                                                case BookStatusConstant.DAMAGED_AVAILABLE:
+                                                    <span class="text-warning">Damaged but Available</span>
+                                                    break;
+                                                case BookStatusConstant.PULLED_OUT:
+                                                    <span class="text-purple">Pulled out</span>
+                                                    break;
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="body-container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Book Information</h5>
+                    <div>
+                        <strong>ISBN:</strong>&emsp;@Model.ISBN
+                        <br />
+                    </div>
+                    <div>
+                        <strong>Title:</strong>&emsp;@Model.Title
+                        <br />
+                    </div>
+                    <div>
+                        <strong>Publish Year:</strong>&emsp;@Model.PublishYear
+                        <br />
+                    </div>
+                    <div>
+                        <strong>Open Library ID:</strong>&emsp;@Model.OLKey
+                        <br />
+                    </div>
+                    @if (!String.IsNullOrEmpty(Model.OLKey))
+                    {
+                        <br />
+                        <div>
+                            <strong>Full Information:</strong>&emsp;
+                            <a target="_blank" style="display:inline;" href="https://openlibrary.org/books/@Model.OLKey">
+                                <font style="color:#0094ff">https://openlibrary.org/books/@Model.OLKey &nbsp;<span class="glyphicon glyphicon-new-window"></span></font>
+                            </a>
+                            <br />
+                        </div>
+                    }
+
+                </div>
+                <div class="col-md-6">
+                    <h5>Genres / Tags</h5>
+                    <div style="height:200px; width:100%; padding:0px 15px;">
+                        @foreach (var tag in Model.BookGenres)
+                        {
+                            <span class="label label-warning" style="font-size:1.1em; line-height:33px;">@tag.Genre.Name</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

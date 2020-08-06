@@ -15,10 +15,66 @@ namespace WizBooklat.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BookUnits
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var books = db.Books.Include(b => b.BookTemplate).Include(b => b.Branch);
-            return View(books.ToList());
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            BookTemplate book = db.BookTemplates.FirstOrDefault(b => b.BookTemplateId == id);
+
+            if (book == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                return View("Index",book);
+            }
+        }
+
+        public ActionResult SetAsPullout(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Book book = db.Books.Find(id);
+            if (book == null)
+            {
+                return HttpNotFound();
+            }
+            book.BookStatus = BookStatusConstant.PULLED_OUT;
+            db.SaveChanges();
+            TempData["Message"] = "<strong>Book with ID; " + id + " , has been Pulled-out.</strong>";
+            return RedirectToAction("Index", new { id = book.BookTemplateId });
+        }
+
+        public ActionResult SetAsAvailable(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Book book = db.Books.Find(id);
+            if (book == null)
+            {
+                return HttpNotFound();
+            }
+            book.BookStatus = BookStatusConstant.AVAILABLE;
+            db.SaveChanges();
+            TempData["Message"] = "<strong>Book with ID; " + id + " , has been set to Available.</strong>";
+            return RedirectToAction("Index", new { id = book.BookTemplateId });
         }
 
         // GET: BookUnits/Details/5

@@ -55,6 +55,11 @@ namespace WizBooklat.Controllers
         }
         #endregion
         
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult Accounts()
         {
             if (TempData["Error"] != null)

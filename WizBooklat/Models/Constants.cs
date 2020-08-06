@@ -26,6 +26,7 @@ namespace WizBooklat.Models
         public const sbyte PULLED_OUT = 3;
         public const sbyte REPORTED_LOST = 4;
         public const sbyte CONFIRMED_LOST = 5;
+        public const sbyte LOANED = 6;
 
         public static List<SelectListItem> BookStatusList = new List<SelectListItem>
         {
@@ -35,6 +36,7 @@ namespace WizBooklat.Models
             new SelectListItem{ Text = "Pulled-out", Value = "3"},
             new SelectListItem{ Text = "Reported Lost", Value = "4"},
             new SelectListItem{ Text = "Confirmed Lost", Value = "5"},
+            new SelectListItem{ Text = "Currently Loaned", Value = "6"},
         };
     }
 

@@ -53,6 +53,10 @@ body {
     color:#6427ff;
 }
 
+.table-side thead tr th:first-of-type, .table-side tbody tr td:first-of-type {
+    padding-left: 20px;
+}
+
 .table.dataTable thead th, table.dataTable thead td{
     border-bottom: 1px groove rgba(50,50,100,0.1) !important;
     /*border-bottom:none !important;*/

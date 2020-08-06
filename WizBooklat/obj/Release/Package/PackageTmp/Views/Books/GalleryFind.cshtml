@@ -19,6 +19,8 @@
                             @featuredBook.DateCreated.ToString("MM-dd-yy")
                             <br />
                             <img src="@featuredBook.ImageLocation" />
+                            <br />
+                            <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">Loan</a>
                         </div>
                     }
                 </div>

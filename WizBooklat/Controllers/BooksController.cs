@@ -52,8 +52,7 @@ namespace WizBooklat.Controllers
 
             return View("GalleryFind", books);
         }
-
-        // GET: Books
+        
         public ActionResult Index()
         {
             if (TempData["Error"] != null)
@@ -67,7 +66,6 @@ namespace WizBooklat.Controllers
             return View(db.BookTemplates.ToList());
         }
 
-        // GET: Books/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -81,16 +79,12 @@ namespace WizBooklat.Controllers
             }
             return View(bookTemplate);
         }
-        
-        // GET: Books/Create
+ 
         public ActionResult Create()
         {
             return View();
         }
         
-        // POST: Books/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
@@ -303,7 +297,6 @@ namespace WizBooklat.Controllers
             }
         }
 
-        // GET: Books/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -317,10 +310,7 @@ namespace WizBooklat.Controllers
             }
             return View(bookTemplate);
         }
-
-        // POST: Books/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
@@ -334,7 +324,6 @@ namespace WizBooklat.Controllers
             return View(bookTemplate);
         }
 
-        // GET: Books/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -385,7 +374,6 @@ namespace WizBooklat.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -394,6 +382,20 @@ namespace WizBooklat.Controllers
             db.BookTemplates.Remove(bookTemplate);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Loan(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            BookTemplate bookTemplate = db.BookTemplates.FirstOrDefault(b=>b.BookTemplateId == id);
+            if (bookTemplate == null)
+            {
+                return HttpNotFound();
+            }
+            return View(bookTemplate);
         }
 
         protected override void Dispose(bool disposing)

@@ -46,6 +46,8 @@ namespace WizBooklat.Models
 
         public string Genres { get; set; } // delimit with comma
         public string Authors { get; set; } // delimit with comma
+        
+        public virtual List<Book> Stocks { get; set; }
 
         public virtual List<BookGenre> BookGenres { get; set; }
         public virtual List<BookAuthor> BookAuthors { get; set; }
@@ -88,6 +90,8 @@ namespace WizBooklat.Models
         public int BookTemplateId { get; set; }
         [ForeignKey("BookTemplateId")]
         public virtual BookTemplate BookTemplate { get; set; }
+
+        public virtual List<Loan> LoanHistory { get; set; }
 
         // use constant
         public Int16 BookStatus { get; set; }

@@ -1,51 +1,141 @@
-﻿@model IEnumerable<WizBooklat.Models.Book>
+﻿@model WizBooklat.Models.BookTemplate
+@using WizBooklat.Models;
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Books";
+    var stocks = Model.Stocks;
 }
 
-<h2>Index</h2>
+<div class="row">
+    <div class="col-md-9">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><a href="@Url.Action("Index","Books")">@ViewBag.Title</a>&emsp;/&emsp;@Model.Title&emsp;/&emsp;Stocks</h5>
+                </div>
+                <div class="topbar-right">
+                    <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("Create")">Add Stock +</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="topbar">
+            <div class="topbar-content">
+                <input class="form-control form-control-line-only topBarCenterContent" placeholder="Search" />
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.BookTemplate.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Branch.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InternalCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BookStatus)
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="body-container">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            Internal Code
+                        </th>
+                        <th>
+                            Branch
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookTemplate.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Branch.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.InternalCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BookStatus)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BookId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BookId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BookId })
-        </td>
-    </tr>
+                <tbody>
+                    @foreach (var item in stocks)
+                    {
+                        <tr>
+                            <td>
+                                @item.BookId
+                            </td>
+                            <td>
+                                @item.InternalCode
+                            </td>
+                            <td>
+                                @if (item.Branch != null)
+                                {
+                                    <span>@item.Branch.Name</span>
+                                }
+                                else
+                                {
+                                    <span class="text-warning">Not assigned</span>
+                                }
+                            </td>
+                            <td>
+                                @switch (item.BookStatus)
+                                {
+                                    case BookStatusConstant.AVAILABLE:
+                                        <span class="text-color-green">Active</span>
+                                        break;
+                                    case BookStatusConstant.RESERVED:
+                                        <span class="text-info">Reserved</span>
+                                        break;
+                                    case BookStatusConstant.LOANED:
+                                        <span class="text-info">Loaned</span>
+                                        break;
+                                    case BookStatusConstant.REPORTED_LOST:
+                                        <span class="text-warning">Reported Lost</span>
+                                        break;
+                                    case BookStatusConstant.CONFIRMED_LOST:
+                                        <span class="text-color-red">Confirmed Lost</span>
+                                        break;
+                                    case BookStatusConstant.DAMAGED_AVAILABLE:
+                                        <span class="text-warning">Damaged but Available</span>
+                                        break;
+                                    case BookStatusConstant.PULLED_OUT:
+                                        <span class="text-purple">Pulled out</span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("Edit", new { id = item.BookTemplateId })">Edit</a>
+
+                                @if (item.BookStatus != BookStatusConstant.LOANED && item.BookStatus != BookStatusConstant.PULLED_OUT)
+                                {
+                                    <a class="btn btn-xs btn-warning btn-table-short" href="@Url.Action("SetAsPullout", new { id = item.BookId })">Pull-out</a>
+                                }
+
+                                @if (item.BookStatus == BookStatusConstant.PULLED_OUT)
+                                {
+                                    <a class="btn btn-xs btn-success btn-table-short" href="@Url.Action("SetAsAvailable", new { id = item.BookId })">Set as Available</a>
+                                }
+
+                                @if (item.LoanHistory == null)
+                                {
+                                    <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("Delete", new { id = item.BookId })">Delete</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'window-heading'<'row'<'col-xs-6'p><'col-xs-6'i>>><'table-responsive'rt>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 4 }
+                ]
+            });
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
 }
-
-</table>

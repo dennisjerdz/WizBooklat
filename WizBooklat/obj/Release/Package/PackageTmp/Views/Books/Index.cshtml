@@ -99,6 +99,8 @@
 
                                 <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("Delete", new { id = item.BookTemplateId })">Delete</a>
 
+                                <a class="btn btn-xs btn-warning btn-table-short" href="@Url.Action("Index","BookUnits", new { id = item.BookTemplateId })">View Stock</a>
+
                                 @if (item.IsFeatured)
                                 {
                                     <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("RemoveFeatured", new { id = item.BookTemplateId })">Unfeature</a>
