@@ -88,7 +88,7 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     @Html.LabelFor(m => m.StudentNumber, new { @class = "control-label" })
-                                    @Html.TextBoxFor(m => m.StudentNumber, new { @class = "form-control form-control-line-only", @type="number", @minlength="10", maxlength="10" })
+                                    @Html.TextBoxFor(m => m.StudentNumber, new { @class = "form-control form-control-line-only", @type="number", @minlength="10", maxlength="10", @required = "true" })
                                 </div>
                             </div>
                             <div class="form-group">

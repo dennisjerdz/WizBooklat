@@ -86,7 +86,6 @@ namespace WizBooklat.Models
         public string MiddleName { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Required]
         public string StudentNumber { get; set; }
         public string MobileNumber { get; set; }
         public string MobileNumberCode { get; set; }
