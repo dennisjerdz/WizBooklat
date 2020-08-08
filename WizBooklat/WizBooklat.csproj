@@ -353,7 +353,7 @@
     <Content Include="Views\Loans\Index.cshtml" />
     <Content Include="Views\Loans\MyLoans.cshtml" />
     <Content Include="Views\Admin\ActiveLoans.cshtml" />
-    <Content Include="Views\Admin\FinishedLoans.cshtml" />
+    <Content Include="Views\Admin\CompletedLoans.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
