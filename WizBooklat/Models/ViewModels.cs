@@ -1,10 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace WizBooklat.Models.ViewModels
 {
+    public class LoanBookModel
+    {
+        public BookTemplate BookTemplate { get; set; }
+        public int BookTemplateId { get; set; }
+        public DateTime StartDate { get; set; }
+        public int LoanPeriod { get; set; }
+    }
+
+    public class LoanSubmitModel
+    {
+        [Required]
+        public int BookTemplateId { get; set; }
+        [Required]
+        public DateTime StartDate { get; set; }
+        [Required]
+        public int LoanPeriod { get; set; }
+    }
+
     public class FindBookViewModel
     {
         public string ISBN { get; set; }

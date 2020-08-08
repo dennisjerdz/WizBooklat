@@ -386,6 +386,15 @@ namespace WizBooklat.Controllers
 
         public ActionResult Loan(int? id)
         {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -396,6 +405,84 @@ namespace WizBooklat.Controllers
                 return HttpNotFound();
             }
             return View(bookTemplate);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> Loan(ViewModels.LoanSubmitModel submitModel)
+        {
+            string userId = User.Identity.GetUserId();
+            TempData["Error"] = "1";
+            TempData["Message"] = "<strong>Failed to process reservation.</strong> Please fill out all fields.";
+
+            Setting maxLoanLimitSetting = db.Settings.FirstOrDefault(s => s.Code == "NUMBER_OF_ACTIVE_BOOK_LOANS");
+            int maxLoanLimit = (maxLoanLimitSetting != null) ? Convert.ToInt16(maxLoanLimitSetting.Value) : 2 ;
+            
+            if (ModelState.IsValid)
+            {
+                BookTemplate bt = db.BookTemplates.Find(submitModel.BookTemplateId);
+
+                if (bt != null)
+                {
+                    List<Loan> existingBookLoans = await db.Loans.Where(l => l.UserId == userId).ToListAsync();
+
+                    if (existingBookLoans.Any(l=>l.Book.BookTemplateId == submitModel.BookTemplateId))
+                    {
+                        TempData["Message"] = "<strong>Failed to process reservation.</strong> Book information not found.";
+                    }
+                    else if (existingBookLoans.Count(l=>l.ReturnDate == null) == maxLoanLimit)
+                    {
+                        TempData["Message"] = "<strong>Failed to process reservation.</strong> You currently have "+maxLoanLimit.ToString()+" active loans / books not returned yet.";
+                    }
+                    else
+                    {
+                        Book availableBook = db.Books.FirstOrDefault(b => b.BookTemplateId == submitModel.BookTemplateId 
+                            && b.BookStatus == BookStatusConstant.AVAILABLE);
+
+                        if (availableBook != null)
+                        {
+                            Loan newLoan = new Loan
+                            {
+                                BookId = availableBook.BookId,
+                                DateCreated = DateTime.UtcNow.AddHours(8),
+                                EndDate = submitModel.StartDate.AddDays(submitModel.LoanPeriod),
+                                StartDate = submitModel.StartDate,
+                                UserId = userId
+                            };
+
+                            try
+                            {
+                                db.Loans.Add(newLoan);
+                                availableBook.BookStatus = BookStatusConstant.LOANED;
+                                await db.SaveChangesAsync();
+
+                                TempData["Error"] = null;
+
+                                if (availableBook.Branch != null)
+                                {
+                                    TempData["Message"] = "<strong>Successfully submitted reservation.</strong> Please pick up your book at " + availableBook.Branch.Name + ".";
+                                }
+                                else
+                                {
+                                    TempData["Message"] = "<strong>Successfully submitted reservation.</strong>.";
+                                }
+
+                                return RedirectToAction("Loan", new { id = submitModel.BookTemplateId });
+                            }
+                            catch(Exception ex)
+                            {
+                                TempData["Message"] = "<strong>Failed to process reservation.</strong> Error: "+ex.Message+".";
+                            }
+                        }
+                        else
+                        {
+                            TempData["Message"] = "<strong>Failed to process reservation.</strong> There is no available stock for this book.";
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("Loan", new { id = submitModel.BookTemplateId });
         }
 
         protected override void Dispose(bool disposing)

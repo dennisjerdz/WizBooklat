@@ -73,4 +73,13 @@ namespace WizBooklat.Models
         public const sbyte Other = 0;
         public const sbyte Book = 1;
     }
+
+    public class LoanPeriodConstant
+    {
+        public List<string> LoanPeriod = new List<string>
+        {
+            "7",
+            "14"
+        };
+    }
 }

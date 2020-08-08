@@ -177,6 +177,7 @@
     <Compile Include="Controllers\BranchesController.cs" />
     <Compile Include="Controllers\GenresController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoansController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RanksController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -345,6 +346,14 @@
     <Content Include="Views\Books\GalleryFind.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Books\Loan.cshtml" />
+    <Content Include="Views\Loans\Create.cshtml" />
+    <Content Include="Views\Loans\Delete.cshtml" />
+    <Content Include="Views\Loans\Details.cshtml" />
+    <Content Include="Views\Loans\Edit.cshtml" />
+    <Content Include="Views\Loans\Index.cshtml" />
+    <Content Include="Views\Loans\MyLoans.cshtml" />
+    <Content Include="Views\Admin\ActiveLoans.cshtml" />
+    <Content Include="Views\Admin\FinishedLoans.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

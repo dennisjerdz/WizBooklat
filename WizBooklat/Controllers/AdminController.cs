@@ -55,6 +55,16 @@ namespace WizBooklat.Controllers
         }
         #endregion
         
+        public ActionResult ActiveLoans()
+        {
+            return View(db.Loans.Where(l => l.ReturnDate == null).ToList());
+        }
+
+        public ActionResult CompletedLoans()
+        {
+            return View(db.Loans.Where(l => l.ReturnDate != null).ToList());
+        }
+
         public ActionResult Index()
         {
             return View();

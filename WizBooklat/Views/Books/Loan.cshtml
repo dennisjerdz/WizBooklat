@@ -52,35 +52,105 @@
             <div class="row">
                 <div class="col-md-6">
                     <h5>Reservation Form:</h5>
-                    @if (Model.Stocks.Any(s=>s.BookStatus == BookStatusConstant.AVAILABLE))
+
+                    @if (User.Identity.IsAuthenticated)
                     {
-                        <div style="height:200px; width:100%; padding:0px 15px;">
-                            <form class="form-horizontal" style="padding-top:10px;">
-                                <input type="hidden" name="BookTemplateId" value="@Model.BookTemplateId" />
+                        if (Model.Stocks.Any(s => s.BookStatus == BookStatusConstant.AVAILABLE))
+                        {
+                            <div style="height:200px; width:100%; padding:0px 15px;">
+                                @using (Html.BeginForm("Loan", "Books", FormMethod.Post, new { @class = "form-horizontal", @style = "padding-top:10px;" }))
+                                {
+                                    <input type="hidden" name="BookTemplateId" value="@Model.BookTemplateId" />
 
-                                <div class="form-group">
-                                    <label class="control-label">Start Date</label>
-                                    <input class="form-control form-control-line-only" name="StartDate" type="date" required/>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Start Date</label>
+                                        <input class="form-control form-control-line-only" name="StartDate" id="StartDate" type="date" required />
+                                    </div>
 
-                                <div class="form-group">
-                                    <label class="control-label">End Date</label>
-                                    <input class="form-control form-control-line-only" name="EndDate" type="date" required/>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Loan Period</label>
+                                        <select class="form-control form-control-line-only" name="LoanPeriod" id="LoanPeriod" type="date" required>
+                                            @{
+                                                WizBooklat.Models.LoanPeriodConstant period = new WizBooklat.Models.LoanPeriodConstant();
 
-                                <div class="form-group">
-                                    <button style="margin-top:15px;" type="submit" class="btn btn-info btn-block">Submit Reservation</button>
-                                </div>
-                            </form>
-                        </div>
+                                                foreach (var i in period.LoanPeriod)
+                                                {
+                                                    <option value="@i">@i days</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button style="margin-top:12px;" type="submit" class="btn btn-info btn-block">Submit Reservation</button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="height:200px; width:100%; padding:0px 40px; background-color:rgb(248, 248, 248);">
+                                <center>
+                                    <h3 class="text-color-red" style="padding-top:35px; margin:0px;">This book is currently unavailable for loaning.</h3>
+
+                                    @{
+                                        var existingLoans = new List<Loan>();
+
+                                        foreach (var item in Model.Stocks.Where(s => s.BookStatus == BookStatusConstant.LOANED))
+                                        {
+                                            var existingLoan = item.LoanHistory.OrderByDescending(h => h.EndDate).FirstOrDefault();
+
+                                            if (existingLoan != null)
+                                            {
+                                                existingLoans.Add(existingLoan);
+                                            }
+                                        }
+
+                                        if (existingLoans.Count > 0)
+                                        {
+                                            var earliestLoan = existingLoans.OrderByDescending(s => s.EndDate).FirstOrDefault();
+
+                                            if (earliestLoan != null)
+                                            {
+                                                <h3 class="text-color-red" style="padding-top:15px; margin:0px;">Earliest Available Date is <br /> @earliestLoan.EndDate.ToString("MM-dd-yyyy").</h3>
+                                            }
+                                        }
+                                    }
+                                </center>
+                            </div>
+                        }
                     }
                     else
                     {
-                        <div style="height:200px; width:100%; padding:0px 40px; background-color:rgb(248, 248, 248);">
-                            <center>
-                                <h2 class="text-color-red" style="padding-top:65px; margin:0px;">This book is currently unavailable for loaning.</h2>
-                            </center>
-                        </div>
+                            <div style="height:200px; width:100%; padding:0px 40px; background-color:rgb(248, 248, 248);">
+                                <center>
+                                    <h3 class="text-color-red" style="padding-top:35px; margin:0px;">Please login to create a reservation.</h3>
+
+                                    @{
+                                        var existingLoans = new List<Loan>();
+
+                                        foreach (var item in Model.Stocks.Where(s => s.BookStatus == BookStatusConstant.LOANED))
+                                        {
+                                            var existingLoan = item.LoanHistory.OrderByDescending(h => h.EndDate).FirstOrDefault();
+
+                                            if (existingLoan != null)
+                                            {
+                                                existingLoans.Add(existingLoan);
+                                            }
+                                        }
+
+                                        if (existingLoans.Count > 0)
+                                        {
+                                            var earliestLoan = existingLoans.OrderByDescending(s => s.EndDate).FirstOrDefault();
+
+                                            if (earliestLoan != null)
+                                            {
+                                                <h3 class="text-color-red" style="padding-top:15px; margin:0px;">Earliest Available Date is <br /> @earliestLoan.EndDate.ToString("MM-dd-yyyy").</h3>
+                                            }
+                                        }
+                                    }
+                                </center>
+                            </div>
                     }
                 </div>
 
@@ -193,3 +263,45 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+        Date.prototype.addHours = function (h) {
+            this.setTime(this.getTime() + (h * 60 * 60 * 1000));
+            return this;
+        }
+
+        $(document).ready(function () {
+
+            var dateToday = new Date();
+            var earliestReservationDate;
+            var latestReservationDate;
+
+            switch (dateToday.getDay()) {
+                case 5:
+                    earliestReservationDate = new Date(new Date().setDate(dateToday.getDate() + 3));
+                    break;
+                case 6:
+                    earliestReservationDate = new Date(new Date().setDate(dateToday.getDate() + 2));
+                    break;
+                case 0:
+                    earliestReservationDate = new Date(new Date().setDate(dateToday.getDate() + 1));
+                    break;
+            }
+
+            // earliestReservationDate = earliestReservationDate.addHours(8);
+            
+            var d1 = earliestReservationDate;
+            var d2 = new Date(new Date().setDate(earliestReservationDate.getDate() + 1));
+            /*var datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
+                d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);*/
+
+            earliestReservationDate = (d1.getFullYear() + "-" + ("0" + (d1.getMonth() + 1)).slice(-2) + "-" + ("0" + d1.getDate()).slice(-2));
+            latestReservationDate = (d2.getFullYear() + "-" + ("0" + (d2.getMonth() + 1)).slice(-2) + "-" + ("0" + d2.getDate()).slice(-2));
+            console.log(earliestReservationDate+","+latestReservationDate);
+
+            $("#StartDate").attr("min", earliestReservationDate);
+            $("#StartDate").attr("max", latestReservationDate);
+        })
+    </script>    
+}

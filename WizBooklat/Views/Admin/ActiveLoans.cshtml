@@ -1,0 +1,178 @@
+﻿@model IEnumerable<WizBooklat.Models.Loan>
+@using WizBooklat.Models;
+
+@{
+    ViewBag.Title = "Loans";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;Active Loans</h5>
+                </div>
+                <!--
+                <div class="topbar-right">
+                    <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("Create")">Add Book +</a>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="topbar">
+            <div class="topbar-content">
+                <input class="form-control form-control-line-only topBarCenterContent" placeholder="Search" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="body-container">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <td>
+                            Loaned By
+                        </td>
+                        <th>
+                            Title
+                        </th>
+                        <th>
+                            Start Date
+                        </th>
+                        <th>
+                            End Date
+                        </th>
+                        <th>
+                            Return Date
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Date Created
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.User.Email
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Loan","Books", new { id = item.Book.BookTemplateId })">
+                                    @item.Book.BookTemplate.Title - ID: @item.BookId
+                                </a>
+                            </td>
+                            <td>
+                                @item.StartDate.ToString("MM-dd-yyyy")
+                            </td>
+                            <td>
+                                @item.EndDate.ToString("MM-dd-yyyy")
+                            </td>
+                            <td>
+                                @if (item.ReturnDate != null)
+                                {
+                                    <text>@item.ReturnDate.Value.ToString("MM-dd-yyyy")</text>
+                                }
+                            </td>
+                            <!--
+                            <td>
+                                @switch (item.Book.BookStatus)
+                                {
+                                    case BookStatusConstant.AVAILABLE:
+                                        <span class="text-color-green">Active</span>
+                                        break;
+                                    case BookStatusConstant.RESERVED:
+                                        <span class="text-info">Reserved</span>
+                                        break;
+                                    case BookStatusConstant.LOANED:
+                                        <span class="text-info">Loaned</span>
+                                        break;
+                                    case BookStatusConstant.REPORTED_LOST:
+                                        <span class="text-warning">Reported Lost</span>
+                                        break;
+                                    case BookStatusConstant.CONFIRMED_LOST:
+                                        <span class="text-color-red">Confirmed Lost</span>
+                                        break;
+                                    case BookStatusConstant.DAMAGED_AVAILABLE:
+                                        <span class="text-warning">Damaged but Available</span>
+                                        break;
+                                    case BookStatusConstant.PULLED_OUT:
+                                        <span class="text-purple">Pulled out</span>
+                                        break;
+                                }
+                            </td>
+                            -->
+                            <td>
+                                @if (item.LostConfirmed != null)
+                                {
+                                    <span class="text-color-red">Confirmed Lost - @item.LostConfirmed.Value.ToString("MM-dd-yyyy")</span>
+                                }
+                                else if (item.LostReported != null)
+                                {
+                                    <span class="text-color-red">Reported Lost - @item.LostReported.Value.ToString("MM-dd-yyyy")</span>
+                                }
+                                else if ((DateTime.UtcNow.Date > item.EndDate.Date) && item.ReturnDate == null)
+                                {
+                                    <span class="text-color-red">Overdue</span>
+                                }
+                                else
+                                {
+
+                                }
+
+                                @if(item.IsLate)
+                                {
+                                    <span class="text-warning">Returned Late</span>
+                                }
+
+                                @if (item.IsDamaged)
+                                {
+                                    <span class="text-warning">Returned Damaged</span>
+                                }
+                            </td>
+                            <td>
+                                @item.DateCreated.ToString("MM-dd-yyyy")
+                            </td>
+                            <td>
+                                @*
+                                @if ((DateTime.UtcNow.Date <= item.StartDate.Date) && item.ReturnDate == null)
+                                {
+                                    <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("Cancel", new { id = item.LoanId })">Cancel Loan</a>
+                                }
+                                *@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'window-heading'<'row'<'col-xs-6'p><'col-xs-6'i>>><'table-responsive'rt>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 7 }
+                ]
+            });
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
+}
