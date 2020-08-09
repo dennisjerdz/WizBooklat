@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
@@ -55,13 +56,70 @@ namespace WizBooklat.Controllers
         }
         #endregion
         
+        public ActionResult ProcessReturn(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Loan loan = db.Loans.Find(id);
+            if (loan == null)
+            {
+                return HttpNotFound();
+            }
+            return View(loan);
+        }
+
+        public ActionResult ViewLoans(string email)
+        {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
+            var user = db.Users.FirstOrDefault(u => u.Email == email);
+            if (user != null)
+            {
+                ViewBag.User = user;
+                return View(db.Loans.Where(l=>l.UserId == user.Id).ToList());
+            }
+            else
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to open Student Book Loans.</strong> Username not found.";
+                return RedirectToAction("Students");
+            }
+        }
+
         public ActionResult ActiveLoans()
         {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             return View(db.Loans.Where(l => l.ReturnDate == null).ToList());
         }
 
         public ActionResult CompletedLoans()
         {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             return View(db.Loans.Where(l => l.ReturnDate != null).ToList());
         }
 
@@ -84,8 +142,23 @@ namespace WizBooklat.Controllers
             var users = db.Users.ToList();
             return View(users);
         }
+
+        public ActionResult Students()
+        {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
+            var users = db.Users.Where(u=>u.AccountType == AccountTypeConstant.LOANER).ToList();
+            return View(users);
+        }
         
-        public ActionResult ActivateAccount(string email)
+        public ActionResult ActivateAccount(string email, string redirect = "Accounts")
         {
             var user = db.Users.FirstOrDefault(u => u.Email == email);
             if (user != null)
@@ -108,10 +181,10 @@ namespace WizBooklat.Controllers
             }
 
             TempData["Message"] = "<strong>Account has been activated.</strong> We've sent a notification to "+user.Email+".";
-            return RedirectToAction("Accounts");
+            return RedirectToAction(redirect);
         }
         
-        public ActionResult DisableAccount(string email)
+        public ActionResult DisableAccount(string email, string redirect = "Accounts")
         {
             var user = db.Users.FirstOrDefault(u => u.Email == email);
             if (user != null)
@@ -120,7 +193,7 @@ namespace WizBooklat.Controllers
             }
             db.SaveChanges();
             TempData["Message"] = "<strong>Account has been disabled.</strong> We've sent a notification to "+ user.Email +".";
-            return RedirectToAction("Accounts");
+            return RedirectToAction(redirect);
         }
         
         public ActionResult AddAccount()

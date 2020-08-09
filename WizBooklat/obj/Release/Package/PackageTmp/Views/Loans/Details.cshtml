@@ -1,0 +1,98 @@
+﻿@model WizBooklat.Models.Loan
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Loan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Book.InternalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Book.InternalCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReturnDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReturnDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsLate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsLate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDamaged)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDamaged)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LostReported)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LostReported)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LostConfirmed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LostConfirmed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateCreated)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.LoanId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

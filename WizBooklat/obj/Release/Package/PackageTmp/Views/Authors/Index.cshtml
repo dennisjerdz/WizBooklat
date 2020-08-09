@@ -1,45 +1,78 @@
-﻿@model IEnumerable<WizBooklat.Models.Author>
-
+﻿@model List<WizBooklat.Models.Author>
+@using WizBooklat.Models
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Authors";
 }
 
-<h2>Index</h2>
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;List</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="topbar">
+            <div class="topbar-content">
+                <input class="form-control form-control-line-only topBarCenterContent all-search" placeholder="Search" />
+            </div>
+        </div>
+    </div>
+</div>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AuthorKey)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="body-container">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            NAME
+                        </th>
+                        <th>
+                            # OF BOOKS
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AuthorKey)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateCreated)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AuthorId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AuthorId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AuthorId })
-        </td>
-    </tr>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.BookAuthors.Count
+                            </td>
+                            <td style="text-align:right;"></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 20,
+                "dom": "<'table-window'<'window-heading'<'row'<'col-xs-6'p><'col-xs-6'i>>><'table-responsive'rt>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 2 }
+                ]
+            });
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
 }
-
-</table>

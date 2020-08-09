@@ -17,7 +17,7 @@ namespace WizBooklat.Controllers
         // GET: Authors
         public ActionResult Index()
         {
-            return View(db.Authors.ToList());
+            return View(db.Authors.Include(a=>a.BookAuthors).ToList());
         }
 
         // GET: Authors/Details/5

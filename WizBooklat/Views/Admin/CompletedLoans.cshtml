@@ -23,7 +23,7 @@
     <div class="col-md-4">
         <div class="topbar">
             <div class="topbar-content">
-                <input class="form-control form-control-line-only topBarCenterContent" placeholder="Search" />
+                <input class="form-control form-control-line-only topBarCenterContent all-search" placeholder="Search" />
             </div>
         </div>
     </div>
@@ -35,26 +35,26 @@
             <table class="table table-condensed table-hover">
                 <thead>
                     <tr>
-                        <td>
-                            Loaned By
-                        </td>
                         <th>
-                            Title
+                            USER
                         </th>
                         <th>
-                            Start Date
+                            TITLE
                         </th>
                         <th>
-                            End Date
+                            START
                         </th>
                         <th>
-                            Return Date
+                            END
                         </th>
                         <th>
-                            Status
+                            RETURN
                         </th>
                         <th>
-                            Date Created
+                            STATUS
+                        </th>
+                        <th>
+                            CREATED
                         </th>
                         <th></th>
                     </tr>
@@ -125,19 +125,21 @@
                                 {
                                     <span class="text-color-red">Overdue</span>
                                 }
+                                else if (item.ReturnDate != null)
+                                {
+                                    <span style="color:rgba(0,0,0,0.5)">Returned</span>
+                                    if (item.IsLate)
+                                    {
+                                        <span class="text-warning">- Late</span>
+                                    }
+                                    if (item.IsDamaged)
+                                    {
+                                        <span class="text-warning">- Damaged</span>
+                                    }
+                                }
                                 else
                                 {
-
-                                }
-
-                                @if (item.IsLate)
-                                {
-                                    <span class="text-warning">Returned Late</span>
-                                }
-
-                                @if (item.IsDamaged)
-                                {
-                                    <span class="text-warning">Returned Damaged</span>
+                                    <span class="text-info">Active</span>
                                 }
                             </td>
                             <td>

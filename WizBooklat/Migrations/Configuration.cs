@@ -242,6 +242,20 @@ namespace WizBooklat.Migrations
                 userManager.AddToRole(user.Id, "Admin");
             }
 
+            if (!context.Users.Any(u => u.UserName == "ha@mailinator.com"))
+            {
+                var user = new ApplicationUser
+                {
+                    FirstName = "Administrator T1",
+                    UserName = "ha@mailinator.com",
+                    Email = "ha@mailinator.com",
+                    EmailConfirmed = true,
+                    AccountStatus = AccountStatusConstant.ACTIVE
+                };
+                userManager.Create(user, "ha@123");
+                userManager.AddToRole(user.Id, "Admin");
+            }
+
             if (!context.Users.Any(u => u.UserName == "wblibrarian@mailinator.com"))
             {
                 var user = new ApplicationUser

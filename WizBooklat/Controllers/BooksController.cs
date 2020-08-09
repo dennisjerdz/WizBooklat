@@ -464,7 +464,7 @@ namespace WizBooklat.Controllers
                                 }
                                 else
                                 {
-                                    TempData["Message"] = "<strong>Successfully submitted reservation.</strong>.";
+                                    TempData["Message"] = "<strong>Successfully submitted reservation.</strong>";
                                 }
 
                                 return RedirectToAction("Loan", new { id = submitModel.BookTemplateId });

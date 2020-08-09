@@ -216,6 +216,10 @@
     <Compile Include="Migrations\202008030915382_Book stock nullable branch Id.Designer.cs">
       <DependentUpon>202008030915382_Book stock nullable branch Id.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008090823354_loan damage description.cs" />
+    <Compile Include="Migrations\202008090823354_loan damage description.Designer.cs">
+      <DependentUpon>202008090823354_loan damage description.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
@@ -354,6 +358,9 @@
     <Content Include="Views\Loans\MyLoans.cshtml" />
     <Content Include="Views\Admin\ActiveLoans.cshtml" />
     <Content Include="Views\Admin\CompletedLoans.cshtml" />
+    <Content Include="Views\Admin\Students.cshtml" />
+    <Content Include="Views\Admin\ViewLoans.cshtml" />
+    <Content Include="Views\Admin\ProcessReturn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -397,6 +404,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008030915382_Book stock nullable branch Id.resx">
       <DependentUpon>202008030915382_Book stock nullable branch Id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008090823354_loan damage description.resx">
+      <DependentUpon>202008090823354_loan damage description.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

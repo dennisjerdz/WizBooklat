@@ -23,7 +23,7 @@
     <div class="col-md-4">
         <div class="topbar">
             <div class="topbar-content">
-                <input class="form-control form-control-line-only topBarCenterContent" placeholder="Search" />
+                <input class="form-control form-control-line-only topBarCenterContent all-search" placeholder="Search" />
             </div>
         </div>
     </div>
@@ -36,19 +36,22 @@
                 <thead>
                     <tr>
                         <th>
-                            Title
+                            TITLE
                         </th>
                         <th>
-                            Start Date
+                            START
                         </th>
                         <th>
-                            End Date
+                            END
                         </th>
                         <th>
-                            Return Date
+                            RETURNED
                         </th>
                         <th>
-                            Date Created
+                            STATUS
+                        </th>
+                        <th>
+                            CREATED
                         </th>
                         <th></th>
                     </tr>
@@ -103,6 +106,36 @@
                                 }
                             </td>
                             -->
+                            <td>
+                                @if (item.LostConfirmed != null)
+                                {
+                                    <span class="text-color-red">Confirmed Lost - @item.LostConfirmed.Value.ToString("MM-dd-yyyy")</span>
+                                }
+                                else if (item.LostReported != null)
+                                {
+                                    <span class="text-color-red">Reported Lost - @item.LostReported.Value.ToString("MM-dd-yyyy")</span>
+                                }
+                                else if ((DateTime.UtcNow.Date > item.EndDate.Date) && item.ReturnDate == null)
+                                {
+                                    <span class="text-color-red">Overdue</span>
+                                }
+                                else if (item.ReturnDate != null)
+                                {
+                                    <span style="color:rgba(0,0,0,0.5)">Returned</span>
+                                    if (item.IsLate)
+                                    {
+                                        <span class="text-warning">- Late</span>
+                                    }
+                                    if (item.IsDamaged)
+                                    {
+                                        <span class="text-warning">- Damaged</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-info">Active</span>
+                                }
+                            </td>
                             <td>
                                 @item.DateCreated.ToString("MM-dd-yyyy")
                             </td>

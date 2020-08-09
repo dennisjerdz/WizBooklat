@@ -114,6 +114,7 @@ namespace WizBooklat.Models
         public DateTime? ReturnDate { get; set; }
         public bool IsLate { get; set; }
         public bool IsDamaged { get; set; }
+        public string DamageDescription { get; set; }
         public DateTime? LostReported { get; set; }
         public DateTime? LostConfirmed { get; set; }
         public DateTime DateCreated { get; set; }

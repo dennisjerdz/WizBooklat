@@ -28,6 +28,7 @@ namespace WizBooklat.Controllers
             }
 
             loan.ReturnDate = DateTime.UtcNow.AddHours(8);
+            loan.Book.BookStatus = BookStatusConstant.AVAILABLE;
             db.SaveChanges();
             TempData["Message"] = "<strong>Reservation has been cancelled successfully.</strong>";
             return RedirectToAction("MyLoans");

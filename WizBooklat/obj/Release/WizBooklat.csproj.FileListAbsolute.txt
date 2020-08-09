@@ -220,3 +220,4 @@ C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.dll
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.pdb
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.StudentRegistration.resources
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.BookstocknullablebranchId.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.loandamagedescription.resources

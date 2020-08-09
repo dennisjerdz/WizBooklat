@@ -3,11 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>WizBooklat - @ViewBag.Title Page</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link href="~/Content/datatables.min.css" rel="stylesheet" />
+    @RenderSection("styles",false)
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -28,12 +29,53 @@
                         <li>@Html.ActionLink("Book Gallery", "Gallery", "Books")</li>
                         @if (User.IsInRole("Admin"))
                         {
-                            <li>@Html.ActionLink("Accounts", "Accounts", "Admin")</li>
-                            <li>@Html.ActionLink("Books", "Index", "Books")</li>
-                            <li>@Html.ActionLink("Branches", "Index", "Branches")</li>
-                            <li>@Html.ActionLink("Ranks", "Index", "Ranks")</li>
-                            <li>@Html.ActionLink("Genres", "Index", "Genres")</li>
-                            <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Books
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Books", "Index", "Books")</li>
+                                    <li>@Html.ActionLink("Genres", "Index", "Genres")</li>
+                                    <li>@Html.ActionLink("Authors", "Index", "Authors")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Accounts
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("All Accounts", "Accounts", "Admin")</li>
+                                    <li>@Html.ActionLink("Students", "Students", "Admin")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Loans
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Active Loans", "ActiveLoans", "Admin")</li>
+                                    <li>@Html.ActionLink("Completed Loans", "CompletedLoans", "Admin")</li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    System
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Branches", "Index", "Branches")</li>
+                                    <li>@Html.ActionLink("Ranks", "Index", "Ranks")</li>
+                                    <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
+                                </ul>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Loaner"))
+                        {
+                            <li>@Html.ActionLink("My Loans", "MyLoans", "Loans")</li>
                         }
                     </ul>
                     @Html.Partial("_LoginPartial")

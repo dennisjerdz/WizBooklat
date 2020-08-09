@@ -17,7 +17,7 @@ namespace WizBooklat.Controllers
         // GET: Genres
         public ActionResult Index()
         {
-            return View(db.Genres.ToList());
+            return View(db.Genres.Include(g=>g.BookGenres).ToList());
         }
 
         // GET: Genres/Details/5
