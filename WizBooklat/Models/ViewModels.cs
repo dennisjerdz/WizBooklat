@@ -6,6 +6,14 @@ using System.Web;
 
 namespace WizBooklat.Models.ViewModels
 {
+    public class ReturnBookModel
+    {
+        public int LoanId { get; set; }
+        public bool IsDamaged { get; set; }
+        public bool IsSevere { get; set; }
+        public string DamageDescription { get; set; }
+    }
+
     public class LoanBookModel
     {
         public BookTemplate BookTemplate { get; set; }

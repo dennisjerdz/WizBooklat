@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WizBooklat.Models;
+using ViewModels = WizBooklat.Models.ViewModels;
 
 namespace WizBooklat.Controllers
 {
@@ -68,6 +69,57 @@ namespace WizBooklat.Controllers
                 return HttpNotFound();
             }
             return View(loan);
+        }
+
+        [HttpPost]
+        public ActionResult ProcessReturn(ViewModels.ReturnBookModel rbm)
+        {
+            if (rbm.LoanId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Loan loan = db.Loans.Find(rbm.LoanId);
+            if (loan == null)
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to initiate return.</strong> Loan ID does not exist.";
+                return RedirectToAction("ActiveLoans", new { });
+            }
+
+            if (loan.ReturnDate != null)
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to initiate return.</strong> This reservation is already completed, the book has been returned last "+ loan.ReturnDate.Value.ToString("MM-dd-yyyy hh:mm tt");
+                return RedirectToAction("ViewLoans", new { email = loan.User.Email });
+            }
+            
+            loan.ReturnDate = DateTime.UtcNow.AddHours(8);
+            loan.IsDamaged = rbm.IsDamaged;
+            loan.IsSevere = rbm.IsSevere;
+            loan.DamageDescription = rbm.DamageDescription;
+
+            if (rbm.IsDamaged)
+            {
+                if (rbm.IsSevere)
+                {
+                    loan.Book.BookStatus = BookStatusConstant.DAMAGED_AVAILABLE;
+                    TempData["Message"] = "<strong>Successfully returned book.</strong> The book, " + loan.Book.BookTemplate.Title + " with ID " + loan.BookId + ", has been set to Available - Damaged.";
+                }
+                else
+                {
+                    loan.Book.BookStatus = BookStatusConstant.AVAILABLE;
+                    TempData["Message"] = "<strong>Successfully returned book.</strong> The book, " + loan.Book.BookTemplate.Title + " with ID " + loan.BookId + ", has been set to Available.";
+                }
+            }
+            else
+            {
+                loan.Book.BookStatus = BookStatusConstant.AVAILABLE;
+                TempData["Message"] = "<strong>Successfully returned book.</strong> The book, " + loan.Book.BookTemplate.Title + " with ID " + loan.BookId + ", has been set to Available.";
+            }
+            
+            db.SaveChanges();
+            
+            return RedirectToAction("ViewLoans", new { email = loan.User.Email });
         }
 
         public ActionResult ViewLoans(string email)

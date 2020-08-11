@@ -220,6 +220,10 @@
     <Compile Include="Migrations\202008090823354_loan damage description.Designer.cs">
       <DependentUpon>202008090823354_loan damage description.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202008110835586_return loaned book, is severe.cs" />
+    <Compile Include="Migrations\202008110835586_return loaned book, is severe.Designer.cs">
+      <DependentUpon>202008110835586_return loaned book, is severe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
@@ -407,6 +411,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008090823354_loan damage description.resx">
       <DependentUpon>202008090823354_loan damage description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202008110835586_return loaned book, is severe.resx">
+      <DependentUpon>202008110835586_return loaned book, is severe.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

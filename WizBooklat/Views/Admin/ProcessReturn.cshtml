@@ -57,7 +57,7 @@
                     <div class="col-md-6">
                         <label class="control-label">Return Date (Date Today)</label>
 
-                        <input class="form-control form-control-line-only" name="ReturnDate" type="date" value="@DateTime.UtcNow.AddHours(8)" readonly />
+                        <input class="form-control form-control-line-only" name="ReturnDate" type="date" id="#ReturnDate"  value="@DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd")" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="control-label">Subsmission Status</label>
@@ -74,17 +74,30 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-6">
-                        <label class="control-label">Is Damaged</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="control-label">Is Damaged</label>
 
-                        <select name="IsDamaged" class="form-control form-control-line-only">
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
-                        </select>
+                                <select name="IsDamaged" id="IsDamaged" class="form-control form-control-line-only">
+                                    <option value="False">No</option>
+                                    <option value="True">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="control-label">Severe?</label>
+
+                                <select name="IsSevere" id="IsSevere" class="form-control form-control-line-only" disabled>
+                                    <option value="False">No</option>
+                                    <option value="True">Yes</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <label class="control-label">Damage Description</label>
 
-                        <input class="form-control form-control-line-only" name="DamageDescription" />
+                        <input class="form-control form-control-line-only" id="DamageDescription" name="DamageDescription" disabled/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -99,5 +112,24 @@
 </div>
 
 @section Scripts {
+    <script>
+        $(document).ready(function () {
+            // $("#ReturnDate").val(new Date());
+        });
+
+        $("#IsDamaged").change(function () {
+            var isDamaged = $(this).val();
+
+            if (isDamaged == "True") {
+                $("#DamageDescription").prop("disabled", false);
+                $("#IsSevere").prop("disabled", false);
+            }
+            else {
+                $("#DamageDescription").prop("disabled", true);
+                $("#IsSevere").prop("disabled", true);
+            }
+        })
+    </script>
+
     @Scripts.Render("~/bundles/jqueryval")
 }
