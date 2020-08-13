@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -205,8 +207,8 @@ namespace WizBooklat.Controllers
             {
                 ViewBag.Message = TempData["Message"];
             }
-
-            var users = db.Users.Where(u=>u.AccountType == AccountTypeConstant.LOANER).ToList();
+           
+            var users = db.Users.Include(u=>u.Loans).Where(u=>u.AccountType == AccountTypeConstant.LOANER).ToList();
             return View(users);
         }
         
@@ -247,7 +249,48 @@ namespace WizBooklat.Controllers
             TempData["Message"] = "<strong>Account has been disabled.</strong> We've sent a notification to "+ user.Email +".";
             return RedirectToAction(redirect);
         }
-        
+
+        public async Task<ActionResult> DeleteAccount(string email, string redirect = "Accounts")
+        {
+            var user = await UserManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                string userId = user.Id;
+                var logins = user.Logins;
+                var rolesForUser = await UserManager.GetRolesAsync(userId);
+
+                using (var transaction = db.Database.BeginTransaction())
+                {
+                    foreach (var login in logins.ToList())
+                    {
+                        await UserManager.RemoveLoginAsync(login.UserId, new UserLoginInfo(login.LoginProvider, login.ProviderKey));
+                    }
+
+                    if (rolesForUser.Count() > 0)
+                    {
+                        foreach (var item in rolesForUser.ToList())
+                        {
+                            // item should be the name of the role
+                            var result = await UserManager.RemoveFromRoleAsync(user.Id, item);
+                        }
+                    }
+
+                    await UserManager.DeleteAsync(user);
+                    transaction.Commit();
+                }
+
+                db.SaveChanges();
+                TempData["Message"] = "<strong>Account has been deleted successfully.</strong>";
+                return RedirectToAction(redirect);
+            }
+
+            TempData["Error"] = "1";
+            TempData["Message"] = "<strong>Failed to delete account; </strong> User not found.";
+            return RedirectToAction(redirect);
+        }
+
+
         public ActionResult AddAccount()
         {
             RegisterViewModel rvm = new RegisterViewModel();
