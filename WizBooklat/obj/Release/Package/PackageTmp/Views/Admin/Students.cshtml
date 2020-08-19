@@ -44,6 +44,12 @@
                         <th>
                             STATUS
                         </th>
+                        <th>
+                            TOTAL LOANS
+                        </th>
+                        <th>
+                            ACTIVE LOANS
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -80,8 +86,19 @@
                                         break;
                                 }
                             </td>
+                            <td>
+                                @item.Loans.Count()
+                            </td>
+                            <td>
+                                @item.Loans.Where(l=>l.ReturnDate == null || l.LostConfirmed != null).Count()
+                            </td>
                             <td style="text-align:right;">
                                 <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("ViewLoans", new { email = item.Email })">View Loans</a>
+
+                                @if (item.Loans.Count == 0 && item.AccountStatus == AccountStatusConstant.DISABLED)
+                                {
+                                    <a href="@Url.Action("DeleteAccount", new { email = item.Email, redirect = "Students" })" class="btn btn-xs btn-danger btn-table-short">Delete</a>
+                                }
 
                                 @if (item.AccountStatus == AccountStatusConstant.ACTIVE)
                                 {

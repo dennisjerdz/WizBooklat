@@ -287,12 +287,31 @@
                 case 0:
                     earliestReservationDate = new Date(new Date().setDate(dateToday.getDate() + 1));
                     break;
+                default:
+                    earliestReservationDate = new Date(new Date().setDate(dateToday.getDate() + 1));
+                    break;
             }
 
             // earliestReservationDate = earliestReservationDate.addHours(8);
             
             var d1 = earliestReservationDate;
-            var d2 = new Date(new Date().setDate(earliestReservationDate.getDate() + 1));
+            var d2;
+
+            /* // if thursday, move on Monday
+            if (dateToday.getDay() == 4) { 
+                d2 = new Date(new Date().setDate(earliestReservationDate.getDate() + 3));
+            } else {
+                d2 = new Date(new Date().setDate(earliestReservationDate.getDate() + 1));
+            }
+            */
+
+            // if thursday, Friday
+            if (dateToday.getDay() == 4) { 
+                d2 = earliestReservationDate;
+            } else {
+                d2 = new Date(new Date().setDate(earliestReservationDate.getDate() + 1));
+            }
+
             /*var datestring = ("0" + d.getDate()).slice(-2) + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" +
                 d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);*/
 

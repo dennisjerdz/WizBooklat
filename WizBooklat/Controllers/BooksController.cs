@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -426,9 +427,9 @@ namespace WizBooklat.Controllers
                 {
                     List<Loan> existingBookLoans = await db.Loans.Where(l => l.UserId == userId).ToListAsync();
 
-                    if (existingBookLoans.Any(l=>l.Book.BookTemplateId == submitModel.BookTemplateId))
+                    if (existingBookLoans.Any(l=> (l.Book.BookTemplateId == submitModel.BookTemplateId && l.ReturnDate == null && l.LostConfirmed == null) ))
                     {
-                        TempData["Message"] = "<strong>Failed to process reservation.</strong> Book information not found.";
+                        TempData["Message"] = "<strong>Failed to process reservation.</strong> You currently have an active loan or reservation with this book.";
                     }
                     else if (existingBookLoans.Count(l=>l.ReturnDate == null) == maxLoanLimit)
                     {
@@ -467,12 +468,29 @@ namespace WizBooklat.Controllers
                                     TempData["Message"] = "<strong>Successfully submitted reservation.</strong>";
                                 }
 
+                                #region Send SMS
+                                try
+                                {
+                                    var user =
+                                    Task.Run(() =>
+                                    {
+                                        new SMSController().SendSMS(userId, "Hello, we have receved your reservation for " + availableBook.BookTemplate.Title + ". Please pick up the book on " + newLoan.StartDate.ToString("MM-dd-yyyy") + ". Present your ID during claiming. Thank you!");
+                                    });
+                                }
+                                catch (Exception e)
+                                {
+                                    Trace.TraceInformation("SMS Send Failed for " + availableBook.BookTemplate.Title + ", Loan ID:" + newLoan.LoanId + ": " + e.Message);
+                                }
+                                #endregion
+
                                 return RedirectToAction("Loan", new { id = submitModel.BookTemplateId });
                             }
                             catch(Exception ex)
                             {
                                 TempData["Message"] = "<strong>Failed to process reservation.</strong> Error: "+ex.Message+".";
                             }
+
+                            
                         }
                         else
                         {

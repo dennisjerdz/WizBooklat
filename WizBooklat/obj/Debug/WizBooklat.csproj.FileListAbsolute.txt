@@ -222,3 +222,5 @@ C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migra
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.csprojAssemblyReference.cache
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.loandamagedescription.resources
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.returnloanedbookissevere.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\GlobeLabs.dll
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\System.Runtime.Serialization.Primitives.dll

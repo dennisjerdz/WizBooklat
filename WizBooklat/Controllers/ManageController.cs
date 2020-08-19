@@ -10,9 +10,33 @@ using WizBooklat.Models;
 
 namespace WizBooklat.Controllers
 {
+
     [Authorize]
     public class ManageController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
+        public ActionResult Edit(EditAccountViewModel model)
+        {
+            string userId = User.Identity.GetUserId();
+            var user = db.Users.FirstOrDefault(u => u.Id == userId);
+
+            if (db.Users.Where(u => u.MobileNumber == model.MobileNumber).ToList().Count > 1)
+            {
+                TempData["Message"] = "<strong>Update Account info failed.</strong> Mobile Number in the system already exists.";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                user.MobileNumber = model.MobileNumber;
+                db.SaveChanges();
+
+                TempData["Message"] = "<strong>Account info updated successfully.</strong>";
+                return RedirectToAction("Index");
+            }
+
+        }
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -54,6 +78,15 @@ namespace WizBooklat.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
@@ -64,13 +97,17 @@ namespace WizBooklat.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            var user = db.Users.FirstOrDefault(u => u.Id == userId);
+
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                MobileNumber = user.MobileNumber,
+                MobileNumberCode = user.MobileNumberCode
             };
             return View(model);
         }

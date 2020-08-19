@@ -6,6 +6,11 @@ using System.Web;
 
 namespace WizBooklat.Models.ViewModels
 {
+    public class EditAccountViewModel
+    {
+        public string MobileNumber { get; set; }
+    }
+
     public class ReturnBookModel
     {
         public int LoanId { get; set; }

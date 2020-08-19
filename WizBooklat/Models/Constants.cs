@@ -6,6 +6,11 @@ using System.Web.Mvc;
 
 namespace WizBooklat.Models
 {
+    public class SMSConstants
+    {
+        public const string ShortCode = "21582399";
+    }
+
     public class ItemTypeConstants
     {
         public const sbyte BOOK = 0;
