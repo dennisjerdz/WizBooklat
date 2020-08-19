@@ -17,6 +17,15 @@ namespace WizBooklat.Controllers
         // GET: Ranks
         public ActionResult Index()
         {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             return View(db.Ranks.ToList());
         }
 
@@ -50,8 +59,15 @@ namespace WizBooklat.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (db.Ranks.Any(r=>r.Points == rank.Points))
+                {
+                    ModelState.AddModelError("Points", "Another Rank entity already exists with the same value.");
+                    return View(rank);
+                }
+
                 db.Ranks.Add(rank);
                 db.SaveChanges();
+                TempData["Message"] = "<strong>Successfully added Rank.</strong>";
                 return RedirectToAction("Index");
             }
 

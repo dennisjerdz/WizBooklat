@@ -6,6 +6,12 @@ using System.Web.Mvc;
 
 namespace WizBooklat.Models
 {
+    public class PointTypeConstants
+    {
+        public const sbyte Deduct = 0;
+        public const sbyte Add = 1;
+    }
+
     public class SMSConstants
     {
         public const string ShortCode = "21582399";

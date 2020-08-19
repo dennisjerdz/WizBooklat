@@ -207,8 +207,9 @@ namespace WizBooklat.Controllers
             {
                 ViewBag.Message = TempData["Message"];
             }
-           
-            var users = db.Users.Include(u=>u.Loans).Where(u=>u.AccountType == AccountTypeConstant.LOANER).ToList();
+
+            ViewBag.ranks = db.Ranks.OrderBy(r=>r.Points).ToList();
+            var users = db.Users.Include(u=>u.Loans).Include(u=>u.PointHistory).Where(u=>u.AccountType == AccountTypeConstant.LOANER).ToList();
             return View(users);
         }
         

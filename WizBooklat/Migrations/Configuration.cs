@@ -325,6 +325,37 @@ namespace WizBooklat.Migrations
                 userManager.Create(user, "wbentrance@123");
                 userManager.AddToRole(user.Id, "Entrance");
             }
+
+            if (!context.Ranks.Any(r=>r.Name == "Bronze"))
+            {
+                context.Ranks.Add(new Rank {
+                    Name = "Bronze",
+                    Color = "#A97142",
+                    Points = 300
+                });
+            }
+
+            if (!context.Ranks.Any(r => r.Name == "Silver"))
+            {
+                context.Ranks.Add(new Rank
+                {
+                    Name = "Silver",
+                    Color = "#D8D8D8",
+                    Points = 500
+                });
+            }
+
+            if (!context.Ranks.Any(r => r.Name == "Gold"))
+            {
+                context.Ranks.Add(new Rank
+                {
+                    Name = "Gold",
+                    Color = "#FFD700",
+                    Points = 1000
+                });
+            }
+
+            context.SaveChanges();
         }
     }
 }

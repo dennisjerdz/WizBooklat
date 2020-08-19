@@ -2,6 +2,8 @@
 @using WizBooklat.Models
 @{
     ViewBag.Title = "Students";
+
+    List<Rank> ranks = (ViewBag.ranks != null) ? (List<Rank>)ViewBag.ranks : null;
 }
 
 <div class="row">
@@ -59,12 +61,36 @@
                     {
                         <tr>
                             <td>
+                                @{
+                                    if (ranks != null)
+                                    {
+                                        int totalPoints = item.PointHistory.Where(p => p.Type == PointTypeConstant.ADD).Sum(p => p.Points)
+                                            - item.PointHistory.Where(p => p.Type == PointTypeConstant.MINUS).Sum(p => p.Points);
+                                        
+                                        int previousPoints = 0;
+                                        string previousColor = "#000000";
+                                        foreach (var thisRank in ranks)
+                                        {
+                                            if (totalPoints >= thisRank.Points)
+                                            {
+                                                previousPoints = thisRank.Points;
+                                                previousColor = thisRank.Color;
+                                                continue;
+                                            }
+                                            else
+                                            {
+                                                <div class="circle-10" style="display:inline-block; background-color:@previousColor;"></div>
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
                                 @item.FirstName
 
                                 @if (item.MiddleName != null)
                                 {
-                                    @item.MiddleName.FirstOrDefault()
-                                    <text>.</text>
+                                    @item.MiddleName.FirstOrDefault()<text>.</text>
                                 }
 
                                 @item.LastName

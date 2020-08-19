@@ -37,6 +37,34 @@ textarea {
 }
 */
 
+.circle-10{
+    height:10px;
+    width:10px;
+    border-radius:100%;
+    margin-right:8px;
+}
+
+.circle-15 {
+    height: 15px;
+    width: 15px;
+    border-radius: 100%;
+    margin-right: 8px;
+}
+
+.circle-20 {
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    margin-right: 8px;
+}
+
+.circle-25 {
+    height: 25px;
+    width: 25px;
+    border-radius: 100%;
+    margin-right: 8px;
+}
+
 html > *{
     font-family: 'Encode Sans', sans-serif;
 }

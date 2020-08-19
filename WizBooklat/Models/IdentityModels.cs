@@ -36,7 +36,7 @@ namespace WizBooklat.Models
         public List<PointHistory> PointHistory { get; set; }
 
         public List<Claim> RewardClaims { get; set; }
-
+        
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
