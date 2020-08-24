@@ -112,6 +112,8 @@ namespace WizBooklat.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime? ReturnDate { get; set; }
+        public DateTime? PickUpDate { get; set; }
+        public bool IsCancelled { get; set; }
         public bool IsLate { get; set; }
         public bool IsSevere { get; set; }
         public bool IsDamaged { get; set; }

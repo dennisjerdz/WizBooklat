@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -58,7 +59,83 @@ namespace WizBooklat.Controllers
             }
         }
         #endregion
-        
+
+        public ActionResult CancelExpiredLoan(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Loan loan = db.Loans.Find(id);
+            if (loan == null)
+            {
+                return HttpNotFound();
+            }
+
+            loan.ReturnDate = DateTime.UtcNow.AddHours(8);
+            loan.IsCancelled = true;
+            loan.Book.BookStatus = BookStatusConstant.AVAILABLE;
+            db.SaveChanges();
+            TempData["Message"] = "<strong>Reservation has been cancelled successfully.</strong>";
+            return RedirectToAction("ViewLoans", new { email = loan.User.Email });
+        }
+
+        public ActionResult ProcessClaim(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Loan loan = db.Loans.Find(id);
+            if (loan == null)
+            {
+                return HttpNotFound();
+            }
+            return View(loan);
+        }
+
+        [HttpPost]
+        public ActionResult ProcessClaim(ViewModels.ClaimBookModel cbm)
+        {
+            if (cbm.LoanId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Loan loan = db.Loans.Find(cbm.LoanId);
+            if (loan == null)
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to initiate return.</strong> Loan ID does not exist.";
+                return RedirectToAction("ActiveLoans", new { });
+            }
+
+            if (loan.ReturnDate != null)
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to initiate return.</strong> This reservation is already completed, the book has been returned last " + loan.ReturnDate.Value.ToString("MM-dd-yyyy hh:mm tt");
+                return RedirectToAction("ViewLoans", new { email = loan.User.Email });
+            }
+
+            loan.PickUpDate = cbm.ClaimDate;
+            
+            db.SaveChanges();
+
+            TempData["Message"] = "<strong>Successfully added Claim date / Pick up date.</strong> The book, " + loan.Book.BookTemplate.Title + " with ID " + loan.BookId + ", has been picked up.";
+            try
+            {
+                var user =
+                Task.Run(() =>
+                {
+                    new SMSController().SendSMS(loan.UserId, "Hello, this is to confirm that you've claimed the book; "+ loan.Book.BookTemplate.Title +" on "+ cbm.ClaimDate.ToString("MM-dd-yyyy")+" from Loan ID; "+loan.LoanId+". Please don't forget to return the book ON or BEFORE its due date; "+loan.EndDate.ToString("MM-dd-yyyy"));
+                });
+            }
+            catch (Exception e)
+            {
+                Trace.TraceInformation("SMS Send Failed for " + loan.Book.BookTemplate.Title + ", Loan ID:" + loan.LoanId + ": " + e.Message);
+            }
+            return RedirectToAction("ViewLoans", new { email = loan.User.Email });
+        }
+
         public ActionResult ProcessReturn(int? id)
         {
             if (id == null)
@@ -120,7 +197,20 @@ namespace WizBooklat.Controllers
             }
             
             db.SaveChanges();
-            
+
+            try
+            {
+                var user =
+                Task.Run(() =>
+                {
+                    new SMSController().SendSMS(loan.UserId, "Hello, this is to confirm that you've returned the book; " + loan.Book.BookTemplate.Title + " on " + loan.ReturnDate.Value.ToString("MM-dd-yyyy hh:mm tt") + "from Loan ID; " + loan.LoanId + ". Please don't forget to return the book ON or BEFORE " + loan.EndDate.ToString("MM-dd-yyyy"));
+                });
+            }
+            catch (Exception e)
+            {
+                Trace.TraceInformation("SMS Send Failed for " + loan.Book.BookTemplate.Title + ", Loan ID:" + loan.LoanId + ": " + e.Message);
+            }
+
             return RedirectToAction("ViewLoans", new { email = loan.User.Email });
         }
 

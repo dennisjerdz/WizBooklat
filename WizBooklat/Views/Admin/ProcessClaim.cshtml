@@ -1,0 +1,117 @@
+﻿@model WizBooklat.Models.Loan
+@using WizBooklat.Models
+@{
+    ViewBag.Title = "Student Loans";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><a href="@Url.Action("ViewLoans", new { email = Model.User.Email })">@ViewBag.Title</a> &emsp;/&emsp;Claim Loaned Item&emsp;/&emsp;@Model.Book.BookTemplate.Title</h5>
+                </div>
+                <div class="topbar-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="body-container">
+            @using (Html.BeginForm("ProcessClaim", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                @Html.HiddenFor(Model => Model.LoanId)
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <center>
+                            <h5>
+                                Please confirm the information below and click Confirm Claim:
+                            </h5>
+                        </center>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Email</label>
+
+                        <input class="form-control form-control-line-only" value="@Model.User.UserName" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Student Number</label>
+
+                        <input class="form-control form-control-line-only" value="@Model.User.StudentNumber" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Start Date (Pick-up Date)</label>
+
+                        <input class="form-control form-control-line-only" value="@Model.StartDate.ToString("MM-dd-yyyy")" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Due Date</label>
+
+                        <input class="form-control form-control-line-only" value="@Model.EndDate.ToString("MM-dd-yyyy")" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Claim Date (Date Today)</label>
+
+                        <input class="form-control form-control-line-only" name="ClaimDate" type="date" id="#ClaimDate" value="@DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd")" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Item Info</label>
+
+                        <input class="form-control form-control-line-only" value="@Model.Book.BookTemplate.Title" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Internal Code</label>
+
+                        <input class="form-control form-control-line-only" value="@Model.Book.InternalCode" readonly />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-8 col-md-4">
+                        <br />
+                        <input type="submit" class="btn btn-info btn-block" value="Confirm Claim" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // $("#ReturnDate").val(new Date());
+        });
+
+        $("#IsDamaged").change(function () {
+            var isDamaged = $(this).val();
+
+            if (isDamaged == "True") {
+                $("#DamageDescription").prop("disabled", false);
+                $("#IsSevere").prop("disabled", false);
+            }
+            else {
+                $("#DamageDescription").prop("disabled", true);
+                $("#IsSevere").prop("disabled", true);
+            }
+        })
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

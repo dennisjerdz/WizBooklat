@@ -11,6 +11,12 @@ namespace WizBooklat.Models.ViewModels
         public string MobileNumber { get; set; }
     }
 
+    public class ClaimBookModel
+    {
+        public int LoanId { get; set; }
+        public DateTime ClaimDate { get; set; }
+    }
+
     public class ReturnBookModel
     {
         public int LoanId { get; set; }

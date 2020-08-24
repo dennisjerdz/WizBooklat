@@ -27,7 +27,7 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary("", new { @class = "text-danger" })
 
-                @Html.HiddenFor(Model=>Model.LoanId)
+                @Html.HiddenFor(Model => Model.LoanId)
 
                 <div class="form-group">
                     <div class="col-md-6">
@@ -57,7 +57,7 @@
                     <div class="col-md-6">
                         <label class="control-label">Return Date (Date Today)</label>
 
-                        <input class="form-control form-control-line-only" name="ReturnDate" type="date" id="#ReturnDate"  value="@DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd")" readonly />
+                        <input class="form-control form-control-line-only" name="ReturnDate" type="date" id="#ReturnDate" value="@DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd")" readonly />
                     </div>
                     <div class="col-md-6">
                         <label class="control-label">Subsmission Status</label>
@@ -70,6 +70,18 @@
                         {
                             <span class="text-success">On-time</span>
                         }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <label class="control-label">Item Info</label>
+
+                        <input class="form-control form-control-line-only" value="@Model.Book.BookTemplate.Title" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Internal Code</label>
+
+                        <input class="form-control form-control-line-only" value="@Model.Book.InternalCode" readonly />
                     </div>
                 </div>
                 <div class="form-group">
@@ -97,7 +109,7 @@
                     <div class="col-md-6">
                         <label class="control-label">Damage Description</label>
 
-                        <input class="form-control form-control-line-only" id="DamageDescription" name="DamageDescription" disabled/>
+                        <input class="form-control form-control-line-only" id="DamageDescription" name="DamageDescription" disabled />
                     </div>
                 </div>
                 <div class="form-group">

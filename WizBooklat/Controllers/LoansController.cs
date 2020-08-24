@@ -15,7 +15,7 @@ namespace WizBooklat.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public ActionResult Cancel(int? id)
+        public ActionResult CancelLoan(int? id)
         {
             if (id == null)
             {
@@ -28,6 +28,7 @@ namespace WizBooklat.Controllers
             }
 
             loan.ReturnDate = DateTime.UtcNow.AddHours(8);
+            loan.IsCancelled = true;
             loan.Book.BookStatus = BookStatusConstant.AVAILABLE;
             db.SaveChanges();
             TempData["Message"] = "<strong>Reservation has been cancelled successfully.</strong>";

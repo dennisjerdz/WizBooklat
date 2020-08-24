@@ -16,7 +16,7 @@
         <div class="topbar">
             <div class="topbar-content">
                 <div class="topbar-left">
-                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;Student&emsp;/&emsp;@student.StudentNumber</h5>
+                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;Student&emsp;/&emsp;@student.StudentNumber @Request.Params["email"]</h5>
                 </div>
                 <!--
                 <div class="topbar-right">
@@ -42,9 +42,6 @@
                 <thead>
                     <tr>
                         <th>
-                            USER
-                        </th>
-                        <th>
                             TITLE
                         </th>
                         <th>
@@ -52,6 +49,9 @@
                         </th>
                         <th>
                             END
+                        </th>
+                        <th style="width:70px;">
+                            CLAIM
                         </th>
                         <th>
                             RETURN
@@ -71,9 +71,6 @@
                     {
                         <tr>
                             <td>
-                                @item.User.Email
-                            </td>
-                            <td>
                                 <a href="@Url.Action("Loan","Books", new { id = item.Book.BookTemplateId })">
                                     @item.Book.BookTemplate.Title - ID: @item.BookId
                                 </a>
@@ -83,6 +80,12 @@
                             </td>
                             <td>
                                 @item.EndDate.ToString("MM-dd-yyyy")
+                            </td>
+                            <td>
+                                @if (item.PickUpDate != null)
+                                {
+                                    <text>@item.PickUpDate.Value.ToString("MM-dd-yyyy")</text>
+                                }
                             </td>
                             <td>
                                 @if (item.ReturnDate != null)
@@ -119,7 +122,11 @@
                             </td>
                             -->
                             <td>
-                                @if (item.LostConfirmed != null)
+                                @if (item.IsCancelled)
+                                {
+                                    <span class="text-color-red">Cancelled</span>
+                                }
+                                else if (item.LostConfirmed != null)
                                 {
                                     <span class="text-color-red">Confirmed Lost - @item.LostConfirmed.Value.ToString("MM-dd-yyyy")</span>
                                 }
@@ -127,7 +134,11 @@
                                 {
                                     <span class="text-color-red">Reported Lost - @item.LostReported.Value.ToString("MM-dd-yyyy")</span>
                                 }
-                                else if ((DateTime.UtcNow.Date > item.EndDate.Date) && item.ReturnDate == null)
+                                else if ((DateTime.UtcNow.Date > item.StartDate.Date) && (item.PickUpDate == null))
+                                {
+                                    <span class="text-color-red">Unclaimed - Past Pickup Date</span>
+                                }
+                                else if ((DateTime.UtcNow.Date > item.EndDate.Date) && (item.PickUpDate != null && item.ReturnDate == null))
                                 {
                                     <span class="text-color-red">Overdue</span>
                                 }
@@ -159,7 +170,17 @@
                                     }
                                 *@
 
-                                @if (item.ReturnDate == null)
+                                @if (DateTime.UtcNow.AddHours(8).Date > item.StartDate && (item.PickUpDate == null) && (item.IsCancelled == false))
+                                {
+                                    <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("CancelExpiredLoan", new { id = item.LoanId })">Cancel</a>
+                                }
+
+                                @if (item.ReturnDate == null && item.PickUpDate == null && item.StartDate == DateTime.UtcNow.AddHours(8).Date) // if within the same day
+                                {
+                                    <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("ProcessClaim", new { id = item.LoanId })">Process Claim</a>
+                                }
+
+                                @if (item.ReturnDate == null && item.PickUpDate != null)
                                 {
                                     <a class="btn btn-xs btn-success btn-table-short" href="@Url.Action("ProcessReturn", new { id = item.LoanId })">Process Return</a>
                                 }
