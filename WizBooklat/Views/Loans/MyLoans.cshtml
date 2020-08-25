@@ -44,8 +44,11 @@
                         <th>
                             END
                         </th>
+                        <th style="width:80px;">
+                            CLAIM
+                        </th>
                         <th>
-                            RETURNED
+                            RETURN
                         </th>
                         <th>
                             STATUS
@@ -71,12 +74,6 @@
                             </td>
                             <td>
                                 @item.EndDate.ToString("MM-dd-yyyy")
-                            </td>
-                            <td>
-                                @if (item.ReturnDate != null)
-                                {
-                                    <text>@item.ReturnDate.Value.ToString("MM-dd-yyyy")</text>
-                                }
                             </td>
                             <!--
                             <td>
@@ -107,7 +104,23 @@
                             </td>
                             -->
                             <td>
-                                @if (item.LostConfirmed != null)
+                                @if (item.PickUpDate != null)
+                                {
+                                    <span title="@item.PickUpDate.Value.ToString("MM-dd-yyyy hh:mm tt")">@item.PickUpDate.Value.ToString("MM-dd-yyyy")</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.ReturnDate != null)
+                                {
+                                    <span title="@item.ReturnDate.Value.ToString("MM-dd-yyyy hh:mm tt")">@item.ReturnDate.Value.ToString("MM-dd-yyyy")</span>
+                                }
+                            </td>
+                            <td>
+                                @if (item.IsCancelled)
+                                {
+                                    <span class="text-color-red">Cancelled</span>
+                                }
+                                else if (item.LostConfirmed != null)
                                 {
                                     <span class="text-color-red">Confirmed Lost - @item.LostConfirmed.Value.ToString("MM-dd-yyyy")</span>
                                 }
@@ -115,7 +128,11 @@
                                 {
                                     <span class="text-color-red">Reported Lost - @item.LostReported.Value.ToString("MM-dd-yyyy")</span>
                                 }
-                                else if ((DateTime.UtcNow.Date > item.EndDate.Date) && item.ReturnDate == null)
+                                else if ((DateTime.UtcNow.Date > item.StartDate.Date) && (item.PickUpDate == null))
+                                {
+                                    <span class="text-color-red">Unclaimed - Past Pickup Date</span>
+                                }
+                                else if ((DateTime.UtcNow.Date > item.EndDate.Date) && (item.PickUpDate != null && item.ReturnDate == null))
                                 {
                                     <span class="text-color-red">Overdue</span>
                                 }
@@ -140,9 +157,9 @@
                                 @item.DateCreated.ToString("MM-dd-yyyy")
                             </td>
                             <td>
-                                @if ((DateTime.UtcNow.Date <= item.StartDate.Date) && item.ReturnDate == null)
+                                @if ((DateTime.UtcNow.Date <= item.StartDate.Date) && item.ReturnDate == null && item.PickUpDate == null)
                                 {
-                                    <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("Cancel", new { id = item.LoanId })">Cancel Loan</a>
+                                    <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("CancelLoan", new { id = item.LoanId })">Cancel Loan</a>
                                 }
                             </td>
                         </tr>
@@ -161,7 +178,7 @@
                 "pageLength": 10,
                 "dom": "<'table-window'<'window-heading'<'row'<'col-xs-6'p><'col-xs-6'i>>><'table-responsive'rt>>",
                 "columnDefs": [
-                    { "orderable": false, "targets": 6 }
+                    { "orderable": false, "targets": 7 }
                 ]
             });
             $(".all-search").keyup(function () {

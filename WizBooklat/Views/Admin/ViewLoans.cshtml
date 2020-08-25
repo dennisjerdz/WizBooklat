@@ -50,7 +50,7 @@
                         <th>
                             END
                         </th>
-                        <th style="width:70px;">
+                        <th style="width:80px;">
                             CLAIM
                         </th>
                         <th>
@@ -84,13 +84,13 @@
                             <td>
                                 @if (item.PickUpDate != null)
                                 {
-                                    <text>@item.PickUpDate.Value.ToString("MM-dd-yyyy")</text>
+                                    <span title="@item.PickUpDate.Value.ToString("MM-dd-yyyy hh:mm tt")">@item.PickUpDate.Value.ToString("MM-dd-yyyy")</span>
                                 }
                             </td>
                             <td>
                                 @if (item.ReturnDate != null)
                                 {
-                                    <text>@item.ReturnDate.Value.ToString("MM-dd-yyyy")</text>
+                                <span title="@item.ReturnDate.Value.ToString("MM-dd-yyyy hh:mm tt")">@item.ReturnDate.Value.ToString("MM-dd-yyyy")</span>
                                 }
                             </td>
                             <!--

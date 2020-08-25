@@ -116,17 +116,16 @@ namespace WizBooklat.Controllers
                 return RedirectToAction("ViewLoans", new { email = loan.User.Email });
             }
 
-            loan.PickUpDate = cbm.ClaimDate;
+            loan.PickUpDate = DateTime.UtcNow.AddHours(8);
             
             db.SaveChanges();
 
             TempData["Message"] = "<strong>Successfully added Claim date / Pick up date.</strong> The book, " + loan.Book.BookTemplate.Title + " with ID " + loan.BookId + ", has been picked up.";
             try
             {
-                var user =
                 Task.Run(() =>
                 {
-                    new SMSController().SendSMS(loan.UserId, "Hello, this is to confirm that you've claimed the book; "+ loan.Book.BookTemplate.Title +" on "+ cbm.ClaimDate.ToString("MM-dd-yyyy")+" from Loan ID; "+loan.LoanId+". Please don't forget to return the book ON or BEFORE its due date; "+loan.EndDate.ToString("MM-dd-yyyy"));
+                    new SMSController().SendSMS(loan.UserId, "Hello, this is to confirm that you've claimed the book; " + loan.Book.BookTemplate.Title + " on " + cbm.ClaimDate.ToString("MM-dd-yyyy") + " from Loan ID; " + loan.LoanId + ". Please don't forget to return the book ON or BEFORE its due date; " + loan.EndDate.ToString("MM-dd-yyyy"));
                 });
             }
             catch (Exception e)
@@ -200,10 +199,10 @@ namespace WizBooklat.Controllers
 
             try
             {
-                var user =
+
                 Task.Run(() =>
                 {
-                    new SMSController().SendSMS(loan.UserId, "Hello, this is to confirm that you've returned the book; " + loan.Book.BookTemplate.Title + " on " + loan.ReturnDate.Value.ToString("MM-dd-yyyy hh:mm tt") + "from Loan ID; " + loan.LoanId + ". Please don't forget to return the book ON or BEFORE " + loan.EndDate.ToString("MM-dd-yyyy"));
+                    new SMSController().SendSMS(loan.UserId, "Hello, this is to confirm that you've returned the book; " + loan.Book.BookTemplate.Title + " on " + loan.ReturnDate.Value.ToString("MM-dd-yyyy hh:mm tt") + " from Loan ID; " + loan.LoanId + ". ");
                 });
             }
             catch (Exception e)
@@ -211,6 +210,37 @@ namespace WizBooklat.Controllers
                 Trace.TraceInformation("SMS Send Failed for " + loan.Book.BookTemplate.Title + ", Loan ID:" + loan.LoanId + ": " + e.Message);
             }
 
+            if (loan.IsDamaged == false && loan.ReturnDate.Value.Date <= loan.EndDate)
+            {
+                try
+                {
+                    PointHistory newPoints = new PointHistory
+                    {
+                        DateCreated = DateTime.UtcNow.AddHours(8),
+                        Description = "Points earned from returning the book; " + loan.Book.BookTemplate.Title + " with Loan ID " + loan.LoanId + " on time.",
+                        Type = PointTypeConstant.ADD,
+                        Points = 15,
+                        UserId = loan.UserId
+                    };
+
+                    db.PointHistories.Add(newPoints);
+                    db.SaveChanges();
+
+                    int totalAddPoints = db.PointHistories.Where(p => p.UserId == loan.UserId && p.Type == PointTypeConstant.ADD).Sum(p => p.Points);
+                    int totalMinusPoints = (db.PointHistories.Where(p => p.UserId == loan.UserId && p.Type == PointTypeConstant.MINUS).Count() == 0) ? 0 : db.PointHistories.Where(p => p.UserId == loan.UserId && p.Type == PointTypeConstant.MINUS).Sum(p => p.Points);
+                    int totalPoints = totalAddPoints - totalMinusPoints;
+
+                    Task.Run(() =>
+                    {
+                        new SMSController().SendSMS(loan.UserId, "Thank you for returning "+loan.Book.BookTemplate.Title+" on time and in good condition! You've earned an additional "+newPoints.Points+". Your total points is now "+totalPoints+".");
+                    });
+                }
+                catch (Exception e)
+                {
+                    Trace.TraceInformation("SMS Send Failed for " + loan.Book.BookTemplate.Title + ", Loan ID:" + loan.LoanId + ": " + e.Message);
+                }
+            }
+            
             return RedirectToAction("ViewLoans", new { email = loan.User.Email });
         }
 

@@ -67,7 +67,7 @@
                     <div class="col-md-6">
                         <label class="control-label">Claim Date (Date Today)</label>
 
-                        <input class="form-control form-control-line-only" name="ClaimDate" type="date" id="#ClaimDate" value="@DateTime.UtcNow.AddHours(8).ToString("yyyy-MM-dd")" readonly />
+                        <input class="form-control form-control-line-only" name="ClaimDate" id="#ClaimDate" value="@DateTime.UtcNow.AddHours(8).ToString("MM/dd/yyyy hh tt")" readonly />
                     </div>
                 </div>
                 <div class="form-group">
