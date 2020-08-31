@@ -6,6 +6,20 @@ using System.Web.Mvc;
 
 namespace WizBooklat.Models
 {
+    public class ReportConstants {
+
+        public static List<string> ReportTypeList = new List<string>
+        {
+            "Top Users",
+            "Top Books",
+            "Genre Tally",
+            "Author Tally",
+            "Loans Past 30 days",
+            "Loans This Year"
+        };
+
+    }
+    
     public class PointTypeConstants
     {
         public const sbyte Deduct = 0;

@@ -60,6 +60,80 @@ namespace WizBooklat.Controllers
         }
         #endregion
 
+        public ActionResult Reports()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<PartialViewResult> GetReport(string reportType)
+        {
+            ViewModels.ReportViewModel rvm = new ViewModels.ReportViewModel();
+            rvm.ReportType = reportType;
+
+            switch (reportType)
+            {
+                case "Top Users":
+                    rvm.Users = await db.Users.Include(u=>u.PointHistory).Where(u=>u.AccountType == AccountTypeConstant.LOANER).ToListAsync();
+                    break;
+                case "Top Books":
+                    rvm.TopBooks = await db.Loans.Include(b => b.Book).GroupBy(b => b.Book.BookTemplate)
+                        .Select(b => new ViewModels.ReportViewModel.BookCount { Name = b.Key.Title, Count = b.Count() }).ToListAsync();
+                    break;
+                case "Genre Tally":
+                    rvm.Genres = await db.Genres.Include(g=>g.BookGenres).OrderByDescending(g=>g.BookGenres.Count()).ToListAsync();
+                    break;
+                case "Author Tally":
+                    rvm.Authors = await db.Authors.Include(a=>a.BookAuthors).OrderByDescending(a=>a.BookAuthors.Count()).ToListAsync();
+                    break;
+                case "Loans Past 30 days":
+
+                    DateTime today = DateTime.UtcNow.AddHours(8).AddDays(1).Date;
+                    DateTime daysAgo = DateTime.UtcNow.AddHours(8).AddDays(-29).Date;
+
+                    rvm.TransactionsPast30Days = new List<WizBooklat.Models.ViewModels.ReportViewModel.TransactionsDatetimeCountModel>();
+                    for (var dt = daysAgo; dt <= today; dt = dt.AddDays(1))
+                    {
+                        rvm.TransactionsPast30Days.Add(new WizBooklat.Models.ViewModels.ReportViewModel.TransactionsDatetimeCountModel { Date = dt, Count = 0 });
+                    }
+
+                    var transactionsPast30DaysDB = db.Loans
+                        .Where(t =>
+                            //t.IsCancelled == false &&
+                            (t.DateCreated <= today && t.DateCreated >= daysAgo)
+                        ).ToList()
+                        .GroupBy(t => t.DateCreated.Date)
+                        .ToList();
+
+                    foreach (var item in transactionsPast30DaysDB)
+                    {
+                        if (rvm.TransactionsPast30Days.FirstOrDefault(x => x.Date == item.Key) != null)
+                        {
+                            rvm.TransactionsPast30Days.FirstOrDefault(x => x.Date == item.Key).Count = item.Count();
+                        }
+                    }
+
+                    break;
+                case "Loans This Year":
+
+                    int year = DateTime.UtcNow.AddHours(8).Year;
+                    rvm.TransactionsThisYear = new List<WizBooklat.Models.ViewModels.ReportViewModel.TransactionsDatetimeCountModel>();
+
+                    for (int month = 1; month <= 12; month++)
+                    {
+                        var loansThisMonth = await db.Loans.Where(l => l.DateCreated.Year == year && l.DateCreated.Month == month).ToListAsync() ;
+                        rvm.TransactionsThisYear.Add(new ViewModels.ReportViewModel.TransactionsDatetimeCountModel
+                        {
+                            Date = DateTime.Parse(month.ToString() + "/1/" + year.ToString()),
+                            Count = loansThisMonth.Count()
+                        });
+                    };
+                    break;
+            }
+
+            return PartialView("_ReportBody",rvm);
+        }
+
         public ActionResult CancelExpiredLoan(int? id)
         {
             if (id == null)

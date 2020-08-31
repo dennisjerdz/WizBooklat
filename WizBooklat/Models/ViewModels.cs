@@ -6,6 +6,30 @@ using System.Web;
 
 namespace WizBooklat.Models.ViewModels
 {
+    public class ReportViewModel
+    {
+        public string ReportType { get; set; }
+        public List<ApplicationUser> Users { get; set; }
+        public List<Genre> Genres { get; set; }
+        public List<WizBooklat.Models.Author> Authors { get; set; }
+        public List<Loan> Loans { get; set; }
+        public List<TransactionsDatetimeCountModel> TransactionsPast30Days { get; set; }
+        public List<TransactionsDatetimeCountModel> TransactionsThisYear { get; set; }
+        public List<BookCount> TopBooks { get; set; }
+
+        public class TransactionsDatetimeCountModel
+        {
+            public DateTime Date { get; set; }
+            public int Count { get; set; }
+        }
+
+        public class BookCount
+        {
+            public string Name { get; set; }
+            public int Count { get; set; }
+        }
+    }
+
     public class EditAccountViewModel
     {
         public string MobileNumber { get; set; }

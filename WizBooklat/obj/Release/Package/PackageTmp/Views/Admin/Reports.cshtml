@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Reports";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><a href="#">@ViewBag.Title</a> &emsp;/&emsp;View Report</h5>
+                </div>
+                <div class="topbar-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="body-container" style="overflow:hidden;">
+            @using (Ajax.BeginForm("GetReport", "Admin", new AjaxOptions
+            {
+                HttpMethod = "POST",
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "report-body",
+                LoadingElementId = "loading-body",
+                OnSuccess = "InitiateTable"
+            }))
+            {
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <center>
+                            <h5 style="margin-top:0px;">
+                                Choose Report Type
+                            </h5>
+                        </center>
+                        <br />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label">Report Type</label>
+
+                        <select class="form-control form-control-line-only" name="reportType">
+                            @foreach (var item in WizBooklat.Models.ReportConstants.ReportTypeList)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label">&nbsp;</label>
+
+                        <button class="btn btn-block btn-info" type="submit">View Report</button>
+                    </div>
+                </div>
+            }
+
+            <br />
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="body-container" style="overflow-x:auto;">
+            <div id="loading-body" style="padding-top:80px; display:none;">
+                <center>
+                    <img src="https://miro.medium.com/max/882/1*9EBHIOzhE1XfMYoKz1JcsQ.gif" />
+                </center>
+            </div>
+
+            <div id="report-body" style="width:100%;"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // $("#ReturnDate").val(new Date());
+        });
+
+        function InitiateTable() {
+            @*
+            var datatable = $("#report-table").DataTable({
+                paging: true,
+                "pageLength": 30,
+                "dom": "<'table-window'<'window-heading'<'row'<'col-xs-6'p><'col-xs-6'i>>><'table-responsive'rt>>",
+                /*"columnDefs": [
+                    { "orderable": false, "targets": 8 },
+                    { "orderable": false, "targets": 4 }
+                ]*/
+            });
+            *@
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            });
+        }
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+}

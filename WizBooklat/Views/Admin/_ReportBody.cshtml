@@ -1,0 +1,440 @@
+﻿@model WizBooklat.Models.ViewModels.ReportViewModel
+
+<div id="report-chart">
+
+</div>
+
+<hr />
+
+<table id="report-table" class="table table-bordered table-condensed table-hover">
+    @switch (Model.ReportType)
+    {
+        case "Top Books":
+            <text>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Number of Loans</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.TopBooks.OrderByDescending(b=>b.Count))
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Count</td>
+                        </tr>
+                    }
+                </tbody>
+            </text>
+            break;
+        case "Genre Tally":
+            <text>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Number of Books</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Genres)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.BookGenres.Count()</td>
+                        </tr>
+                    }
+                </tbody>
+            </text>
+            break;
+        case "Author Tally":
+            <text>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Number of Authors</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Authors)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.BookAuthors.Count()</td>
+                        </tr>
+                    }
+                </tbody>
+            </text>
+            break;
+        case "Loans Past 30 days":
+            <text>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Number of Loans</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.TransactionsPast30Days.OrderBy(t => t.Date))
+                    {
+                        <tr>
+                            <td>@item.Date.ToString("MM-dd-yyyy")</td>
+                            <td>@item.Count</td>
+                        </tr>
+                    }
+                </tbody>
+            </text>
+            break;
+        case "Loans This Year":
+            <text>
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th>Number of Loans</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.TransactionsThisYear.OrderBy(t => t.Date))
+                    {
+                        <tr>
+                            <td>@item.Date.ToString("MM-yyyy")</td>
+                            <td>@item.Count</td>
+                        </tr>
+                    }
+                </tbody>
+            </text>
+            break;
+    }
+</table>
+
+<script src="~/Scripts/googlecharts.js"></script>
+
+<script>
+        function generateColor(ranges) {
+            if (!ranges) {
+                ranges = [
+                    [150, 256],
+                    [0, 190],
+                    [0, 30]
+                ];
+            }
+            var g = function () {
+                //select random range and remove
+                var range = ranges.splice(Math.floor(Math.random() * ranges.length), 1)[0];
+                //pick a random number from within the range
+                return Math.floor(Math.random() * (range[1] - range[0])) + range[0];
+            }
+            return "rgb(" + g() + "," + g() + "," + g() + ")";
+        };
+
+        // Load the Visualization API and the piechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates, instantiates chart, and draw chart
+        function drawChart() {
+            var chartHeight = 320;
+
+            @switch(Model.ReportType)
+            {
+                case "Top Books":
+                    <text>
+                        var bookLoansData = google.visualization.arrayToDataTable([
+                            ['Books', '', { role: 'style' }],
+                             @foreach (var item in Model.TopBooks)
+                            {
+                                <text>['@item.Name',@item.Count, generateColor()],</text>
+                            }
+                        ]);
+                        var bookLoansOptions = {
+                            title: 'Loans per Book',
+                            chartArea: { width: '50%' },
+                            hAxis: {
+                                title: 'Loans',
+                                minValue: 0
+                            },
+                            vAxis: {
+                                title: 'Book'
+                            },
+                            legend: { position:'none' },
+                            height: chartHeight
+                        };
+                        var bookLoansChart = new google.visualization.BarChart(document.getElementById('report-chart'));
+                        bookLoansChart.draw(bookLoansData, bookLoansOptions);
+                    </text>
+                    break;
+                case "Genre Tally":
+                    <text>
+                    var genreTallyData = google.visualization.arrayToDataTable([
+                            ['Genre', '', { role: 'style' }],
+                             @foreach (var item in Model.Genres.Take(10))
+                            {
+                                <text>['@item.Name',@item.BookGenres.Count(), ''],</text>
+                            }
+                        ]);
+                    var genreTallyOptions = {
+                            title: '# Books per Genre',
+                            height: chartHeight,
+                            pieHole: 0.3
+                        };
+                    var genreTallyChart = new google.visualization.PieChart(document.getElementById('report-chart'));
+                    genreTallyChart.draw(genreTallyData, genreTallyOptions);
+                    </text>
+                    break;
+                case "Author Tally":
+                    <text>
+                        var authorTallyData = google.visualization.arrayToDataTable([
+                            ['Author', '', { role: 'style' }],
+                             @foreach (var item in Model.Authors.Take(10))
+                            {
+                                <text>['@item.Name',@item.BookAuthors.Count(), ''],</text>
+                            }
+                        ]);
+                        var authorTallyOptions = {
+                            title: '# Books per Author',
+                            height: chartHeight,
+                            pieHole: 0.3
+                        };
+                        var authorTallyChart = new google.visualization.PieChart(document.getElementById('report-chart'));
+                        authorTallyChart.draw(authorTallyData, authorTallyOptions);
+                    </text>
+                    break;
+                case "Loans Past 30 days":
+                    <text>
+                        var loansPast30DaysData = google.visualization.arrayToDataTable([
+                            ['Date', '# of Loans'],
+                            @foreach (var item in Model.TransactionsPast30Days)
+                            {
+                                <text>['@item.Date.ToString("MM-dd-yyyy")',@item.Count],</text>
+                            }
+                        ]);
+                        var loansPast30DaysOptions = {
+                            title: 'Loans Past 30 Days',
+                            curveType: 'function',
+                            vAxis: { minValue:0, baseline:0 },
+                            legend: { position: 'in' },
+                            height: chartHeight
+                        };
+                        var loansPast30DaysChart = new google.visualization.LineChart(document.getElementById('report-chart'));
+                        loansPast30DaysChart.draw(loansPast30DaysData, loansPast30DaysOptions);
+                    </text>
+                    break;
+                case "Loans This Year":
+                    <text>
+                        var loansThisYearData = google.visualization.arrayToDataTable([
+                            ['Date', '# of Loans'],
+                            @foreach (var item in Model.TransactionsThisYear)
+                            {
+                                <text>['@item.Date.ToString("MM-yyyy")',@item.Count],</text>
+                            }
+                        ]);
+                        var loansThisYearOptions = {
+                            title: 'Loans This Year',
+                            curveType: 'function',
+                            vAxis: { minValue:0, baseline:0 },
+                            legend: { position: 'in' },
+                            height: chartHeight
+                        };
+                        var loansThisYearChart = new google.visualization.LineChart(document.getElementById('report-chart'));
+                        loansThisYearChart.draw(loansThisYearData, loansThisYearOptions);
+                    </text>
+                    break;
+            }
+
+            /*
+            *
+            * Logins per Role
+            *
+            */
+
+            @*
+            var loginsByRoleData = google.visualization.arrayToDataTable([
+                ['Date', 'ADMIN', 'SELLER', 'CUSTOMER'],
+                @foreach (var item in Model.LoginsByRolePast5Days.OrderBy(x=>x.Key).Take(5))
+                {
+                    <text>
+                    [
+                        '@item.Key.ToString("MM-dd-yyyy")',
+                        @item.Where(i => i.Key == "ADMIN").Sum(s=>s.Count()),
+                        @item.Where(i => i.Key == "SELLER").Sum(s => s.Count()),
+                        @item.Where(i => i.Key == "CUSTOMER").Sum(s => s.Count())
+                    ],</text>
+                }
+            ]);
+            var loginsByRoleOptions = {
+                height: chartHeight,
+                legend: { position: 'top', maxLines: 5 },
+                bar: { groupWidth: '75%' },
+                isStacked: true
+            };
+            var loginsByRoleChart = new google.visualization.ColumnChart(document.getElementById('loginsByRoleChart'));
+            loginsByRoleChart.draw(loginsByRoleData, loginsByRoleOptions);
+
+            /*
+            *
+            * Most Bought Categories
+            *
+            */
+
+            var categoryTransactionsData = google.visualization.arrayToDataTable([
+                ['Category', '', { role: 'style' }],
+                 @foreach (var item in Model.CategoriesWithMostTransactions)
+                {
+                    <text>['@item.Key.CategoryName',@item.Count(), generateColor()],</text>
+                }
+            ]);
+            var categoryTransactionsOptions = {
+                title: 'Transactions per Category',
+                chartArea: { width: '50%' },
+                hAxis: {
+                    title: 'Transactions',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'Category'
+                },
+                legend: { position:'none' },
+                height: chartHeight
+            };
+            var categoryTransactionsChart = new google.visualization.BarChart(document.getElementById('categoryTransactionsChart'));
+            categoryTransactionsChart.draw(categoryTransactionsData, categoryTransactionsOptions);
+
+            /*
+            *
+            * Category w/ Most Products
+            *
+            */
+
+            var categoryMostProductsData = google.visualization.arrayToDataTable([
+                ['Category', '', { role: 'style' }],
+                 @foreach (var item in Model.CategoriesWithMostItems.OrderByDescending(x=>x.Count).Take(5))
+                {
+                    <text>['@item.Category.CategoryName',@item.Count, generateColor()],</text>
+                }
+            ]);
+            var categoryMostProductsOptions = {
+                title: 'Products per Category',
+                chartArea: { width: '50%' },
+                hAxis: {
+                    title: 'Products',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'Category'
+                },
+                legend : { position: 'none' },
+                height: chartHeight
+            };
+            var categoryMostProductsChart = new google.visualization.BarChart(document.getElementById('categoryMostProductsChart'));
+            categoryMostProductsChart.draw(categoryMostProductsData, categoryMostProductsOptions);
+
+            /*
+            *
+            * Number of Products per Category
+            *
+            */
+
+            var productsPerCategoryData = google.visualization.arrayToDataTable([
+                ['Category', '', { role: 'style' }],
+                 @foreach (var item in Model.CategoriesWithMostItems.OrderByDescending(x=>x.Count))
+                {
+                    <text>['@item.Category.CategoryName',@item.Count, ''],</text>
+                }
+            ]);
+            var productsPerCategoryOptions = {
+                title: 'Products per Category',
+                height: chartHeight,
+                pieHole: 0.3
+            };
+            var productsPerCategoryChart = new google.visualization.PieChart(document.getElementById('productsPerCategoryChart'));
+            productsPerCategoryChart.draw(productsPerCategoryData, productsPerCategoryOptions);
+
+            /*
+            *
+            * Transactions Per Day
+            *
+            */
+
+            var transactionsPerDayData = google.visualization.arrayToDataTable([
+                ['Date', 'Transactions'],
+                @foreach (var item in Model.TransactionsPast30Days)
+                {
+                    <text>['@item.Date.ToString("MM-dd-yyyy")',@item.Count],</text>
+                }
+            ]);
+            var transactionsPerDayOptions = {
+                title: 'Transactions Per Day',
+                curveType: 'function',
+                vAxis: { minValue:0, baseline:0 },
+                legend: { position: 'in' },
+                height: chartHeight
+            };
+            var transactionsPerDayChart = new google.visualization.LineChart(document.getElementById('transactionsPerDayChart'));
+            transactionsPerDayChart.draw(transactionsPerDayData, transactionsPerDayOptions);
+
+            /*
+            *
+            * Most Products Sold
+            *
+            */
+
+            var mostProductSoldData = google.visualization.arrayToDataTable([
+                ['Product', '', { role: 'annotation' }, { role: 'style' }],
+                 @foreach (var item in Model.ProductsWithMostItemsSold.OrderByDescending(p=>p.Count()))
+                {
+                    <text>['@item.Key.ProductName',@item.Count(), 'Sold by: @item.Key.User.Email', generateColor()],</text>
+                }
+            ]);
+            var mostProductSoldOptions = {
+                title: 'Number of Products Sold',
+                chartArea: { width: '50%' },
+                hAxis: {
+                    title: 'Units Sold',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'Product'
+                },
+                legend: {position: 'none'},
+                height: chartHeight
+            };
+            var mostProductSoldChart = new google.visualization.BarChart(document.getElementById('mostProductSoldChart'));
+            mostProductSoldChart.draw(mostProductSoldData, mostProductSoldOptions);
+
+            /*
+            *
+            * Product Income Chart
+            *
+            */
+
+            var productIncomeData = google.visualization.arrayToDataTable([
+                ['Product', '', { role: 'annotation' }, { role: 'style' }],
+                 @foreach (var item in Model.ProductsWithMostIncome.OrderByDescending(p=>p.Income))
+                {
+                    <text>['@item.ProductTemplate.Key.ProductName',@item.Income, 'Sold by: @item.ProductTemplate.Key.User.Email', generateColor()],</text>
+                }
+            ]);
+            var productIncomeOptions = {
+                title: 'Products with Most Earnings',
+                chartArea: { width: '50%' },
+                hAxis: {
+                    title: 'Earnings',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'Product'
+                },
+                legend: {position: 'none'},
+                height: chartHeight
+            };
+            var productIncomeChart = new google.visualization.BarChart(document.getElementById('productIncomeChart'));
+            productIncomeChart.draw(productIncomeData, productIncomeOptions);
+            *@
+        }
+</script>
