@@ -14,6 +14,27 @@ namespace WizBooklat.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public ActionResult Rewards(int? id)
+        {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
+            if (id == null)
+            {
+                return View(db.Rewards.ToList());
+            }
+            else
+            {
+                return View(db.Rewards.Where(r => r.RankId == id.Value).ToList());
+            }
+        }
+
         // GET: Ranks
         public ActionResult Index()
         {

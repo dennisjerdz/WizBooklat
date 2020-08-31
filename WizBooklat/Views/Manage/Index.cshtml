@@ -1,13 +1,98 @@
 ﻿@model WizBooklat.Models.IndexViewModel
+@using WizBooklat.Models
 @{
     ViewBag.Title = "Account";
 }
 
+@{
+    int totalPoints = Model.User.PointHistory.Where(p => p.Type == PointTypeConstant.ADD).Sum(p => p.Points)
+            - Model.User.PointHistory.Where(p => p.Type == PointTypeConstant.MINUS).Sum(p => p.Points);
+}
+
 <div class="row">
+    <div class="col-md-8">
+        <br />
+        <div class="body-container">
+            <div class="row">
+                <div class="col-md-8">
+                    Name
+                    <br />
+                    <h2 style="margin-top:10px;">
+                        Hi @Model.User.FirstName @Model.User.LastName
+
+                        @if (!String.IsNullOrEmpty(Model.User.StudentNumber))
+                        {
+                            <small>@Model.User.StudentNumber</small>
+                        }
+
+                        @{
+                            if (Model.Ranks != null)
+                            {
+                                int previousPoints = 0;
+                                string previousColor = "#000000";
+                                foreach (var thisRank in Model.Ranks)
+                                {
+                                    if (totalPoints >= thisRank.Points)
+                                    {
+                                        previousPoints = thisRank.Points;
+                                        previousColor = thisRank.Color;
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        <text>&nbsp;</text>
+                                        <span class="glyphicon glyphicon-certificate" style="display:inline-block; color:@previousColor;"></span>
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    </h2>
+                </div>
+                <div class="col-md-4">
+                    <center>
+                        Your Total Points is
+                        <br />
+                        <h2 style="margin-top:10px;">
+                            @totalPoints
+                        </h2>
+                    </center>
+                </div>
+            </div>
+            <hr />
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    <center>
+                        Number of Loans
+                        <br />
+                        <h2 style="margin-top:10px;">@Model.User.Loans.Count()</h2>
+                    </center>
+                </div>
+                <div class="col-md-4">
+                    <center>
+                        Active Loans
+                        <br />
+                        <h2 style="margin-top:10px;">@Model.User.Loans.Count(l => l.ReturnDate == null)</h2>
+                    </center>
+                </div>
+                <div class="col-md-4">
+                    <center>
+                        Cancelled Loans
+                        <br />
+                        <h2 style="margin-top:10px;">@Model.User.Loans.Count(l => l.IsCancelled == true)</h2>
+                    </center>
+                </div>
+            </div>
+            <br />
+            <hr />
+
+        </div>
+    </div>
+
     <div class="col-md-4">
         <br />
         <div class="body-container">
-            <h2>@ViewBag.Title.</h2>
             <p class="text-success">@ViewBag.StatusMessage</p>
             <h4>Edit Mobile Number</h4>
 

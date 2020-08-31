@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -97,10 +98,12 @@ namespace WizBooklat.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            var user = db.Users.FirstOrDefault(u => u.Id == userId);
+            var user = db.Users.Include(u=>u.PointHistory).Include(u=>u.Loans).FirstOrDefault(u => u.Id == userId);
 
             var model = new IndexViewModel
             {
+                User = user,
+                Ranks = db.Ranks.ToList(),
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),

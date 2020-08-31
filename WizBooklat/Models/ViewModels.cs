@@ -6,6 +6,7 @@ using System.Web;
 
 namespace WizBooklat.Models.ViewModels
 {
+
     public class ReportViewModel
     {
         public string ReportType { get; set; }

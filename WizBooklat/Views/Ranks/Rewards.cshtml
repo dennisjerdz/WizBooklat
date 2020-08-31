@@ -1,0 +1,114 @@
+﻿@model List<WizBooklat.Models.Reward>
+@using WizBooklat.Models
+@{
+    ViewBag.Title = "Rewards";
+    var r = Url.RequestContext.RouteData.Values["id"];
+
+    int rankId = 0;
+
+    if (r != null)
+    {
+        rankId = Convert.ToInt16(r);
+    }
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;List</h5>
+                </div>
+                <div class="topbar-right">
+                    <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("AddReward", new { id = rankId })">Add Reward +</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="topbar">
+            <div class="topbar-content">
+                <input class="form-control form-control-line-only topBarCenterContent all-search" placeholder="Search" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="body-container">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            RANK
+                        </th>
+                        <th>
+                            NAME
+                        </th>
+                        <th>
+                            START
+                        </th>
+                        <th>
+                            END
+                        </th>
+                        <th>
+                            # OF CLAIMS
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Rank.Name
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                @item.StartDate.ToString("MM-dd-yyyy hh:mm tt")
+                            </td>
+                            <td>
+                                @item.EndDate.ToString("MM-dd-yyyy hh:mm tt")
+                            </td>
+                            <td>
+                                @item.Claims.Count
+                            </td>
+                            <td style="text-align:right;">
+                                <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("EditReward", new { id = item.RewardId })">Edit Reward</a>
+
+                                @if (item.Claims.Count == 0)
+                                {
+                                    <a href="@Url.Action("Delete", new { id = item.RewardId })" class="btn btn-xs btn-danger btn-table-short">Delete</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'window-heading'<'row'<'col-xs-6'p><'col-xs-6'i>>><'table-responsive'rt>>",
+                "columnDefs": [
+                    { "orderable": false, "targets": 4 }
+                ]
+            });
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
+}

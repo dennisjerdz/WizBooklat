@@ -214,6 +214,9 @@ namespace WizBooklat.Models
         public int RankId { get; set; }
         [ForeignKey("RankId")]
         public virtual Rank Rank { get; set; }
+
+        public virtual List<Claim> Claims { get; set; }
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime DateCreated { get; set; }
