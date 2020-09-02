@@ -388,6 +388,8 @@
     <Content Include="Views\Admin\ReportBody.cshtml" />
     <Content Include="Views\Admin\_ReportBody.cshtml" />
     <Content Include="Views\Ranks\Rewards.cshtml" />
+    <Content Include="Views\Ranks\AddReward.cshtml" />
+    <Content Include="Views\Ranks\EditReward.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

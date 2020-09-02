@@ -17,7 +17,7 @@
         <div class="topbar">
             <div class="topbar-content">
                 <div class="topbar-left">
-                    <h5><font>@ViewBag.Title</font> &emsp;/&emsp;List</h5>
+                    <h5><a href="@Url.Action("Index","Ranks", new { })">Ranks</a>&emsp;/&emsp;<font>@ViewBag.Title</font> &emsp;/&emsp;List</h5>
                 </div>
                 <div class="topbar-right">
                     <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("AddReward", new { id = rankId })">Add Reward +</a>
@@ -70,10 +70,10 @@
                                 @item.Title
                             </td>
                             <td>
-                                @item.StartDate.ToString("MM-dd-yyyy hh:mm tt")
+                                @item.StartDate.ToString("MM-dd-yyyy")
                             </td>
                             <td>
-                                @item.EndDate.ToString("MM-dd-yyyy hh:mm tt")
+                                @item.EndDate.ToString("MM-dd-yyyy")
                             </td>
                             <td>
                                 @item.Claims.Count

@@ -14,6 +14,63 @@ namespace WizBooklat.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        [HttpPost]
+        public ActionResult EditReward(Reward reward)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(reward).State = EntityState.Modified;
+                db.SaveChanges();
+                TempData["Message"] = "<strong>Successfully added Reward.</strong>";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Ranks = db.Ranks.ToList();
+            return View(reward);
+        }
+
+        public ActionResult EditReward(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Reward reward = db.Rewards.Find(id);
+            if (reward == null)
+            {
+                return HttpNotFound();
+            }
+            return View(reward);
+        }
+
+        [HttpPost]
+        public ActionResult AddReward(Reward reward)
+        {
+            reward.DateCreated = DateTime.UtcNow.AddHours(8);
+            if (ModelState.IsValid)
+            {
+                db.Rewards.Add(reward);
+                db.SaveChanges();
+                TempData["Message"] = "<strong>Successfully added Reward.</strong>";
+                return RedirectToAction("Index");
+            }
+            
+            ViewBag.Ranks = db.Ranks.ToList();
+            return View(reward);
+        }
+
+        public ActionResult AddReward(int? id)
+        {
+            Rank rank = db.Ranks.Find(id);
+            if (rank != null)
+            {
+                ViewBag.Rank = rank;
+            }
+            ViewBag.Ranks = db.Ranks.ToList();
+
+            return View();
+        }
+
         public ActionResult Rewards(int? id)
         {
             if (TempData["Error"] != null)
