@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -7,12 +8,28 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WizBooklat.Models;
+using WizBooklat.Models.ViewModels;
 
 namespace WizBooklat.Controllers
 {
     public class RanksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
+        public ActionResult ViewRewards()
+        {
+            string userId = User.Identity.GetUserId();
+
+            ApplicationUser user = db.Users.Include(u => u.PointHistory).Where(u => u.Id == userId).FirstOrDefault();
+
+            ViewRewardsModel vrm = new ViewRewardsModel
+            {
+                User = user,
+                Ranks = db.Ranks.ToList()
+            };
+
+            return View(vrm);
+        }
 
         [HttpPost]
         public ActionResult EditReward(Reward reward)

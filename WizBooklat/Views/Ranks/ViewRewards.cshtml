@@ -1,0 +1,124 @@
+﻿@model WizBooklat.Models.ViewModels.ViewRewardsModel
+@using WizBooklat.Models
+@{
+    ViewBag.Title = "Rewards";
+
+    int previousPoints = 0;
+    string previousColor = "#000000";
+    string previousRank = "Unranked";
+
+    var RanksCopy = Model.Ranks;
+
+    int totalPoints = 0;
+
+    if (Model.User != null)
+    {
+        totalPoints = Model.User.PointHistory.Where(p => p.Type == PointTypeConstant.ADD).Sum(p => p.Points)
+        - Model.User.PointHistory.Where(p => p.Type == PointTypeConstant.MINUS).Sum(p => p.Points);
+    }
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <div>
+                            Hello @Model.User.FirstName! Your current rank is
+
+                            @{
+                                foreach (var thisRank in RanksCopy)
+                                {
+                                    if (totalPoints >= thisRank.Points)
+                                    {
+                                        previousPoints = thisRank.Points;
+                                        previousColor = thisRank.Color;
+                                        previousRank = thisRank.Name;
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        <!--<div class="circle-10" style="display:inline-block; background-color:@previousColor;"></div>-->
+                                        <span style="color:@previousColor;">@previousRank .</span>
+                                        break;
+                                    }
+                                }
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div>Please login to claim rewards.</div>
+                    }
+                </div>
+                <div class="topbar-right">
+                    <!--
+                        <a class="btn btn-info btn-round topBarCenterContent" href="@Url.Action("AddAccount")">Add Account +</a>
+                    -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @if (Model.Ranks != null)
+    {
+        previousPoints = 0;
+        previousColor = "#000000";
+
+        foreach (var thisRank in Model.Ranks)
+        {
+            if (thisRank.Rewards.Count != 0)
+            {
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h3 style="color:@thisRank.Color; line-height:40px;">
+                                <span class="glyphicon glyphicon-certificate"></span> @thisRank.Name
+                                <small style="opacity:0.5;"> and above</small>
+                            </h3>
+                        </div>
+
+                        <div class="col-md-9">
+                            <hr style="margin-top:40px; border-top: 2px solid @thisRank.Color; opacity:0.1;" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        @foreach (var reward in thisRank.Rewards)
+                        {
+                            <div class="col-md-4">
+                                <div class="body-container padding-0" style="overflow:hidden; min-height:300px;">
+                                    <div style="padding-left:20px; padding-right:20px; height:150px; width:100%; background-size:cover; background:url('@reward.ImageLocation');">
+                                        <center>
+                                            <h2 style="margin-top:0px; padding-top:40px; font-weight:800; color:white; text-shadow:0px 0px 8px rgba(0,0,0,0.8)">@reward.Title</h2>
+                                        </center>
+                                    </div>
+
+                                    <div style="padding:25px; height:100px; word-break:break-word; overflow-y:auto;">
+                                        <p>@reward.Description</p>
+                                    </div>
+
+                                    <div style="padding:25px;">
+                                        @if (totalPoints >= thisRank.Points)
+                                        {
+                                            <a href="@Url.Action("ClaimReward", new { id = reward.RewardId })" class="btn btn-info btn-block btn-lg">
+                                                Claim Reward
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-info btn-block btn-lg" disabled>Claim Reward</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>

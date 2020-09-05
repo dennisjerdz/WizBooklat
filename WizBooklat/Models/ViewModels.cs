@@ -6,6 +6,11 @@ using System.Web;
 
 namespace WizBooklat.Models.ViewModels
 {
+    public class ViewRewardsModel
+    {
+        public ApplicationUser User { get; set; }
+        public List<Rank> Ranks { get; set; }
+    }
 
     public class ReportViewModel
     {

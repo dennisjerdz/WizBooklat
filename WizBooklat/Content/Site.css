@@ -3,7 +3,12 @@
     padding-bottom: 20px;
 }
 
+.text-logo-blue {
+    color: #00d0ff;
+}
+
 /*
+    logo-blue: #00d0ff
     aqua blue: #206BA4 -> #00a0ff
     sky blue: #BBD9EE
     white: #EBF4FA 
@@ -230,6 +235,10 @@ table.dataTable.no-footer{
     border-radius:14px;
     box-shadow:rgba(100,100,100,0.1) 0px 3px 5px;
     margin-top:22px;
+}
+
+.padding-0{
+    padding:0px !important
 }
 
 .btn-round{
