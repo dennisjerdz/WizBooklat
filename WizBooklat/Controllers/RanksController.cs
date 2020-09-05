@@ -16,8 +16,60 @@ namespace WizBooklat.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         
+        public ActionResult ClaimReward(int? id)
+        {
+            if (id == null)
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to claim reward; Reward not found.</strong>";
+                return RedirectToAction("ViewRewards");
+            }
+            Reward reward = db.Rewards.Find(id);
+            if (reward == null)
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to claim reward; Reward not found.</strong>";
+                return RedirectToAction("ViewRewards");
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
+                string userId = User.Identity.GetUserId();
+
+                Claim newClaim = new Claim
+                {
+                    Code = String.Join("",Guid.NewGuid().ToString().Take(10)),
+                    DateCreated = DateTime.UtcNow.AddHours(8),
+                    RewardId = reward.RewardId,
+                    UserId = userId
+                };
+
+                db.Claims.Add(newClaim);
+                db.SaveChanges();
+
+                TempData["Message"] = "<strong>Reward claimed successfully; Please use the code; "+ newClaim.Code 
+                    +" when claiming your reward.</strong>";
+            }
+            else
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to claim reward; please login first.</strong>";
+            }
+
+            return RedirectToAction("ViewRewards");
+        }
+
         public ActionResult ViewRewards()
         {
+            if (TempData["Error"] != null)
+            {
+                ViewBag.Error = TempData["Error"];
+            }
+            if (TempData["Message"] != null)
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             string userId = User.Identity.GetUserId();
 
             ApplicationUser user = db.Users.Include(u => u.PointHistory).Where(u => u.Id == userId).FirstOrDefault();

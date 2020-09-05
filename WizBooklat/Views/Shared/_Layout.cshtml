@@ -78,6 +78,8 @@
                         @if (User.IsInRole("Loaner"))
                         {
                             <li>@Html.ActionLink("My Loans", "MyLoans", "Loans")</li>
+                            <li>@Html.ActionLink("Rewards", "ViewRewards", "Ranks")</li>
+                            <li>@Html.ActionLink("Claimed Rewards", "Index", "Manage")</li>
                         }
                     </ul>
                     @Html.Partial("_LoginPartial")

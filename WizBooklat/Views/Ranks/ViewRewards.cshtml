@@ -87,11 +87,11 @@
                         </div>
                     </div>
                     <div class="row">
-                        @foreach (var reward in thisRank.Rewards)
+                        @foreach (var reward in thisRank.Rewards.Where(r=> ((DateTime.UtcNow.AddHours(8).Date >= r.StartDate.Date) && (DateTime.UtcNow.AddHours(8).Date <= r.EndDate.Date))))
                         {
                             <div class="col-md-4">
                                 <div class="body-container padding-0" style="overflow:hidden; min-height:300px;">
-                                    <div style="padding-left:20px; padding-right:20px; height:150px; width:100%; background-size:cover; background:url('@reward.ImageLocation');">
+                                    <div style="padding-left:20px; padding-right:20px; height:150px; width:100%; background:url('@reward.ImageLocation'); background-repeat:no-repeat;background-size:100%;">
                                         <center>
                                             <h2 style="margin-top:0px; padding-top:40px; font-weight:800; color:white; text-shadow:0px 0px 8px rgba(0,0,0,0.8)">@reward.Title</h2>
                                         </center>
@@ -102,16 +102,36 @@
                                     </div>
 
                                     <div style="padding:25px;">
-                                        @if (totalPoints >= thisRank.Points)
+                                        @if (User.Identity.IsAuthenticated)
                                         {
-                                            <a href="@Url.Action("ClaimReward", new { id = reward.RewardId })" class="btn btn-info btn-block btn-lg">
-                                                Claim Reward
-                                            </a>
+                                            if (totalPoints >= thisRank.Points)
+                                            {
+                                                Claim claim = reward.Claims.Where(r => r.UserId == Model.User.Id).FirstOrDefault();
+
+                                                if (claim != null)
+                                                {
+                                                    <a href="#" class="btn btn-success btn-block btn-lg">
+                                                        Claim Code: @claim.Code
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("ClaimReward", new { id = reward.RewardId })" class="btn btn-info btn-block btn-lg">
+                                                        Claim Reward
+                                                    </a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-default btn-block btn-lg" title="You have not yet reached this rank." disabled>Claim Reward</button>
+                                            }
                                         }
                                         else
                                         {
-                                            <button class="btn btn-info btn-block btn-lg" disabled>Claim Reward</button>
+                                            <button class="btn btn-default btn-block btn-lg" title="Please login to claim reward." disabled>Claim Reward</button>
                                         }
+
+
                                     </div>
                                 </div>
                             </div>

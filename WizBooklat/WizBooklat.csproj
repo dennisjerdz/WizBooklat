@@ -241,6 +241,10 @@
     <Compile Include="Migrations\202008240416370_Pick up date.Designer.cs">
       <DependentUpon>202008240416370_Pick up date.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009051648171_user reward claim.cs" />
+    <Compile Include="Migrations\202009051648171_user reward claim.Designer.cs">
+      <DependentUpon>202009051648171_user reward claim.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
@@ -448,6 +452,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202008240416370_Pick up date.resx">
       <DependentUpon>202008240416370_Pick up date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009051648171_user reward claim.resx">
+      <DependentUpon>202009051648171_user reward claim.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

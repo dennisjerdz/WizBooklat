@@ -98,7 +98,7 @@ namespace WizBooklat.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            var user = db.Users.Include(u=>u.PointHistory).Include(u=>u.Loans).FirstOrDefault(u => u.Id == userId);
+            var user = db.Users.Include(u=>u.PointHistory).Include(u=>u.Loans).Include(u=>u.RewardClaims).FirstOrDefault(u => u.Id == userId);
 
             var model = new IndexViewModel
             {

@@ -226,3 +226,4 @@ C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\GlobeLabs.dll
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\System.Runtime.Serialization.Primitives.dll
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.loaniscancelled.resources
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.Pickupdate.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Debug\WizBooklat.Migrations.userrewardclaim.resources

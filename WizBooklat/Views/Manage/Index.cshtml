@@ -86,7 +86,30 @@
             </div>
             <br />
             <hr />
+            <div class="row">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>Reward ID</th>
+                            <th>Name</th>
+                            <th>Claim Code</th>
+                            <th>Date Created</th>
+                        </tr>
+                    </thead>
 
+                    <tbody>
+                        @foreach (var rc in Model.User.RewardClaims)
+                        {
+                            <tr>
+                                <td>@rc.RewardId</td>
+                                <td>@rc.Reward.Title</td>
+                                <td>@rc.Code</td>
+                                <td>@rc.DateCreated.ToString("MM-dd-yyyy")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -116,6 +139,21 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var datatable = $("table").DataTable({
+                paging: true,
+                "pageLength": 10,
+                "dom": "<'table-window'<'window-heading'<'row'<'col-xs-6'p><'col-xs-6'i>>><'table-responsive'rt>>"
+            });
+            $(".all-search").keyup(function () {
+                datatable.search($(this).val()).draw();
+            })
+        });
+    </script>
+}
 
 <!--
     <div>
