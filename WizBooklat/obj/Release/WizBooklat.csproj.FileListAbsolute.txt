@@ -226,3 +226,7 @@ C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\bin\System.Runtime.Seriali
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.returnloanedbookissevere.resources
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.loaniscancelled.resources
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.Pickupdate.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.userrewardclaim.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.loanreview.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.reviewdescription.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.reviewaverage.resources

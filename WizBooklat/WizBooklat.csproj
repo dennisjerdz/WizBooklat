@@ -245,6 +245,18 @@
     <Compile Include="Migrations\202009051648171_user reward claim.Designer.cs">
       <DependentUpon>202009051648171_user reward claim.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202009060234378_loan-review.cs" />
+    <Compile Include="Migrations\202009060234378_loan-review.Designer.cs">
+      <DependentUpon>202009060234378_loan-review.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009060240284_review description.cs" />
+    <Compile Include="Migrations\202009060240284_review description.Designer.cs">
+      <DependentUpon>202009060240284_review description.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202009060303524_review average.cs" />
+    <Compile Include="Migrations\202009060303524_review average.Designer.cs">
+      <DependentUpon>202009060303524_review average.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
@@ -396,6 +408,8 @@
     <Content Include="Views\Ranks\AddReward.cshtml" />
     <Content Include="Views\Ranks\EditReward.cshtml" />
     <Content Include="Views\Ranks\ViewRewards.cshtml" />
+    <Content Include="Views\Loans\AddReview.cshtml" />
+    <Content Include="Views\Books\Others.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -455,6 +469,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009051648171_user reward claim.resx">
       <DependentUpon>202009051648171_user reward claim.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009060234378_loan-review.resx">
+      <DependentUpon>202009060234378_loan-review.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009060240284_review description.resx">
+      <DependentUpon>202009060240284_review description.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202009060303524_review average.resx">
+      <DependentUpon>202009060303524_review average.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

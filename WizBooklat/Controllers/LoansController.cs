@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WizBooklat.Models;
@@ -14,6 +16,75 @@ namespace WizBooklat.Controllers
     public class LoansController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        [HttpPost]
+        public ActionResult AddReview(int LoanId, int Review, string ReviewDescription)
+        {
+            Loan loan = db.Loans.Find(LoanId);
+            
+            if (loan == null)
+            {
+                TempData["Error"] = "1";
+                TempData["Message"] = "<strong>Failed to submit review.</strong> Loan ID not found.";
+                return RedirectToAction("MyLoans");
+            }
+
+            loan.Review = (short)Review;
+            loan.ReviewDescription = ReviewDescription;
+            
+            string userId = loan.UserId;
+            db.PointHistories.Add(new PointHistory
+            {
+                DateCreated = DateTime.UtcNow.AddHours(8),
+                Points = 15,
+                Type = PointTypeConstant.ADD,
+                UserId = userId
+            });
+
+            db.SaveChanges();
+
+            BookTemplate bt = db.BookTemplates.Find(loan.Book.BookTemplateId);
+            double? average = bt.Stocks.Average(s => s.LoanHistory.Average(h => h.Review));
+
+            if (average != null)
+            {
+                bt.ReviewAverage = (float)Math.Round(average.Value,2);
+                db.SaveChanges();
+            }
+
+            #region Send SMS
+            try
+            {
+                var user =
+                Task.Run(() =>
+                {
+                    new SMSController().SendSMS(userId, "Hello, thank you for reviewing " + loan.Book.BookTemplate.Title + ". You have earned 15 points!");
+                });
+            }
+            catch (Exception e)
+            {
+                Trace.TraceInformation("SMS Send Failed for " + loan.Book.BookTemplate.Title + ", Loan ID:" + loan.LoanId + ": " + e.Message);
+            }
+            #endregion
+            
+            TempData["Message"] = "<strong>Successfully submitted review.</strong> You have earned 15 points.";
+            return RedirectToAction("MyLoans");
+        }
+
+        public ActionResult AddReview(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Loan loan = db.Loans.Find(id);
+            if (loan == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(loan);
+        }
 
         public ActionResult CancelLoan(int? id)
         {

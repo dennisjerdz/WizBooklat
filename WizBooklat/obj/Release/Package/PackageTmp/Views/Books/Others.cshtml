@@ -1,0 +1,53 @@
+﻿@model List<WizBooklat.Models.BookTemplate>
+
+@{
+    ViewBag.Title = "Other Resources";
+}
+
+<div class="row-container-offset-top">
+    <div class="row">
+        @foreach (var featuredBook in Model)
+        {
+            <div class="col-md-4">
+                <div class="body-container" style="margin-bottom:10px;">
+                    @featuredBook.Title
+                    <br />
+                    @featuredBook.ISBN
+                    <br />
+                    @featuredBook.DateCreated.ToString("MM-dd-yy")
+                    <br />
+                    <img style="width:100%;" src="@featuredBook.ImageLocation" />
+                    <br />
+                    Review: @featuredBook.ReviewAverage
+                    <br />
+                    <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">View</a>
+                </div>
+            </div>
+        }
+
+        <!--
+    <div class="col-md-3">
+        <div class="body-container">
+            <h4>Filters</h4>
+            @using (Html.BeginForm("Gallery/Find", "Books", FormMethod.Get, new { @class = "form-horizontal" }))
+            {
+
+                <label class="control-label">Title</label>
+                <input name="title" class="form-control form-control-line-only" placeholder="Title" />
+
+                <br />
+
+                <button class="btn btn-block btn-info" type="submit">Search</button>
+
+                <br />
+            }
+        </div>
+    </div>
+    -->
+    </div>
+
+</div>
+
+@section scripts{
+
+}

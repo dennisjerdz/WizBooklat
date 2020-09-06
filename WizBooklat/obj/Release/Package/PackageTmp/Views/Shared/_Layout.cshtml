@@ -21,12 +21,14 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a href="@Url.Action("Index", "Home", new { })" class="navbar-brand">
-                        <strong class="text-purple">Wiz</strong><font class="text-purple">Booklat</font>
+                        <strong class="text-logo-blue">Wiz</strong><font class="text-logo-blue">Booklat</font>
+                        <img style="width:67px; margin-top:-5px; display:inline-block;" src="~/Content/Images/logo.png" />
                     </a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Book Gallery", "Gallery", "Books")</li>
+                        <li>@Html.ActionLink("Gallery", "Gallery", "Books")</li>
+                        <li>@Html.ActionLink("Others", "Others", "Books")</li>
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="dropdown">
@@ -77,6 +79,8 @@
                         @if (User.IsInRole("Loaner"))
                         {
                             <li>@Html.ActionLink("My Loans", "MyLoans", "Loans")</li>
+                            <li>@Html.ActionLink("Rewards", "ViewRewards", "Ranks")</li>
+                            <li>@Html.ActionLink("Claimed Rewards", "Index", "Manage")</li>
                         }
                     </ul>
                     @Html.Partial("_LoginPartial")

@@ -23,6 +23,8 @@ namespace WizBooklat.Models
 
         public string ImageLocation { get; set; }
 
+        public float ReviewAverage { get; set; }
+
         // Book or Other Resources
         public Int16 Type { get; set; }
 
@@ -109,6 +111,9 @@ namespace WizBooklat.Models
         [ForeignKey("BookId")]
         public virtual Book Book { get; set; }
         
+        public Int16? Review { get; set; } // 1 to 5, if null, don't include
+        public string ReviewDescription { get; set; }
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public DateTime? ReturnDate { get; set; }

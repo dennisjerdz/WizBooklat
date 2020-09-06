@@ -161,6 +161,18 @@
                                 {
                                     <a class="btn btn-xs btn-danger btn-table-short" href="@Url.Action("CancelLoan", new { id = item.LoanId })">Cancel Loan</a>
                                 }
+
+                                @if (item.IsCancelled != true && item.ReturnDate != null && item.PickUpDate != null)
+                                {
+                                    if (item.Review == null)
+                                    {
+                                        <a class="btn btn-xs btn-warning btn-table-short" href="@Url.Action("AddReview", new { id = item.LoanId })">Add Review</a>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-warning">Reviewed: @item.Review.Value</span>
+                                    }
+                                }
                             </td>
                         </tr>
                     }

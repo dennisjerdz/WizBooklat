@@ -20,6 +20,11 @@ namespace WizBooklat.Controllers
     public class BooksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
+        public ActionResult Others()
+        {
+            return View(db.BookTemplates.Where(b=>b.Type == BookTypeConstant.Other).ToList());
+        }
 
         [Route("Books/Gallery/")]
         public async Task<ActionResult> Gallery()
@@ -49,7 +54,13 @@ namespace WizBooklat.Controllers
             List<Genre> genreOptions = db.Genres.ToList();
             ViewBag.GenreOptions = genreOptions;
 
-            var books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(isbn) && b.Title.Contains(title) && b.BookGenres.Select(g=>g.GenreId).Contains(genreId.FirstOrDefault())).ToListAsync();
+            var books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(isbn) && b.Title.Contains(title)).ToListAsync();
+
+            if (genreId.FirstOrDefault() != 0)
+            {
+                books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(isbn) && b.Title.Contains(title) && b.BookGenres.Select(g => g.GenreId).Contains(genreId.FirstOrDefault())).ToListAsync();
+            }
+            
 
             return View("GalleryFind", books);
         }
@@ -88,14 +99,13 @@ namespace WizBooklat.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
+        public ActionResult Create([Bind(Include = "BookTemplateId,Title,Type,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
         {
             int? branchId = null;
             ApplicationUser currentUser;
 
             bookTemplate.IsFeatured = false;
             bookTemplate.ActualQuantity = bookTemplate.InitialQuantity;
-            bookTemplate.Type = WizBooklat.Models.BookTypeConstant.Book;
             bookTemplate.DateCreated = DateTime.UtcNow.AddHours(8);
 
             string[] genres = { "" };

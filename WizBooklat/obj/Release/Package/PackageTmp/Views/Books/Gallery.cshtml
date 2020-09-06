@@ -24,6 +24,8 @@
                                     <br />
                                     <img src="@featuredBook.ImageLocation" />
                                     <br />
+                                    Review: @featuredBook.ReviewAverage
+                                    <br />
                                     <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">View</a>
                                 </div>
                             }
@@ -47,6 +49,8 @@
                                     @featuredBook.DateCreated.ToString("MM-dd-yy")
                                     <br />
                                     <img src="@featuredBook.ImageLocation" />
+                                    <br />
+                                    Review: @featuredBook.ReviewAverage
                                     <br />
                                     <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">View</a>
                                 </div>
@@ -72,6 +76,8 @@
                                     <br />
                                     <img src="@featuredBook.ImageLocation" />
                                     <br />
+                                    Review: @featuredBook.ReviewAverage
+                                    <br />
                                     <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">View</a>
                                 </div>
                             }
@@ -94,6 +100,7 @@
 
                     <label class="control-label">Genre</label>
                     <select name="genreId" class="form-control form-control-line-only" placeholder="Genre">
+                        <option value="0">--Choose--</option>
                         @{ 
                             List<WizBooklat.Models.Genre> sl = (List<WizBooklat.Models.Genre>)ViewBag.GenreOptions;
                             foreach (var option in sl)

@@ -1,0 +1,106 @@
+﻿@model WizBooklat.Models.Loan
+
+@{
+    ViewBag.Title = "Review";
+}
+
+@section styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">   
+    <style>
+        .checked {
+            color: orange;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="topbar">
+            <div class="topbar-content">
+                <div class="topbar-left">
+                    <h5>
+                        <a href="@Url.Action("MyLoans")">My Loans</a>&emsp;/
+                        @Model.Book.BookTemplate.Title &emsp;/&emsp;Review
+                    </h5>
+                </div>
+                <div class="topbar-right">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <br />
+        <div class="body-container">
+
+            @using (Html.BeginForm("AddReview", "Loans", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label">Title</label>
+                        <input value="@Model.Book.BookTemplate.Title" class="form-control form-control-line-only" readonly />
+                        <input type="hidden" name="LoanId" value="@Model.LoanId" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label">Review</label>
+                        <br />
+                        <div style="font-size:2em; padding-top:15px;">
+                            <span data-value="1" class="fa fa-star" style="cursor:pointer;"></span>
+                            <span data-value="2" class="fa fa-star" style="cursor:pointer;"></span>
+                            <span data-value="3" class="fa fa-star" style="cursor:pointer;"></span>
+                            <span data-value="4" class="fa fa-star" style="cursor:pointer;"></span>
+                            <span data-value="5" class="fa fa-star" style="cursor:pointer;"></span>
+                        </div>
+                        <input type="hidden" id="ReviewInput" name="Review" value="0" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="control-label">Description</label>
+                        <textarea class="form-control form-control-text-area" name="ReviewDescription"></textarea>
+                        @Html.ValidationMessageFor(model => model.ReviewDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <br />
+                        <button type="submit" class="btn btn-info btn-block">Save</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function(){
+            $(".fa-star").click(function () {
+                var review = $(this).data("value");
+                $("#ReviewInput").val(review);
+
+                $(".fa-star").removeClass("checked");
+
+                $(".fa-star").each(function (i) {
+                    if ($(this).data("value") <= review) {
+                        $(this).addClass("checked");
+                    }
+                });
+
+                console.log($("#ReviewInput").val());
+            }); 
+        });
+    </script>    
+}
