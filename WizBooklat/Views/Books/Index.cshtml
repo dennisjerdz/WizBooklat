@@ -121,6 +121,11 @@
                                 {
                                     <a class="btn btn-xs btn-success btn-table-short" href="@Url.Action("Feature", new { id = item.BookTemplateId })">Feature</a>
                                 }
+
+                                @if (item.NewEditionBookTemplateId == null)
+                                {
+                                    <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("Create","Books", new { oldBookEditionTemplateId = item.BookTemplateId })">Add New Edition</a>
+                                }
                             </td>
                         </tr>
                     }

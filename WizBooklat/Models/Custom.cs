@@ -49,6 +49,8 @@ namespace WizBooklat.Models
         public string Genres { get; set; } // delimit with comma
         public string Authors { get; set; } // delimit with comma
         
+        public int? NewEditionBookTemplateId { get; set; }
+
         public virtual List<Book> Stocks { get; set; }
 
         public virtual List<BookGenre> BookGenres { get; set; }

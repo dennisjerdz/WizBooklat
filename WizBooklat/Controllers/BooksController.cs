@@ -31,10 +31,10 @@ namespace WizBooklat.Controllers
         {
             ViewModels.InitialGalleryViewModel ig = new ViewModels.InitialGalleryViewModel();
 
-            ig.Featured = await db.BookTemplates.Where(b => b.IsFeatured == true).OrderByDescending(b=>b.DateCreated).Take(10).ToListAsync();
-            ig.NewArrival = await db.BookTemplates.OrderByDescending(b => b.DateCreated).Take(10).ToListAsync();
+            ig.Featured = await db.BookTemplates.Where(b => b.IsFeatured == true && b.Type == BookTypeConstant.Book).OrderByDescending(b=>b.DateCreated).Take(10).ToListAsync();
+            ig.NewArrival = await db.BookTemplates.Where(b=>b.Type == BookTypeConstant.Book).OrderByDescending(b => b.DateCreated).Take(10).ToListAsync();
 
-            var topGenre = await db.Genres.Include(b=>b.BookGenres).OrderByDescending(b => b.BookGenres.Count()).FirstOrDefaultAsync();
+            var topGenre = await db.Genres.Where(g=>g.Name != "Other Resources").Include(b=>b.BookGenres).OrderByDescending(b => b.BookGenres.Count()).FirstOrDefaultAsync();
 
             if (topGenre != null)
             {
@@ -54,7 +54,7 @@ namespace WizBooklat.Controllers
             List<Genre> genreOptions = db.Genres.ToList();
             ViewBag.GenreOptions = genreOptions;
 
-            var books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(isbn) && b.Title.Contains(title)).ToListAsync();
+            var books = await db.BookTemplates.Where(b => b.ISBN.StartsWith(isbn) && b.Title.Contains(title) && b.Type == BookTypeConstant.Book).ToListAsync();
 
             if (genreId.FirstOrDefault() != 0)
             {
@@ -92,15 +92,21 @@ namespace WizBooklat.Controllers
             return View(bookTemplate);
         }
  
-        public ActionResult Create()
+        public ActionResult Create(int? oldBookEditionTemplateId)
         {
-            return View();
+            return View(new BookTemplate {
+                NewEditionBookTemplateId = oldBookEditionTemplateId
+            });
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BookTemplateId,Title,Type,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
+        public ActionResult Create([Bind(Include = "NewEditionBookTemplateId,BookTemplateId,Title,Type,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
         {
+            // store value, use new BookTemplateId and store it to NewEditionBookTemplateId/Old Edition Book
+            int? newEditionBookTemplateId = bookTemplate.NewEditionBookTemplateId;
+            bookTemplate.NewEditionBookTemplateId = null;
+
             int? branchId = null;
             ApplicationUser currentUser;
 
@@ -245,6 +251,18 @@ namespace WizBooklat.Controllers
                 db.SaveChanges();
 
                 TempData["Message"] = "<strong>Book has been added successfully. The books are set to have the Branch ID assigned to you. You can manually update Branch ID per stock in Manage Stock.</strong>";
+
+                if (newEditionBookTemplateId != null)
+                {
+                    var oldBook = db.BookTemplates.Find(newEditionBookTemplateId.Value);
+                    if (oldBook != null)
+                    {
+                        oldBook.NewEditionBookTemplateId = bookTemplate.BookTemplateId;
+                        db.SaveChanges();
+                        TempData["Message"] = "<strong>New Edition Book has been added successfully. The books are set to have the Branch ID assigned to you. You can manually update Branch ID per stock in Manage Stock.</strong>";
+                    }
+                }
+                
                 return RedirectToAction("Index");
             }
 

@@ -30,6 +30,8 @@
 
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+                        <input name="NewEditionBookTemplateId" value="@Model.NewEditionBookTemplateId" type="hidden"/>
+
                         <div class="form-group">
                             <div class="col-md-12">
                                 <label class="control-label">Tag as Other Resource</label>

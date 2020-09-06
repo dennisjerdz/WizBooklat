@@ -16,7 +16,7 @@ using ViewModels = WizBooklat.Models.ViewModels;
 
 namespace WizBooklat.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Librarian")]
     public class AdminController : Controller
     {
         #region Account Manager

@@ -46,6 +46,14 @@
                 </center>
             }
         </div>
+        @if (Model.NewEditionBookTemplateId != null)
+        {
+            <br />
+            <a class="btn btn-lg btn-warning" href="@Url.Action("Loan",new { id = Model.NewEditionBookTemplateId })">
+                This book has a new edition!
+            </a>
+        }
+        
     </div>
     <div class="col-md-9">
         <div class="body-container">

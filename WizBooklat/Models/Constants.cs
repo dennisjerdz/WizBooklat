@@ -10,7 +10,7 @@ namespace WizBooklat.Models
 
         public static List<string> ReportTypeList = new List<string>
         {
-            "Top Users",
+            // "Top Users",
             "Top Books",
             "Genre Tally",
             "Author Tally",
