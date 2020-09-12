@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Gallery";
-
 }
 
 <div class="row-container-offset-top">
@@ -10,24 +9,38 @@
         <div class="col-md-9">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Featured</h2>
+                    <h2 class="gallery-h2">Featured</h2>
                     <div class="horizontal-scrolling-wrapper">
                         <div class="horizontal-scrolling-container">
                             @foreach (var featuredBook in Model.Featured)
                             {
-                                <div class="body-container" style="margin-right:40px; display:inline-block !important;">
-                                    @featuredBook.Title
+                            <div class="body-container book-card" style="margin-right:40px; display:inline-block !important;">
+                                <center>
+                                    <p class="book-title">
+                                        @featuredBook.Title
+                                    </p>
+                                    <small>@featuredBook.ISBN</small>
                                     <br />
-                                    @featuredBook.ISBN
-                                    <br />
-                                    @featuredBook.DateCreated.ToString("MM-dd-yy")
-                                    <br />
-                                    <img src="@featuredBook.ImageLocation" />
-                                    <br />
-                                    Review: @featuredBook.ReviewAverage
-                                    <br />
-                                    <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">View</a>
-                                </div>
+                                    <small>@featuredBook.DateCreated.ToString("MM-dd-yy")</small>
+                                </center>
+                                
+                                <br />
+                                @if (String.IsNullOrEmpty(featuredBook.ImageLocation))
+                                {
+                                    <div style="width:100%; height:300px; background:url(https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg); background-size:contain; background-position:center; background-repeat:no-repeat;"></div>
+                                }
+                                else
+                                {
+                                    <div style="width:100%; height:300px; background:url('@featuredBook.ImageLocation'); background-color:grey; background-size:contain; background-position:center; background-repeat:no-repeat;"></div>
+                                }
+
+                                <br />
+                                <center>
+                                    Average Rating: <strong class="text-warning">@featuredBook.ReviewAverage</strong>
+                                </center>
+                                <br />
+                                <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">View</a>
+                            </div>
                             }
                         </div>
                     </div>
@@ -36,21 +49,35 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h2>New Arrival</h2>
+                    <h2 class="gallery-h2">New Arrival</h2>
                     <div class="horizontal-scrolling-wrapper">
                         <div class="horizontal-scrolling-container">
                             @foreach (var featuredBook in Model.NewArrival)
                             {
-                                <div class="body-container" style="margin-right:40px; display:inline-block !important;">
-                                    @featuredBook.Title
+                                <div class="body-container book-card" style="margin-right:40px; display:inline-block !important;">
+                                    <center>
+                                        <p class="book-title">
+                                            @featuredBook.Title
+                                        </p>
+                                        <small>@featuredBook.ISBN</small>
+                                        <br />
+                                        <small>@featuredBook.DateCreated.ToString("MM-dd-yy")</small>
+                                    </center>
+
                                     <br />
-                                    @featuredBook.ISBN
+                                    @if (String.IsNullOrEmpty(featuredBook.ImageLocation))
+                                    {
+                                        <div style="width:100%; height:300px; background:url(https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg); background-size:contain; background-position:center; background-repeat:no-repeat;"></div>
+                                    }
+                                    else
+                                    {
+                                        <div style="width:100%; height:300px; background:url('@featuredBook.ImageLocation'); background-color:grey; background-size:contain; background-position:center; background-repeat:no-repeat;"></div>
+                                    }
+
                                     <br />
-                                    @featuredBook.DateCreated.ToString("MM-dd-yy")
-                                    <br />
-                                    <img src="@featuredBook.ImageLocation" />
-                                    <br />
-                                    Review: @featuredBook.ReviewAverage
+                                    <center>
+                                        Average Rating: <strong class="text-warning">@featuredBook.ReviewAverage</strong>
+                                    </center>
                                     <br />
                                     <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">View</a>
                                 </div>
@@ -62,21 +89,35 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Top Genre</h2>
+                    <h2 class="gallery-h2">Top Genre</h2>
                     <div class="horizontal-scrolling-wrapper">
                         <div class="horizontal-scrolling-container">
                             @foreach (var featuredBook in Model.TopGenre)
                             {
-                                <div class="body-container" style="margin-right:40px; display:inline-block !important;">
-                                    @featuredBook.Title
+                                <div class="body-container book-card" style="margin-right:40px; display:inline-block !important;">
+                                    <center>
+                                        <p class="book-title">
+                                            @featuredBook.Title
+                                        </p>
+                                        <small>@featuredBook.ISBN</small>
+                                        <br />
+                                        <small>@featuredBook.DateCreated.ToString("MM-dd-yy")</small>
+                                    </center>
+
                                     <br />
-                                    @featuredBook.ISBN
+                                    @if (String.IsNullOrEmpty(featuredBook.ImageLocation))
+                                    {
+                                        <div style="width:100%; height:300px; background:url(https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg); background-size:contain; background-position:center; background-repeat:no-repeat;"></div>
+                                    }
+                                    else
+                                    {
+                                        <div style="width:100%; height:300px; background:url('@featuredBook.ImageLocation'); background-color:grey; background-size:contain; background-position:center; background-repeat:no-repeat;"></div>
+                                    }
+
                                     <br />
-                                    @featuredBook.DateCreated.ToString("MM-dd-yy")
-                                    <br />
-                                    <img src="@featuredBook.ImageLocation" />
-                                    <br />
-                                    Review: @featuredBook.ReviewAverage
+                                    <center>
+                                        Average Rating: <strong class="text-warning">@featuredBook.ReviewAverage</strong>
+                                    </center>
                                     <br />
                                     <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">View</a>
                                 </div>

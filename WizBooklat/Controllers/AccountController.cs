@@ -107,9 +107,9 @@ namespace WizBooklat.Controllers
                         switch (user.AccountType)
                         {
                             case AccountTypeConstant.LIBRARIAN:
-                                return RedirectToAction("Index", "Home");
+                                return RedirectToAction("Reports", "Admin");
                             case AccountTypeConstant.ADMIN:
-                                return RedirectToAction("Index", "Admin");
+                                return RedirectToAction("Reports", "Admin");
                             default:
                                 return RedirectToAction("Index", "Home");
                         }

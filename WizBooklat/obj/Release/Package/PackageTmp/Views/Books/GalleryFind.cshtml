@@ -11,14 +11,31 @@
                 <div class="gallery-items-container">
                     @foreach (var featuredBook in Model)
                     {
-                        <div class="body-container" style="margin-right:40px; display:inline-block !important;">
-                            @featuredBook.Title
+
+                        <div class="body-container book-card" style="margin-right:40px; display:inline-block !important;">
+                            <center>
+                                <p class="book-title">
+                                    @featuredBook.Title
+                                </p>
+                                <small>@featuredBook.ISBN</small>
+                                <br />
+                                <small>@featuredBook.DateCreated.ToString("MM-dd-yy")</small>
+                            </center>
+
                             <br />
-                            @featuredBook.ISBN
+                            @if (String.IsNullOrEmpty(featuredBook.ImageLocation))
+                            {
+                                <div style="width:100%; height:300px; background:url(https://thumbs.dreamstime.com/b/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg); background-size:contain; background-position:center; background-repeat:no-repeat;"></div>
+                            }
+                            else
+                            {
+                                <div style="width:100%; height:300px; background:url('@featuredBook.ImageLocation'); background-color:grey; background-size:contain; background-position:center; background-repeat:no-repeat;"></div>
+                            }
+
                             <br />
-                            @featuredBook.DateCreated.ToString("MM-dd-yy")
-                            <br />
-                            <img src="@featuredBook.ImageLocation" />
+                            <center>
+                                Average Rating: <strong class="text-warning">@featuredBook.ReviewAverage</strong>
+                            </center>
                             <br />
                             <a class="btn btn-block btn-warning" href="@Url.Action("Loan", new { id = featuredBook.BookTemplateId })">Loan</a>
                         </div>
