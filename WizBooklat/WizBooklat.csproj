@@ -291,6 +291,8 @@
     <Content Include="Content\Images\4.jpg" />
     <Content Include="Content\Images\5.jpg" />
     <Content Include="Content\Images\fancyLineBreak1.png" />
+    <Content Include="Content\Images\hero.png" />
+    <Content Include="Content\Images\hero2.jpeg" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

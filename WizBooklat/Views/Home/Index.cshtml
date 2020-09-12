@@ -6,16 +6,23 @@
 @section Styles{
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.3.0/animate.css" />
     <style>
+        html {
+            height:100% !important;
+        }
+
         body{
-            background-color:white !important;
+            background-color:#ffffff !important;
+            //background-color:white !important;
+            padding:0px;
         }
 
         .hero{
-            background:url('@Url.Content("~/Content/Images/3.jpg")');
+            //background:url('@Url.Content("~/Content/Images/3.jpg")');
             background-size:cover;
             padding-top:30px;
-            padding-bottom:220px;
-            box-shadow: 0px 0px 40px 4px rgba(0,0,0,1) inset;
+            padding-bottom:0px;
+            //padding-bottom:220px;
+            //box-shadow: 0px 0px 40px 4px rgba(0,0,0,1) inset;
         }
 
         @@media(max-width:768px){
@@ -160,6 +167,10 @@
             text-align:center !important;
             margin-bottom:10px;
         }
+
+        .navbar-container{
+            box-shadow:none;
+        }
     </style>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 }
@@ -255,32 +266,52 @@
 
     <div class="container container-home">
         <div class="row">
-            <div class="col-md-6">
-                <div class="hero-heading">
-                    <h2>WizBooklat</h2>
-                    <h4>Cloud Based Library Management System</h4>
+            <div style="">
+                <div class="col-md-6 col-md-push-6">
+                    <div class="body-container" style="
+                            box-shadow:none;
+                            margin-top:0px;
+                            padding-top:30px;
+                            border-radius:10px;
+                            border:1px solid #00d0ff;
+                            height:560px;
+                            border-left:none; border-top-left-radius:0px; border-bottom-left-radius:0px;">
+                        <center>
+                            <img style="width:65px; margin-bottom:-40px; margin-left:20px; display:inline-block;" src="~/Content/Images/logo.png" />
+                            <h2 class="text-logo-blue"><strong>Wiz</strong><font class="text-logo-blue">Booklat</font></h2>
+                            <br />
+                            <br />
+                            <br />
+                        </center>
+
+                        <form class="form-home" action="@Url.Action("Register","Account", null)" method="GET">
+                            <input class="form-control form-control-line-only" name="StudentNumber" placeholder="Student Number" />
+                            <input class="form-control form-control-line-only" name="Email" placeholder="Email" />
+                            <button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
+                            <br />
+                            <center>
+                                <h4>
+                                    <a href="@Url.Action("Login","Account", new { })">Already have an account? Login here.</a>
+                                </h4>
+                            </center>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-md-pull-6">
+                    <img src="~/Content/Images/hero2.jpeg" style="width:100%; border-radius:10px;" />
+                    <!--<div class="hero-heading">
+            <h2>WizBooklat</h2>
+            <h4>Cloud Based Library Management System</h4>
+        </div>-->
                 </div>
             </div>
-
-            <div class="col-md-6">
-                <div class="body-container">
-                    <center>
-                        <h2 class="hero-form-text text-logo-blue"><strong>Wiz</strong><font class="text-logo-blue">Booklat</font></h2>
-                    </center>
-
-                    <form class="form-home" action="@Url.Action("Register","Account", null)" method="GET">
-                        <input class="form-control form-control-line-only" name="StudentNumber" placeholder="Student Number" />
-                        <input class="form-control form-control-line-only" name="Email" placeholder="Email" />
-                        <button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
-                    </form>
-                </div>
-            </div>
+            
         </div>
     </div>
-
 </div>
 
-<div class="container container-home container-info">
+<div class="container container-home container-info" style="display:none;">
     <div class="row">
         <div class="col-md-12">
             <div style="height:20px;"></div>
@@ -367,9 +398,4 @@
             @Html.Raw(ViewBag.Message)
         </div>
     }
-
-    <footer>
-        <br />
-        <!--<p class="pull-left">&copy; WizBooklat @DateTime.Now.Year</p>-->
-    </footer>
 </div>

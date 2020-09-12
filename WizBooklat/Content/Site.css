@@ -3,8 +3,36 @@
     padding-bottom: 20px;
 }
 
+.gallery-h2 {
+    color: #00d0ff;
+    font-weight:800;
+    letter-spacing:1.5px;
+}
+
+.horizontal-scrolling-wrapper {
+    padding-bottom:30px;
+}
+
+.book-card{
+    width:235px !important;
+}
+
+.book-card .book-title{
+    color: #00d0ff;
+    word-break:break-word;
+    font-size:1.1em;
+    white-space:normal;
+    height:45px;
+    overflow-y:auto;
+    font-weight:800;
+}
+
 .text-logo-blue {
     color: #00d0ff;
+}
+
+.text-warning {
+    color: #f5be4d !important;
 }
 
 /*
