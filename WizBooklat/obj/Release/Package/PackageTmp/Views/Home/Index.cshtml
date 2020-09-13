@@ -123,7 +123,7 @@
         .icon-left-container{
             padding:20px;
             border-radius:10px;
-            background-color:#6427ff;
+            background-color:#00d0ff;
             display:inline-block;
             float:right;
             margin-right:100px;
@@ -132,14 +132,14 @@
         .icon-right-container{
             padding:20px;
             border-radius:10px;
-            background-color:#6427ff;
+            background-color:#00d0ff;
             display:inline-block;
             float:left;
             margin-left:100px;
         }
 
         .text-left-container .head,.text-right-container .head{
-            color:#6427ff;
+            color:orange;
             font-size:2.5em;
             font-weight:800;
         }
@@ -202,6 +202,14 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Gallery", "Gallery", "Books")</li>
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li><a href="#Contact">Contact Us</a></li>
+                        }
+                        @if (User.IsInRole("Entrance"))
+                        {
+                            <li>@Html.ActionLink("Entrance", "Index", "Entrance")</li>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="dropdown">
@@ -311,7 +319,7 @@
     </div>
 </div>
 
-<div class="container container-home container-info" style="display:none;">
+<div class="container container-home container-info">
     <div class="row">
         <div class="col-md-12">
             <div style="height:20px;"></div>
@@ -378,6 +386,30 @@
                     Powered by<br /> Open Library
                 </div>
                 <div class="sub">Discover more than 3M books with OpenLibrary</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div style="background-color:#00d0ff;" id="Contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <center id="#Contact" style="padding:40px 0px 40px 0px;">
+                    <div style="display:block; width:100%;">
+                        <h4 style="color:white; display:inline-block; margin-left:0; width:230px;"><i class="material-icons md-landing" style="margin-left:30px;">facebook</i></h4>
+                        <h4 style="color:white; display:inline; position:relative; top:-70px;">www.facebook.com/wizbooklat</h4>
+                    </div>
+                    <div style="display:block; width:100%;">
+                        <h4 style="color:white; display:inline-block; margin-left:0; width:200px;"><i class="material-icons md-landing">email</i></h4>
+                        <h4 style="color:white; display:inline; position:relative; top:-70px;">wizbooklat@mailnator.com</h4>
+                    </div>
+                    <div style="display:block; width:100%;">
+                        <h4 style="color:white; display:inline-block; margin-left:0; width:200px;"><i class="material-icons md-landing">phone</i></h4>
+                        <h4 style="color:white; display:inline; position:relative; top:-70px;">09566878712 / 446-23-97</h4>
+                    </div>
+                </center>
             </div>
         </div>
     </div>

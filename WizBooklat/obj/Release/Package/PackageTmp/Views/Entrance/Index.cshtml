@@ -1,0 +1,95 @@
+﻿@using WizBooklat.Models
+@{
+    Layout = "../Shared/_HomeLayout.cshtml";
+    ViewBag.Title = "Visit";
+}
+
+@section Styles{
+    <style>
+        body{
+            background:url('@Url.Content("~/Content/Images/3.jpg")');
+            background-size:cover;
+        }
+
+        .extra-container-margin{
+            margin:30px;
+        }
+
+        .validation-summary-errors{
+            background-color:#fe3933;
+            padding:10px;
+            border-radius:9px;
+            margin-bottom:10px;
+        }
+
+        .validation-summary-errors > ul li{
+            color:white !important;
+            line-height:25px;
+        }
+    </style>
+}
+
+<div class="container">
+    @if (ViewBag.Error != null)
+    {
+        if (ViewBag.Error == "1")
+        {
+            <div class="ownorent-alert alert alert-danger alert-dismissible marginTop10">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                @Html.Raw(ViewBag.Message)
+            </div>
+        }
+    }
+    else if (ViewBag.Message != null)
+    {
+        <div class="ownorent-alert alert alert-success alert-dismissable marginTop10">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @Html.Raw(ViewBag.Message)
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="extra-container-margin">
+                <div class="body-container">
+                    @using (Html.BeginForm("Index", "Entrance", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <center>
+                            <h3>
+                                <strong class="text-logo-blue">Wiz</strong><font class="text-logo-blue">Booklat</font>
+                            </h3>
+                            <h4>
+                                Entrance
+                            </h4>
+                        </center>
+                        <hr />
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label class="control-label">Student Number</label>
+                                <input class="form-control form-control-line-only"  name="studentNumber" required/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <br />
+                            <div class="col-md-12">
+                                <input type="submit" value="Submit" class="btn btn-success btn-block" />
+                            </div>
+                        </div>
+                        @* Enable this once you have account confirmation enabled for password reset functionality
+                            <p>
+                                @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                            </p>*@
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

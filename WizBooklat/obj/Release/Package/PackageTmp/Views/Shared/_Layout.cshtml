@@ -29,6 +29,10 @@
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Gallery", "Gallery", "Books")</li>
                         <li>@Html.ActionLink("Others", "Others", "Books")</li>
+                        @if (User.IsInRole("Entrance"))
+                        {
+                            <li>@Html.ActionLink("Entrance", "Index", "Entrance")</li>
+                        }
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="dropdown">
