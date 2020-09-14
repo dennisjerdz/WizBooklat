@@ -110,6 +110,8 @@ namespace WizBooklat.Controllers
                                 return RedirectToAction("Reports", "Admin");
                             case AccountTypeConstant.ADMIN:
                                 return RedirectToAction("Reports", "Admin");
+                            case AccountTypeConstant.LOANER:
+                                return RedirectToAction("Index", "Manage");
                             default:
                                 return RedirectToAction("Index", "Home");
                         }

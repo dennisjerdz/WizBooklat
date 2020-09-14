@@ -439,8 +439,22 @@ namespace WizBooklat.Controllers
             if (user != null)
             {
                 user.AccountStatus = AccountStatusConstant.DISABLED;
+
+                string body = "Hello " + user.FirstName + ", your WizBooklat account has been deactivated. Please <a href='http://wizbooklat.azurewebsites.net/Home/Index#Contact'>contact</a> an administrator to reactivate.";
+                string fromName = "WizBooklat Account Service";
+                string subject = "WizBooklat Account Deactivated"; //+ DateTime.UtcNow.AddHours(8).ToString("MM-dd-yy");
+
+                try
+                {
+                    WBHelper.SendEmail(fromName, subject, body, user.Email, user.FirstName);
+                }
+                catch (Exception e)
+                {
+                    return Content(e.Message);
+                }
             }
             db.SaveChanges();
+            
             TempData["Message"] = "<strong>Account has been disabled.</strong> We've sent a notification to "+ user.Email +".";
             return RedirectToAction(redirect);
         }
