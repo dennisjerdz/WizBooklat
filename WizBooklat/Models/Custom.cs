@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -9,9 +10,26 @@ namespace WizBooklat.Models
     public class Branch
     {
         public int BranchId { get; set; }
+        [Required]
         public string Name { get; set; }
 
         public virtual List<Book> Books { get; set; }
+        public virtual List<Visit> Visits { get; set; }
+        public virtual List<ApplicationUser> Users { get; set; }
+    }
+
+    public class BookTemplateEditModel
+    {
+        public int BookTemplateId { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string ImageLocation { get; set; }
+        public int LoanPeriod { get; set; }
+        public string ISBN { get; set; }
+        public string OLKey { get; set; }
+        public Int16? PublishYear { get; set; }
+        public string Genres { get; set; }
+        public string Authors { get; set; }
     }
 
     public class BookTemplate

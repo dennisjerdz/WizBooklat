@@ -82,9 +82,11 @@ namespace WizBooklat.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
+        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Use letters for First Name.")]
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         [Required]
+        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "Use letters for Last Name.")]
         public string LastName { get; set; }
         public string StudentNumber { get; set; }
         public string MobileNumber { get; set; }

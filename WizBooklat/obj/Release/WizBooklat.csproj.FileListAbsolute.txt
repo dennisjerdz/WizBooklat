@@ -231,3 +231,4 @@ C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Mig
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.reviewdescription.resources
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.reviewaverage.resources
 C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.neweditionbooktemplateid.resources
+C:\Users\JERDI2604\source\repos\WizBooklat\WizBooklat\obj\Release\WizBooklat.Migrations.regexfixes.resources

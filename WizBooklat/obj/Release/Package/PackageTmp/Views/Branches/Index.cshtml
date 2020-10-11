@@ -25,7 +25,11 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.BranchId }) |
             @Html.ActionLink("Details", "Details", new { id=item.BranchId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BranchId })
+
+            @if (item.Users.Count == 0 && item.Visits.Count == 0 && item.Books.Count == 0)
+            {
+                @Html.ActionLink("Delete (No Registered Books and Users)", "Delete", new { id = item.BranchId })
+            }
         </td>
     </tr>
 }

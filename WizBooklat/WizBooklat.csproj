@@ -262,6 +262,10 @@
     <Compile Include="Migrations\202009060747287_new edition book template id.Designer.cs">
       <DependentUpon>202009060747287_new edition book template id.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010110831494_regex fixes.cs" />
+    <Compile Include="Migrations\202010110831494_regex fixes.Designer.cs">
+      <DependentUpon>202010110831494_regex fixes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Constants.cs" />
@@ -489,6 +493,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202009060747287_new edition book template id.resx">
       <DependentUpon>202009060747287_new edition book template id.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010110831494_regex fixes.resx">
+      <DependentUpon>202010110831494_regex fixes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

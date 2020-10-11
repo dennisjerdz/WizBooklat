@@ -342,12 +342,132 @@ namespace WizBooklat.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,InitialQuantity,Genres,Authors")] BookTemplate bookTemplate)
+        public ActionResult Edit([Bind(Include = "BookTemplateId,Title,Description,ImageLocation,LoanPeriod,ISBN,OLKey,PublishYear,Genres,Authors")] BookTemplateEditModel bookTemplate)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(bookTemplate).State = EntityState.Modified;
-                db.SaveChanges();
+                var editBook = db.BookTemplates.FirstOrDefault(b => b.BookTemplateId == bookTemplate.BookTemplateId);
+                if (editBook != null)
+                {
+                    editBook.Title = bookTemplate.Title;
+                    editBook.Description = bookTemplate.Description;
+                    editBook.ImageLocation = bookTemplate.ImageLocation;
+                    editBook.LoanPeriod = bookTemplate.LoanPeriod;
+                    editBook.ISBN = bookTemplate.ISBN;
+                    editBook.OLKey = bookTemplate.OLKey;
+                    editBook.PublishYear = bookTemplate.PublishYear;
+                    editBook.Genres = bookTemplate.Genres;
+                    editBook.Authors = editBook.Authors;
+
+                    db.BookGenres.RemoveRange(editBook.BookGenres);
+                    db.BookAuthors.RemoveRange(editBook.BookAuthors);
+                    db.SaveChanges();
+
+                    List<Genre> genresToAdd = new List<Genre>();
+                    List<BookGenre> genresToSave = new List<BookGenre>();
+
+                    List<Author> authorsToAdd = new List<Author>();
+                    List<BookAuthor> authorsToSave = new List<BookAuthor>();
+
+                    string[] genres = { "" };
+                    string[] authors = { "" };
+
+                    if (bookTemplate.Genres != null)
+                    {
+                        genres = bookTemplate.Genres.Split(',');
+                    }
+
+                    if (bookTemplate.Authors != null)
+                    {
+                        authors = bookTemplate.Authors.Split(',');
+                    }
+
+                    #region Genres
+                    foreach (string genre in genres.Where(g => g != ""))
+                    {
+                        Genre findGenre = db.Genres.FirstOrDefault(g => g.Name == genre);
+
+                        if (findGenre != null)
+                        {
+                            genresToSave.Add(new BookGenre
+                            {
+                                BookTemplateId = bookTemplate.BookTemplateId,
+                                GenreId = findGenre.GenreId,
+                                DateCreated = DateTime.UtcNow.AddHours(8)
+                            });
+                        }
+                        else
+                        {
+                            Genre newGenre = new Genre
+                            {
+                                DateCreated = DateTime.UtcNow.AddHours(8),
+                                Name = genre
+                            };
+
+                            genresToAdd.Add(newGenre);
+                        }
+                    }
+
+                    db.Genres.AddRange(genresToAdd);
+                    db.SaveChanges();
+
+                    foreach (Genre newGenre in genresToAdd)
+                    {
+                        genresToSave.Add(new BookGenre
+                        {
+                            BookTemplateId = bookTemplate.BookTemplateId,
+                            GenreId = newGenre.GenreId,
+                            DateCreated = DateTime.UtcNow.AddHours(8)
+                        });
+                    }
+
+                    db.BookGenres.AddRange(genresToSave);
+                    db.SaveChanges();
+                    #endregion
+
+                    #region Authors
+                    foreach (string author in authors.Where(a => a != ""))
+                    {
+                        Author findAuthor = db.Authors.FirstOrDefault(a => a.Name == author);
+
+                        if (findAuthor != null)
+                        {
+                            authorsToSave.Add(new BookAuthor
+                            {
+                                BookTemplateId = bookTemplate.BookTemplateId,
+                                AuthorId = findAuthor.AuthorId,
+                                DateCreated = DateTime.UtcNow.AddHours(8)
+                            });
+                        }
+                        else
+                        {
+                            Author newAuthor = new Author
+                            {
+                                DateCreated = DateTime.UtcNow.AddHours(8),
+                                Name = author
+                            };
+
+                            authorsToAdd.Add(newAuthor);
+                        }
+                    }
+
+                    db.Authors.AddRange(authorsToAdd);
+                    db.SaveChanges();
+
+                    foreach (Author newAuthor in authorsToAdd)
+                    {
+                        authorsToSave.Add(new BookAuthor
+                        {
+                            BookTemplateId = bookTemplate.BookTemplateId,
+                            AuthorId = newAuthor.AuthorId,
+                            DateCreated = DateTime.UtcNow.AddHours(8)
+                        });
+                    }
+
+                    db.BookAuthors.AddRange(authorsToSave);
+                    db.SaveChanges();
+                    #endregion
+                }
                 return RedirectToAction("Index");
             }
             return View(bookTemplate);

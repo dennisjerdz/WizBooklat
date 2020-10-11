@@ -293,8 +293,8 @@
                         </center>
 
                         <form class="form-home" action="@Url.Action("Register","Account", null)" method="GET">
-                            <input class="form-control form-control-line-only" name="StudentNumber" placeholder="Student Number" />
-                            <input class="form-control form-control-line-only" name="Email" placeholder="Email" />
+                            <input class="form-control form-control-line-only" name="StudentNumber" type="number" placeholder="Student Number" required/>
+                            <input class="form-control form-control-line-only" name="Email" type="email" placeholder="Email" />
                             <button class="btn btn-lg btn-info btn-block" type="submit">Register</button>
                             <br />
                             <center>

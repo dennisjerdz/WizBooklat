@@ -97,8 +97,6 @@
                                 }
                             </td>
                             <td>
-                                <a class="btn btn-xs btn-info btn-table-short" href="@Url.Action("Edit", new { id = item.BookTemplateId })">Edit</a>
-
                                 @if (item.BookStatus != BookStatusConstant.LOANED && item.BookStatus != BookStatusConstant.PULLED_OUT)
                                 {
                                     <a class="btn btn-xs btn-warning btn-table-short" href="@Url.Action("SetAsPullout", new { id = item.BookId })">Pull-out</a>
